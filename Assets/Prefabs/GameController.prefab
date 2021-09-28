@@ -12,9 +12,7 @@ GameObject:
   - component: {fileID: 2508807963702052049}
   - component: {fileID: 2508807963702052048}
   - component: {fileID: 2508807963702052051}
-  - component: {fileID: 2508807963702052050}
   - component: {fileID: 2508807963702052044}
-  - component: {fileID: 2508807963702052053}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -51,10 +49,6 @@ MonoBehaviour:
   m_player: {fileID: 525478424409402998, guid: f1107735f2fd6ed49b9ae6dcfc63d3f7, type: 3}
   m_enemys:
   - {fileID: 7589822185640726656, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
-  m_spwonPoint:
-  - {fileID: 0}
-  - {fileID: 0}
-  m_instansCount: 1
 --- !u!114 &2508807963702052048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,18 +79,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2f507468df355ea49ae3f4f9ce209003, type: 3}
   - {fileID: 8300000, guid: 13efde3dbdf118c4b805c5dacec397dc, type: 3}
   m_bgms: []
---- !u!114 &2508807963702052050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2508807963702052052}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cc8d8ffac8a36a4cabe3efafe6fd7e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!120 &2508807963702052044
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -196,15 +178,3 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &2508807963702052053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2508807963702052052}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cc8d8ffac8a36a4cabe3efafe6fd7e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

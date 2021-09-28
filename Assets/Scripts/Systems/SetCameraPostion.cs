@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class SetCameraPostion
 {
-    GameObject m_camera;
+    Transform m_camera;
 
-    public void GetCramera() => m_camera = GameObject.FindGameObjectWithTag("MainCamera");
+    public void GetCramera() => m_camera = GameObject.FindGameObjectWithTag("MainCamera").transform;
 
     public void Set()
     {
-        
+        Transform player = GameObject.FindGameObjectWithTag("Player").transform;
+        Quaternion q = player.localRotation;
+
+        if (q.y == 0)
+            m_camera.position = new Vector3(player.position.x + 1, player.position.y, m_camera.transform.position.z);
+        else
+            m_camera.position = new Vector3(player.position.x - 1, player.position.y, m_camera.transform.position.z);
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 using GetEnumToGame;
 using AudioType;
 using AttackType;
@@ -42,7 +43,6 @@ public class AttackClass
             GameManager.Instance.PlayAudio(ClipType.Slashing, BGMType.None);
 
         float add = thisI.AddDamage();
-        Debug.Log(add);
         otherI.GetDamage(add);
     }
 

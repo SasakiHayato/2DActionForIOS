@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 using AudioType;
 using UiType;
 
@@ -10,11 +11,16 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] GameObject m_player;
     [SerializeField] GameObject[] m_enemys = new GameObject[0];
+    [SerializeField] Transform[] m_spawnPos = new Transform[2];
+    [SerializeField] float m_setTime;
 
     List<GameObject> m_Objects = new List<GameObject>();
+
     UiManager m_ui;
     PlayerController m_playerControl;
     SetCameraPostion m_setCamera = new SetCameraPostion();
+
+    float m_time;
     int m_count = 0;
 
     private void Awake()
@@ -30,7 +36,23 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(Instance);
     }
 
-    public void SetEnemys(Vector2 setPos)
+    void Update()
+    {
+        m_setCamera.Set();
+
+        // CreateEnemy
+        m_time += Time.deltaTime;
+        if (m_time > m_setTime)
+        {
+            int set = Random.Range(0, m_spawnPos.Length);
+            Vector2 setPos = m_spawnPos[set].position;
+            SetEnemys(setPos);
+
+            m_time = 0;
+        }
+    }
+
+    void SetEnemys(Vector2 setPos)
     {
         int range = Random.Range(0, m_enemys.Length);
         GameObject get = Instantiate(m_enemys[range]);
@@ -65,7 +87,9 @@ public class GameManager : MonoBehaviour
         
         m_Objects.Remove(m_Objects[id]);
         m_Objects.Add(null);
-        
+
+        m_ui.AddScore(100);
+
         Destroy(set);
     }
     public void EnemysSpeed(bool boolean)
