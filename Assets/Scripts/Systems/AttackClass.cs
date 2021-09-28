@@ -4,11 +4,10 @@ using UnityEngine;
 
 using GetEnumToGame;
 using AudioType;
-using AttackType;
 
 public class AttackClass
 {
-    public void Set(Vector2 setVec, GameObject parent, Parent type, Type attack)
+    public void Set(Vector2 setVec, GameObject parent, Parent type)
     {
         LayerMask setLayer;
 
@@ -17,10 +16,10 @@ public class AttackClass
         else
             setLayer = LayerMask.GetMask("Player");
         
-        ShotRay(setVec, parent, setLayer, attack);
+        ShotRay(setVec, parent, setLayer);
     }
 
-    void ShotRay(Vector2 setVec, GameObject parent, LayerMask layer, Type attack)
+    void ShotRay(Vector2 setVec, GameObject parent, LayerMask layer)
     {
         Vector2 thisVec = parent.transform.position;
         RaycastHit2D hit = Physics2D.Raycast(thisVec, setVec, setVec.magnitude, layer);
@@ -30,17 +29,14 @@ public class AttackClass
             IDamageble otherI = hit.collider.GetComponent<IDamageble>();
             IDamageble thisI = parent.GetComponent<IDamageble>();
 
-            Attack(thisI, otherI, attack);
-
-            if (attack == Type.Shlash)
-              SetPostion(parent.transform, hit.collider.transform);
+            Attack(thisI, otherI);
+            SetPostion(parent.transform, hit.collider.transform);
         }
     }
 
-    void Attack(IDamageble thisI, IDamageble otherI, Type attack)
+    void Attack(IDamageble thisI, IDamageble otherI)
     {
-        if (attack == Type.Shlash)
-            GameManager.Instance.PlayAudio(ClipType.Slashing, BGMType.None);
+        GameManager.Instance.PlayAudio(ClipType.Slashing, BGMType.None);
 
         float add = thisI.AddDamage();
         otherI.GetDamage(add);

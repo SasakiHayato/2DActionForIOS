@@ -10,6 +10,8 @@ public class SetCameraPostion
 
     public void Set()
     {
+        if (GameObject.FindGameObjectWithTag("Player") == null) return;
+
         Transform player = GameObject.FindGameObjectWithTag("Player").transform;
         Quaternion q = player.localRotation;
 

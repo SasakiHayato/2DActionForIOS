@@ -71,7 +71,7 @@ public class PlayerController : CharactorBase, IDamageble
         {
             if (m_flick.IsSlide)
             {
-                m_attackClass.Set(new Vector2(front, 0) * m_attackRange, gameObject, Parent.Player, AttackType.Type.Shlash);
+                m_attackClass.Set(new Vector2(front, 0) * m_attackRange, gameObject, Parent.Player);
             }
 
             GameManager.Instance.EnemysSpeed(false);

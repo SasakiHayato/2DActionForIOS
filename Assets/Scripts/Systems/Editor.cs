@@ -12,21 +12,11 @@ namespace GetEnumToGame
         Enemy,
     }
 
-    enum Game
+    public enum Game
     {
-        Is,
-        None,
-    }
-}
-
-namespace AttackType
-{
-    public enum Type
-    {
-        Shlash,
-        Bullet,
-
-        None,
+        Main,
+        Titel,
+        Result,
     }
 }
 
@@ -41,7 +31,7 @@ namespace AudioType
     public enum ClipType
     {
         Slashing,
-        Bullet,
+        
         None,
     }
 }

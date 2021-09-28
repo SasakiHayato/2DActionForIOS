@@ -517,6 +517,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2725948518908325043, guid: ef3f3cfbd0ef21643994f7f89e9e091a, type: 3}
+      propertyPath: m_setTime
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2725948518908325049, guid: ef3f3cfbd0ef21643994f7f89e9e091a, type: 3}
       propertyPath: m_Name
       value: GameController
@@ -533,6 +537,14 @@ PrefabInstance:
     - target: {fileID: 8432815222443221573, guid: 62bb9c2c38c82e445be0e3f5927faddb, type: 3}
       propertyPath: m_Name
       value: GameCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432815222548880247, guid: 62bb9c2c38c82e445be0e3f5927faddb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -310
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432815222548880247, guid: 62bb9c2c38c82e445be0e3f5927faddb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 649
       objectReference: {fileID: 0}
     - target: {fileID: 8432815222590636405, guid: 62bb9c2c38c82e445be0e3f5927faddb, type: 3}
       propertyPath: m_AnchorMax.x

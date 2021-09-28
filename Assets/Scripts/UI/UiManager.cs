@@ -7,7 +7,7 @@ public class UiManager : MonoBehaviour
 {
     [SerializeField] Text m_scoreText;
     Slider m_slider;
-
+    
     float m_totalScore;
     string m_text;
 

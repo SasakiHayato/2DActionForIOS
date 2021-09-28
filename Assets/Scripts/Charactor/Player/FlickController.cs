@@ -8,6 +8,7 @@ public class FlickController
     Vector2 m_endPos = Vector2.zero;
 
     float m_pushTime = 0;
+    float m_flickTime = 0.25f;
 
     public int Dir { get; private set; }
     public bool IsSlide { get; private set; }
@@ -48,7 +49,7 @@ public class FlickController
         else if (m_startPos.x > m_endPos.x)
             Dir = -1;
 
-        if (m_pushTime < 0.25f)
+        if (m_pushTime < m_flickTime)
         {
             Debug.Log("ƒtƒŠƒbƒN");
             IsSlide = false;

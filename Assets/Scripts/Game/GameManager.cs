@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using GetEnumToGame;
 using AudioType;
 using UiType;
 
@@ -18,7 +19,9 @@ public class GameManager : MonoBehaviour
 
     UiManager m_ui;
     PlayerController m_playerControl;
+
     SetCameraPostion m_setCamera = new SetCameraPostion();
+    SceneController m_scene = new SceneController();
 
     float m_time;
     int m_count = 0;
@@ -26,9 +29,14 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         m_ui = FindObjectOfType<UiManager>();
-        SetPlayer();
-        m_setCamera.GetCramera();
 
+        if (GameMaster.Instance().CurrentType == Game.Main)
+        {
+            SetPlayer();
+            m_setCamera.GetCramera();
+        }
+
+        // DontDestroy
         if (Instance != null)
             Destroy(Instance);
 
@@ -38,6 +46,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (GameMaster.Instance().CurrentType != Game.Main) return;
+
         m_setCamera.Set();
 
         // CreateEnemy
@@ -127,4 +137,6 @@ public class GameManager : MonoBehaviour
         if (type == Ui.PlayerSlider)
             m_ui.SetSliderParam(m_playerControl.CurrentAttack);
     }
+
+    public void Scenes(string set) => m_scene.SetScene(set);
 }
