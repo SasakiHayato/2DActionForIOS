@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 525478424409402999}
   - component: {fileID: 525478424409402987}
   m_Layer: 6
-  m_Name: TestPlayer
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -185,6 +185,7 @@ MonoBehaviour:
   m_hp: 10
   m_speed: 10
   m_addDamage: 10
+  m_attackRange: 4
 --- !u!50 &525478424409402999
 Rigidbody2D:
   serializedVersion: 4

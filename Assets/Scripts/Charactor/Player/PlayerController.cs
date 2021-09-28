@@ -5,9 +5,12 @@ using GetEnumToGame;
 
 public class PlayerController : CharactorBase, IDamageble
 {
+    [SerializeField] float m_attackRange;
     Rigidbody2D m_rb;
+
     AttackClass m_attackClass = new AttackClass();
     DrawLine m_line = new DrawLine();
+    FlickController m_flick = new FlickController();
 
     float m_rate = 1;
     public bool CurrentAttack { get; private set; }
@@ -24,6 +27,10 @@ public class PlayerController : CharactorBase, IDamageble
         float h = Move(ref front);
         Attack(ref front);
 
+        m_flick.IsPush();
+        m_flick.Pressing();
+        m_flick.Separated();
+
         m_rb.velocity = new Vector2(h / m_rate, m_rb.velocity.y);
     }
 
@@ -31,12 +38,12 @@ public class PlayerController : CharactorBase, IDamageble
     {
         float h = Input.GetAxisRaw("Horizontal") * Speed;
 
-        if (h < 0)
+        if (m_flick.Dir < 0)
         {
             transform.localRotation = Quaternion.Euler(0, 180, 0);
             front = -1;
         }
-        else if (h > 0)
+        else if (m_flick.Dir > 0)
         {
             transform.localRotation = Quaternion.Euler(0, 0, 0);
             front = 1;
@@ -44,24 +51,29 @@ public class PlayerController : CharactorBase, IDamageble
 
         return h;
     }
+
     void Attack(ref float front)
     {
-        if (Input.GetButtonDown("Fire1") && !CurrentAttack)
+        if (Input.GetMouseButtonDown(0) && !CurrentAttack)
         {
             GameManager.Instance.EnemysSpeed(true);
             CurrentAttack = true;
             m_rate = 2;
         }
 
-        if (Input.GetButton("Fire1"))
+        if (Input.GetMouseButton(0))
         {
-            m_line.Drow(transform, new Vector2(front, 0) * 4);
+            m_line.Drow(transform, new Vector2(front, 0) * m_attackRange);
             GameManager.Instance.SetUiParam(UiType.Ui.PlayerSlider);
         }
 
-        if (Input.GetButtonUp("Fire1"))
+        if (Input.GetMouseButtonUp(0))
         {
-            m_attackClass.Set(new Vector2(front, 0) * 4, gameObject, Parent.Player, AttackType.Type.Shlash);
+            if (m_flick.IsSlide)
+            {
+                m_attackClass.Set(new Vector2(front, 0) * m_attackRange, gameObject, Parent.Player, AttackType.Type.Shlash);
+            }
+
             GameManager.Instance.EnemysSpeed(false);
             m_line.Des();
             m_rate = 1;
