@@ -15,6 +15,7 @@ public class FlickCheckToMove
         Vector2 setVec = new Vector2(dir, 0);
         
         SetRay(setVec, get.transform, set);
+        SetTrans(get, dir);
     }
 
     void SetRay(Vector2 dir, Transform parent,float distance)
@@ -22,17 +23,16 @@ public class FlickCheckToMove
         LayerMask mask = LayerMask.GetMask("Wall");
         
         RaycastHit2D hit = Physics2D.Raycast(parent.position, dir, dir.magnitude * distance, mask);
-        Vector2 setVec = dir * distance;
-        if (hit.collider)
-        {
-            Debug.Log("AA");
-        }
-        else
-            Move(setVec);
+        Vector3 setVec = dir * distance;
+        if (!hit.collider)
+            m_parent.transform.position += setVec;
     }
 
-    void Move(Vector3 distance)
+    void SetTrans(GameObject parent, float dir)
     {
-        m_parent.transform.position += distance;
+        if (dir < 0)
+            parent.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        else if (dir > 0)
+            parent.transform.localRotation = Quaternion.Euler(0, 180, 0);
     }
 }
