@@ -17,7 +17,6 @@ public class PlayerController : CharactorBase, IDamageble
 
     void Start()
     {
-        m_rb = GetComponent<Rigidbody2D>();
         CurrentAttack = false;
     }
 
@@ -27,11 +26,9 @@ public class PlayerController : CharactorBase, IDamageble
         float h = Move(ref front);
         Attack(ref front);
 
-        m_flick.IsPush();
+        m_flick.IsPush(gameObject);
         m_flick.Pressing();
         m_flick.Separated();
-
-        m_rb.velocity = new Vector2(h / m_rate, m_rb.velocity.y);
     }
 
     float Move(ref float front)

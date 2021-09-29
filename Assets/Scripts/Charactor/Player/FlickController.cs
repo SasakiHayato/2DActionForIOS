@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FlickController
 {
+    FlickCheckToMove m_flickCheck = new FlickCheckToMove();
+
     Vector2 m_startPos = Vector2.zero;
     Vector2 m_endPos = Vector2.zero;
 
@@ -13,10 +15,13 @@ public class FlickController
     public int Dir { get; private set; }
     public bool IsSlide { get; private set; }
 
-    public void IsPush()
+    GameObject m_parent;
+
+    public void IsPush(GameObject parent)
     {
         if (Input.GetMouseButtonDown(0))
         {
+            m_parent = parent;
             Vector3 mousePos = Input.mousePosition;
             m_startPos = Camera.main.ScreenToWorldPoint(mousePos);
         }
@@ -52,6 +57,7 @@ public class FlickController
         if (m_pushTime < m_flickTime)
         {
             Debug.Log("ƒtƒŠƒbƒN");
+            m_flickCheck.IsFrick(m_parent, Dir);
             IsSlide = false;
         }
         else

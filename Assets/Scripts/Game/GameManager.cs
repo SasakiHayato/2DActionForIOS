@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject[] m_enemys = new GameObject[0];
     [SerializeField] Transform[] m_spawnPos = new Transform[2];
     [SerializeField] float m_setTime;
+    [SerializeField] bool m_isDebug = false;
 
     List<GameObject> m_Objects = new List<GameObject>();
 
@@ -30,7 +31,7 @@ public class GameManager : MonoBehaviour
     {
         m_ui = FindObjectOfType<UiManager>();
 
-        if (GameMaster.Instance().CurrentType == Game.Main)
+        if (GameMaster.Instance().CurrentType == Game.Main || m_isDebug)
         {
             SetPlayer();
             m_setCamera.GetCramera();
@@ -46,7 +47,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (GameMaster.Instance().CurrentType != Game.Main) return;
+        if (GameMaster.Instance().CurrentType != Game.Main && !m_isDebug) return;
 
         m_setCamera.Set();
 
@@ -82,6 +83,8 @@ public class GameManager : MonoBehaviour
     {
         GameObject player = Instantiate(m_player);
         m_playerControl = player.GetComponent<PlayerController>();
+
+        m_ui.GetHp = m_playerControl.Hp;
     }
 
     public void DeidPlayer()
