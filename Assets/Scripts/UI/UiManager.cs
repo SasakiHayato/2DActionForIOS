@@ -8,8 +8,10 @@ public class UiManager : MonoBehaviour
     [SerializeField] Text m_scoreText;
     [SerializeField] GameObject m_hpCanvas;
 
+    List<GameObject> m_hpImages = new List<GameObject>();
     Slider m_slider;
-    
+
+    int m_hpCount;
     float m_totalScore;
     string m_text;
 
@@ -27,7 +29,10 @@ public class UiManager : MonoBehaviour
     {
         for (int i = 0; i < (int)GetHp; i++)
         {
+            m_hpCount++;
+
             GameObject setImage = new GameObject();
+            m_hpImages.Add(setImage);
             setImage.name = $"Hp :{i}";
             setImage.AddComponent<Image>();
             RectTransform rect = setImage.GetComponent<RectTransform>();
@@ -35,6 +40,14 @@ public class UiManager : MonoBehaviour
             rect.localScale = new Vector2(0.275f, 0.275f);
             setImage.transform.parent = m_hpCanvas.transform;
         }
+    }
+
+    public void ChengeHpImage()
+    {
+        if (m_hpCount == 0) return;
+        
+        Destroy(m_hpImages[m_hpCount - 1]);
+        m_hpCount--;
     }
 
     public void SetSliderParam(bool get)

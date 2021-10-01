@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
 
         Destroy(set);
     }
-    public void EnemysSpeed(bool boolean)
+    public void EnemysSpeed(bool boolean, float setSpeed)
     {
         foreach (GameObject get in m_Objects)
         {
@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
             {
                 EnemyBase enemyBase = get.GetComponent<EnemyBase>();
                 if (boolean)
-                    enemyBase.ThisMotionSpeed(2, true);
+                    enemyBase.ThisMotionSpeed(setSpeed, true);
                 else
                     enemyBase.ThisMotionSpeed(0, false);
             }
@@ -139,6 +139,10 @@ public class GameManager : MonoBehaviour
     {
         if (type == Ui.PlayerSlider)
             m_ui.SetSliderParam(m_playerControl.CurrentAttack);
+        else if (type == Ui.PlayerHp)
+            m_ui.ChengeHpImage();
+
+
     }
 
     public void Scenes(string set) => m_scene.SetScene(set);

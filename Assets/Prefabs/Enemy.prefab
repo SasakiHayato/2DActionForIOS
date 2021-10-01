@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 7589822185640726659}
   - component: {fileID: -1367306519125586493}
   m_Layer: 7
-  m_Name: TestEnemy
+  m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -222,3 +222,4 @@ MonoBehaviour:
   m_hp: 0
   m_speed: 3
   m_addDamage: 0
+  m_attackRange: 2

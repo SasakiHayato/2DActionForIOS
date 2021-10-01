@@ -7,6 +7,9 @@ using AudioType;
 
 public class AttackClass
 {
+    bool m_attackBool = false;
+    public bool GetAttack { get => m_attackBool; set { m_attackBool = value; } }
+
     public void Set(Vector2 setVec, GameObject parent, Parent type)
     {
         LayerMask setLayer;
@@ -40,6 +43,8 @@ public class AttackClass
 
         float add = thisI.AddDamage();
         otherI.GetDamage(add);
+
+        m_attackBool = true;
     }
 
     void SetPostion(Transform parent, Transform other)

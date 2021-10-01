@@ -41,6 +41,7 @@ namespace UiType
     public enum Ui
     {
         PlayerSlider,
+        PlayerHp,
         Game,
     }
 }

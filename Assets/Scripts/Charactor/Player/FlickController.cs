@@ -28,7 +28,7 @@ public class FlickController
         {
             IsSlide = false;
 
-            GameManager.Instance.EnemysSpeed(true);
+            GameManager.Instance.EnemysSpeed(true, 2);
             m_parent = parent;
             Vector3 mousePos = Input.mousePosition;
             m_startPos = Camera.main.ScreenToWorldPoint(mousePos);
@@ -61,8 +61,8 @@ public class FlickController
             m_line.Des();
              attack = false;
 
-            GameManager.Instance.EnemysSpeed(false);
-            GameManager.Instance.SetUiParam(UiType.Ui.PlayerSlider);  
+            GameManager.Instance.EnemysSpeed(false, 0);
+            GameManager.Instance.SetUiParam(UiType.Ui.PlayerSlider);
         }
     }
 

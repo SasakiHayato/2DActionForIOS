@@ -7,7 +7,7 @@ public class PlayerController : CharactorBase, IDamageble
     [SerializeField] float m_attackRange;
 
     FlickController m_flick = new FlickController();
-    SlideCheckToAttack m_slide = new SlideCheckToAttack();
+    AttackClass m_attack = new AttackClass();
 
     bool m_attackCheck;
     public bool CurrentAttack { get => m_attackCheck;}
@@ -31,6 +31,12 @@ public class PlayerController : CharactorBase, IDamageble
         }
 
         SetTrans(m_flick.Dir);
+
+        if (m_attack.GetAttack)
+        {
+            m_attack.GetAttack = false;
+            AroundAttack();
+        }
     }
 
     void SetTrans(float dir)
@@ -41,12 +47,22 @@ public class PlayerController : CharactorBase, IDamageble
             transform.localRotation = Quaternion.Euler(0, 0, 0);
     }
 
-    void Attack() => m_slide.IsSlide(gameObject, m_flick.Dir);
+    void Attack()
+    {
+        Vector2 set = new Vector2(m_flick.Dir, 0) * m_attackRange;
+        m_attack.Set(set, gameObject, GetEnumToGame.Parent.Player);
+    }
+
+    void AroundAttack()
+    {
+        Debug.Log("UŒ‚");
+    }
 
     public float AddDamage() => Add;
     public void GetDamage(float damage)
     {
         Hp -= damage;
+        GameManager.Instance.SetUiParam(UiType.Ui.PlayerHp);
         if (Hp <= 0)
         {
             GameManager.Instance.Shake();
