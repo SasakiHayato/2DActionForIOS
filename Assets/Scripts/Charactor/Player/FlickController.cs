@@ -5,8 +5,7 @@ using UnityEngine;
 public class FlickController
 {
     FlickCheckToMove m_flickCheck = new FlickCheckToMove();
-    SlideCheckToAttack m_slideCheck = new SlideCheckToAttack();
-
+    
     DrawLine m_line = new DrawLine();
 
     Vector2 m_startPos = Vector2.zero;
@@ -14,26 +13,29 @@ public class FlickController
 
     float m_pushTime = 0;
     float m_flickTime = 0.25f;
-    int m_dir = 1;
+
+    float m_dir = 1;
+    public float Dir { get => m_dir; }
 
     GameObject m_parent;
+    public bool IsSlide { get; set; }
+    public bool IsPush { get; private set; }
+    bool m_check = false;
 
-    public void IsPush(GameObject parent, PlayerController controller)
+    public void IsPress(GameObject parent)
     {
         if (Input.GetMouseButtonDown(0))
         {
+            IsSlide = false;
+
             GameManager.Instance.EnemysSpeed(true);
-            float front = m_dir * -1;
-            Debug.Log(front);
             m_parent = parent;
             Vector3 mousePos = Input.mousePosition;
             m_startPos = Camera.main.ScreenToWorldPoint(mousePos);
-
-            m_line.Drow(m_parent.transform, new Vector2(front, 0) * controller.AttackRange);
         }
     }
 
-    public void Pressing(ref bool attack)
+    public void Pressing(ref bool attack, PlayerController controller)
     {
         if (Input.GetMouseButton(0))
         {
@@ -44,6 +46,8 @@ public class FlickController
             m_endPos = Camera.main.ScreenToWorldPoint(mousePos);
 
             GameManager.Instance.SetUiParam(UiType.Ui.PlayerSlider);
+            CheckDir();
+            m_line.Drow(m_parent.transform, new Vector2(m_dir, 0) * controller.AttackRange);
         }
     }
 
@@ -51,43 +55,46 @@ public class FlickController
     {
         if (Input.GetMouseButtonUp(0))
         {
-            CheckDir();
+            Set();
+
             m_pushTime = 0;
             m_line.Des();
              attack = false;
 
             GameManager.Instance.EnemysSpeed(false);
-            GameManager.Instance.SetUiParam(UiType.Ui.PlayerSlider);
+            GameManager.Instance.SetUiParam(UiType.Ui.PlayerSlider);  
         }
     }
 
     void CheckDir()
     {
-        bool check = false;
         float dir = m_endPos.x - m_startPos.x;
 
-        if (dir > 3)
+        if (dir > 1.5f)
         {
-            Debug.Log("A");
             m_dir = 1;
-            check = true;
+            m_check = true;
         }
-        else if (dir < -3)
+        else if (dir < -1.5f)
         {
-            Debug.Log("B");
             m_dir = -1;
-            check = true;
+            m_check = true;
         }
-        if (m_pushTime < m_flickTime && check)
+    }
+
+    void Set()
+    {
+        if (m_pushTime < m_flickTime && m_check)
         {
             Debug.Log("フリック");
             m_flickCheck.IsFrick(m_parent, m_dir);
         }
-        else if(m_pushTime >= m_flickTime && check)
+        else if (m_pushTime >= m_flickTime && m_check)
         {
             Debug.Log("スライド");
-            m_slideCheck.IsSlide(m_parent, m_dir);
+            IsSlide = true;
         }
-    }
 
+        m_check = false;
+    }
 }

@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GetEnumToGame;
 
 public class PlayerController : CharactorBase, IDamageble
 {
     [SerializeField] float m_attackRange;
 
     FlickController m_flick = new FlickController();
+    SlideCheckToAttack m_slide = new SlideCheckToAttack();
 
     bool m_attackCheck;
     public bool CurrentAttack { get => m_attackCheck;}
@@ -20,10 +20,28 @@ public class PlayerController : CharactorBase, IDamageble
 
     void Update()
     {
-        m_flick.IsPush(gameObject, this);
-        m_flick.Pressing(ref m_attackCheck);
+        m_flick.IsPress(gameObject);
+        m_flick.Pressing(ref m_attackCheck, this);
         m_flick.Separated(ref m_attackCheck);
+
+        if (m_flick.IsSlide)
+        {
+            m_flick.IsSlide = false;
+            Attack();
+        }
+
+        SetTrans(m_flick.Dir);
     }
+
+    void SetTrans(float dir)
+    {
+        if (dir < 0)
+            transform.localRotation = Quaternion.Euler(0, 180, 0);
+        else if (dir > 0)
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
+    }
+
+    void Attack() => m_slide.IsSlide(gameObject, m_flick.Dir);
 
     public float AddDamage() => Add;
     public void GetDamage(float damage)
