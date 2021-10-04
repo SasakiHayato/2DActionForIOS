@@ -25,17 +25,44 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonUp(0)) 
             m_flick.Separated();
 
-        SetTrans();
         m_rb.velocity = new Vector2(m_flick.Dir * m_speed, m_rb.velocity.y);
     }
 
-    void SetTrans()
+    private void FixedUpdate()
+    {
+        FindEnemy();
+    }
+
+    void FindEnemy()
+    {
+        float posX = float.MaxValue;
+        Vector3 setVec = Vector3.zero;
+        EnemyBase[] enemys = FindObjectsOfType<EnemyBase>();
+
+        foreach (EnemyBase get in enemys)
+        {
+            IEnemys check = get.GetComponent<IEnemys>();
+            if (check != null)
+            {
+                float absX = Mathf.Abs(transform.position.x - check.GetPos().x);
+                if (posX > absX)
+                {
+                    posX = absX;
+                    setVec = transform.position - check.GetPos();
+                }
+            }
+        }
+        
+        SetTrans(setVec);
+    }
+
+    void SetTrans(Vector2 get)
     {
         Quaternion q = Quaternion.identity;
 
-        if (m_flick.Dir == 1)
+        if (get.x < 0)
             q = Quaternion.Euler(0, 0, 0);
-        else if (m_flick.Dir == -1)
+        else if (get.x > 0)
             q = Quaternion.Euler(0, 180, 0);
 
         transform.localRotation = q;

@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IEnemys
 {
-    Vector2 SetPos();
+    Vector3 GetPos();
 }
 
