@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageble
 {
+    AttackClass m_attack = new AttackClass();
+
     [SerializeField] float m_speed;
 
     Rigidbody2D m_rb;
@@ -12,6 +14,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
+        m_flick.GetPlayer = gameObject;
     }
 
     void Update()
@@ -67,10 +70,22 @@ public class Player : MonoBehaviour
 
         transform.localRotation = q;
     }
+
+    public float AddDamage() => 1;
+
+    public void GetDamage(float damage)
+    {
+        Debug.Log("PlayerŽ€‚ñ‚¾");
+    }
+
 }
 
 public class Flick
 {
+    AttackClass m_attack = new AttackClass();
+
+    public GameObject GetPlayer { private get; set; }
+
     Vector2 m_startPos = Vector2.zero;
     Vector2 m_endPos = Vector2.zero;
 
@@ -80,6 +95,7 @@ public class Flick
     public void Pushed()
     {
         m_startPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        
     }
 
     public void Pressing()
@@ -92,8 +108,9 @@ public class Flick
 
     public void Separated()
     {
-        m_pushTime = 0;
+        FlickCheck();
         Dir = 0;
+        m_pushTime = 0;
     }
 
     private void SetDir()
@@ -104,8 +121,12 @@ public class Flick
         else if (check < -1.5f) Dir = 1;
     }
 
-    private void FilicOrSlede()
+    private void FlickCheck()
     {
+        if (m_pushTime >= 0.5f) return;
         
+        
+        Vector2 dir = new Vector2(Dir, 0);
+        m_attack.Set(GetPlayer, dir, 100, GetParent.Parent.Player);
     }
 }

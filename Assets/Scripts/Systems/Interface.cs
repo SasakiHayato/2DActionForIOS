@@ -7,3 +7,8 @@ public interface IEnemys
     Vector3 GetPos();
 }
 
+public interface IDamageble
+{
+    float AddDamage();
+    void GetDamage(float damage);
+}
