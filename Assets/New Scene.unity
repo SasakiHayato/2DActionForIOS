@@ -123,6 +123,79 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &409262892
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -6249652615197725394, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761475123974, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761539176863, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_Name
+      value: Enemy (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761539176863, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761539176863, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761539176933, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761539176933, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761539176933, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761539176933, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761539176933, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761539176933, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761539176933, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761539176933, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761539176933, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761539176933, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761539176933, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
 --- !u!1001 &1307996742
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -145,6 +218,10 @@ PrefabInstance:
     - target: {fileID: 4137590424653777924, guid: f1107735f2fd6ed49b9ae6dcfc63d3f7, type: 3}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4137590424653778043, guid: f1107735f2fd6ed49b9ae6dcfc63d3f7, type: 3}
+      propertyPath: m_attackRange
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4137590424653778043, guid: f1107735f2fd6ed49b9ae6dcfc63d3f7, type: 3}
       propertyPath: m_teleportTime
@@ -410,6 +487,10 @@ PrefabInstance:
     - target: {fileID: 817611761539176863, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 817611761539176863, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 817611761539176933, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
       propertyPath: m_RootOrder

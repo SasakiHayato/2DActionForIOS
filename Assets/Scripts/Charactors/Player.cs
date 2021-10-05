@@ -6,10 +6,12 @@ public class Player : MonoBehaviour, IDamageble
 {
     [SerializeField] float m_speed;
     [SerializeField] float m_teleportTime;
+    [SerializeField] float m_attackRange;
 
     Rigidbody2D m_rb;
     Flick m_flick = new Flick();
     AttackClass m_attack = new AttackClass();
+    DrawLine m_line = new DrawLine();
 
     float m_slideSpeed = 0;
 
@@ -25,23 +27,30 @@ public class Player : MonoBehaviour, IDamageble
         if (Input.GetMouseButtonDown(0)) 
             m_flick.Pushed();
 
-        else if (Input.GetMouseButton(0)) 
+        else if (Input.GetMouseButton(0))
+        {
             m_flick.Pressing();
-
-        if (Input.GetMouseButtonUp(0)) 
+            m_line.Draw(gameObject.transform, new Vector2(m_flick.Dir, 0), m_attackRange);
+        }
+            
+        if (Input.GetMouseButtonUp(0))
+        {
             m_flick.Separated();
+            m_line.DeleteLine();
+        }
+            
 
         float speed = m_flick.Dir * m_speed + m_slideSpeed;
         m_rb.velocity = new Vector2(speed, m_rb.velocity.y);
     }
 
-    private void FixedUpdate() => FindEnemy();
-    void FindEnemy()
+    private void FixedUpdate() => FindEnemyToLook();
+    void FindEnemyToLook()
     {
         float posX = float.MaxValue;
         Vector3 setVec = Vector3.zero;
         EnemyBase[] enemys = FindObjectsOfType<EnemyBase>();
-        if (enemys == null) return;
+
         foreach (EnemyBase get in enemys)
         {
             IEnemys check = get.GetComponent<IEnemys>();
@@ -74,13 +83,15 @@ public class Player : MonoBehaviour, IDamageble
     public void Attack()
     {
         Vector2 dir = new Vector2(m_flick.Dir, 0);
-        m_attack.Set(gameObject, dir, 100, GetParent.Parent.Player);
+        m_attack.Set(gameObject, dir, m_attackRange, GetParent.Parent.Player);
 
         SetPos();
     }
 
     void SetPos()
     {
+        if (m_attack.HitPos == null) return;
+
         float distance = m_attack.HitPos.position.x - transform.position.x;
         StartCoroutine(Move(distance / (m_teleportTime)));
     }
