@@ -14,11 +14,6 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
 
     void Update()
     {
-
-    }
-
-    private void FixedUpdate()
-    {
         FindPlayer();
     }
 

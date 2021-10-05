@@ -132,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6249652615197725394, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
       propertyPath: m_type
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 817611761475123974, guid: 8563e4b03448e5d44a98a388c166a084, type: 3}
       propertyPath: m_Layer
@@ -221,11 +221,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4137590424653778043, guid: f1107735f2fd6ed49b9ae6dcfc63d3f7, type: 3}
       propertyPath: m_attackRange
-      value: 5
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: 4137590424653778043, guid: f1107735f2fd6ed49b9ae6dcfc63d3f7, type: 3}
       propertyPath: m_teleportTime
-      value: 10
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4137590424653778046, guid: f1107735f2fd6ed49b9ae6dcfc63d3f7, type: 3}
       propertyPath: m_RootOrder
