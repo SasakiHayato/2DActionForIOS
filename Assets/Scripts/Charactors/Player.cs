@@ -14,6 +14,7 @@ public class Player : MonoBehaviour, IDamageble
     DrawLine m_line = new DrawLine();
 
     float m_slideSpeed = 0;
+    float m_attackDir = 0;
 
     void Start()
     {
@@ -30,7 +31,7 @@ public class Player : MonoBehaviour, IDamageble
         else if (Input.GetMouseButton(0))
         {
             m_flick.Pressing();
-            m_line.Draw(gameObject.transform, new Vector2(m_flick.Dir, 0), m_attackRange);
+            m_line.Draw(gameObject.transform, new Vector2(m_attackDir, 0), m_attackRange);
         }
             
         if (Input.GetMouseButtonUp(0))
@@ -73,16 +74,22 @@ public class Player : MonoBehaviour, IDamageble
         Quaternion q = Quaternion.identity;
 
         if (get.x < 0)
+        {
+            m_attackDir = 1;
             q = Quaternion.Euler(0, 0, 0);
+        }
         else if (get.x > 0)
+        {
+            m_attackDir = -1;
             q = Quaternion.Euler(0, 180, 0);
+        }
 
         transform.localRotation = q;
     }
 
     public void Attack()
     {
-        Vector2 dir = new Vector2(m_flick.Dir, 0);
+        Vector2 dir = new Vector2(m_attackDir, 0);
         m_attack.Set(gameObject, dir, m_attackRange, GetParent.Parent.Player);
 
         SetPos();
