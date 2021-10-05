@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IDamageble
 {
-    AttackClass m_attack = new AttackClass();
-
     [SerializeField] float m_speed;
+    [SerializeField] float m_teleportTime;
 
     Rigidbody2D m_rb;
     Flick m_flick = new Flick();
+    AttackClass m_attack = new AttackClass();
+
+    float m_slideSpeed = 0;
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
-        m_flick.GetPlayer = gameObject;
+        m_flick.GetPlayer = this;
+        m_teleportTime /= 60;
     }
 
     void Update()
@@ -28,20 +31,17 @@ public class Player : MonoBehaviour, IDamageble
         if (Input.GetMouseButtonUp(0)) 
             m_flick.Separated();
 
-        m_rb.velocity = new Vector2(m_flick.Dir * m_speed, m_rb.velocity.y);
+        float speed = m_flick.Dir * m_speed + m_slideSpeed;
+        m_rb.velocity = new Vector2(speed, m_rb.velocity.y);
     }
 
-    private void FixedUpdate()
-    {
-        FindEnemy();
-    }
-
+    private void FixedUpdate() => FindEnemy();
     void FindEnemy()
     {
         float posX = float.MaxValue;
         Vector3 setVec = Vector3.zero;
         EnemyBase[] enemys = FindObjectsOfType<EnemyBase>();
-
+        if (enemys == null) return;
         foreach (EnemyBase get in enemys)
         {
             IEnemys check = get.GetComponent<IEnemys>();
@@ -56,10 +56,10 @@ public class Player : MonoBehaviour, IDamageble
             }
         }
         
-        SetTrans(setVec);
+        SetDir(setVec);
     }
 
-    void SetTrans(Vector2 get)
+    void SetDir(Vector2 get)
     {
         Quaternion q = Quaternion.identity;
 
@@ -71,8 +71,28 @@ public class Player : MonoBehaviour, IDamageble
         transform.localRotation = q;
     }
 
-    public float AddDamage() => 1;
+    public void Attack()
+    {
+        Vector2 dir = new Vector2(m_flick.Dir, 0);
+        m_attack.Set(gameObject, dir, 100, GetParent.Parent.Player);
 
+        SetPos();
+    }
+
+    void SetPos()
+    {
+        float distance = m_attack.HitPos.position.x - transform.position.x;
+        StartCoroutine(Move(distance / (m_teleportTime)));
+    }
+
+    IEnumerator Move(float speed)
+    {
+        m_slideSpeed = speed;
+        yield return new WaitForSeconds(m_teleportTime);
+        m_slideSpeed = 0;
+    }
+
+    public float AddDamage() => 1;
     public void GetDamage(float damage)
     {
         Debug.Log("PlayerŽ€‚ñ‚¾");
@@ -82,9 +102,7 @@ public class Player : MonoBehaviour, IDamageble
 
 public class Flick
 {
-    AttackClass m_attack = new AttackClass();
-
-    public GameObject GetPlayer { private get; set; }
+    public Player GetPlayer {private get; set; }
 
     Vector2 m_startPos = Vector2.zero;
     Vector2 m_endPos = Vector2.zero;
@@ -95,7 +113,6 @@ public class Flick
     public void Pushed()
     {
         m_startPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        
     }
 
     public void Pressing()
@@ -123,10 +140,7 @@ public class Flick
 
     private void FlickCheck()
     {
-        if (m_pushTime >= 0.5f) return;
-        
-        
-        Vector2 dir = new Vector2(Dir, 0);
-        m_attack.Set(GetPlayer, dir, 100, GetParent.Parent.Player);
+        if (m_pushTime >= 0.2f) return;
+        GetPlayer.Attack();
     }
 }
