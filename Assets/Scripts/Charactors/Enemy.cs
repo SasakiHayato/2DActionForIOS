@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Enemy : EnemyBase, IEnemys, IDamageble
 {
+    AddForce m_force = new AddForce();
+
     Rigidbody2D m_rb;
     public Vector3 GetPos() => transform.position;
 
@@ -39,7 +41,7 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
     public void GetDamage(float damage)
     {
         Hp -= damage;
-
+        m_force.Set(m_rb, transform, Player.transform);
         if(Hp <= 0) Died(gameObject);
     }
 }

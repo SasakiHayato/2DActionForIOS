@@ -5,7 +5,7 @@ using GetParent;
 public class AttackClass
 {
     Transform m_hitPos;
-    public Transform HitPos { get => m_hitPos; private set { m_hitPos = value; } }
+    public Transform HitPos { get => m_hitPos; set { m_hitPos = value; } }
 
     public void Set(GameObject parent, Vector2 dir, float range, Parent type)
     {

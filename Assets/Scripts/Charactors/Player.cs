@@ -101,6 +101,7 @@ public class Player : MonoBehaviour, IDamageble
 
         float distance = m_attack.HitPos.position.x - transform.position.x;
         StartCoroutine(Move(distance / (m_teleportTime)));
+        m_attack.HitPos = null;
     }
 
     IEnumerator Move(float speed)
