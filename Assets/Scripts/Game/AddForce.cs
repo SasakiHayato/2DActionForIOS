@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 
 public class AddForce
 {
+    float m_power = 50;
+
     public void Set(Rigidbody2D targetRb, Transform thisPos, Transform otherPos)
     {
         float angle = 0;
@@ -17,7 +19,7 @@ public class AddForce
         float rad = angle * Mathf.Deg2Rad;
         Vector2 force = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
 
-        targetRb.velocity = force * 50;
+        targetRb.velocity = force * m_power;
         Task.Run(() => ReverseForce(force, targetRb));
     }
 
@@ -28,7 +30,7 @@ public class AddForce
         {
             Debug.Log(i);
             updateDir = new Vector2(i * -1, dir.y);
-            Debug.Log(updateDir * 50);
+            Debug.Log(updateDir * m_power);
             //rb.velocity = updateDir * 50;
         }
     }
