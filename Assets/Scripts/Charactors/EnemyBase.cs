@@ -18,12 +18,14 @@ public class EnemyBase : MonoBehaviour
 
     public float Hp { get => m_hp; set { m_hp = value; } }
     public float Speed { get => m_speed; private set { m_speed = value; } }
+    public bool IsDied { get; private set; }
 
     GameObject m_player;
     public GameObject Player { get => m_player; set { m_player = value; } }
 
     private void Awake()
     {
+        IsDied = false;
         m_data.Set(m_type, ref m_hp, ref m_speed);
         m_player = GameObject.FindGameObjectWithTag("Player");
         m_groundMask = LayerMask.GetMask("Ground");
@@ -32,8 +34,9 @@ public class EnemyBase : MonoBehaviour
 
     public void Died(GameObject target)
     {
-        Destroy(target);
+        IsDied = true;
         GameManager.Instance.GoSystem(IManage.Systems.DiedEnemy);
+        Destroy(target);
     }
 
     public void GroundRay(Transform target)
