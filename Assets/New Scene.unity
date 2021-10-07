@@ -146,6 +146,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4137590424653778042, guid: f1107735f2fd6ed49b9ae6dcfc63d3f7, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4137590424653778043, guid: f1107735f2fd6ed49b9ae6dcfc63d3f7, type: 3}
       propertyPath: m_attackRange
       value: 5.5
@@ -334,6 +338,10 @@ PrefabInstance:
       propertyPath: m_execution.Array.data[0].m_name
       value: TimeRate
       objectReference: {fileID: 0}
+    - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
+      propertyPath: m_execution.Array.data[0].m_blood
+      value: 
+      objectReference: {fileID: 21300000, guid: 88b556e80e8caee44a5e29bc742ee604, type: 3}
     - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
       propertyPath: m_curve.m_Curve.Array.data[0].time
       value: 0
