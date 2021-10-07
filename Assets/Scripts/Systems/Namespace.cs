@@ -56,12 +56,11 @@ namespace EnemyType
     }
 }
 
-namespace SystemType
+namespace IManage
 {
     public enum Systems
     {
-        A,
-        B,
+        DiedEnemy,
         TimeRate,
         None,
     }

@@ -304,15 +304,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
       propertyPath: m_execution.Array.data[0]
-      value: Assembly-CSharp TimeRate
+      value: Assembly-CSharp DiedEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
       propertyPath: m_execution.Array.data[1]
-      value: Assembly-CSharp A
+      value: Assembly-CSharp TimeRate
       objectReference: {fileID: 0}
     - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
       propertyPath: m_execution.Array.data[2]
-      value: Assembly-CSharp B
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
       propertyPath: m_manager.Array.data[0].data
@@ -395,6 +395,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
+      propertyPath: m_execution.Array.data[1].m_curve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
       propertyPath: m_manager.Array.data[0].m_curve.m_RotationOrder
       value: 4
       objectReference: {fileID: 0}
@@ -403,7 +407,15 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
+      propertyPath: m_execution.Array.data[1].m_curve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
       propertyPath: m_execution.Array.data[0].m_curve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
+      propertyPath: m_execution.Array.data[1].m_curve.m_RotationOrder
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
@@ -412,6 +424,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
       propertyPath: m_execution.Array.data[0].m_curve.m_Curve.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
+      propertyPath: m_execution.Array.data[1].m_curve.m_Curve.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}

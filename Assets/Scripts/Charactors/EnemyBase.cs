@@ -33,7 +33,7 @@ public class EnemyBase : MonoBehaviour
     public void Died(GameObject target)
     {
         Destroy(target);
-        Debug.Log("EnemyŽ€‚ñ‚¾");
+        GameManager.Instance.GoSystem(IManage.Systems.DiedEnemy);
     }
 
     public void GroundRay(Transform target)

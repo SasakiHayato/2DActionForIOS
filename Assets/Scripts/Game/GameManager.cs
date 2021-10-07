@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using SystemType;
+using IManage;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,8 +20,8 @@ public class GameManager : MonoBehaviour
     {
         foreach (IManager ex in m_execution)
         {
-            ex.Do = false;
-            SetDicId(ex);
+            if (ex == null) continue;
+            m_manage.AddDic(ex);
         }
             
 
@@ -35,22 +35,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(Instance);
     }
 
-    void SetDicId(IManager manager)
-    {
-        m_manage.AddDic(manager);
-    }
-
-    void Update()
-    {
-        foreach (IManager ex in m_execution)
-            ex.Execution();
-    }
-
-    public void DoSet(bool set, Systems type)
-    {
-        int id = (int)type;
-        m_execution[id].Do = set;
-    }
+    public void GoSystem(Systems type) => m_manage.Request(type);
 }
 
 class IManageControl
@@ -59,9 +44,11 @@ class IManageControl
 
     public void AddDic(IManager manager)
     {
-        Systems a = FindManagerId(manager);
-        Debug.Log(a);
+        Systems get = FindManagerId(manager);
+        m_dic.Add(get, manager);
     }
+
+    public void Request(Systems type) => m_dic[type].Execution();
 
     Systems FindManagerId(IManager manager)
     {

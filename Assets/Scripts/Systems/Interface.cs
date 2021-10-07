@@ -15,6 +15,5 @@ public interface IDamageble
 
 public interface IManager
 {
-    bool Do { get; set; }
     void Execution();
 }
