@@ -155,11 +155,12 @@ public class Flick
 
         if (check > 1.5f) Dir = -1;
         else if (check < -1.5f) Dir = 1;
+        else Dir = 0;
     }
 
     private void FlickCheck()
     {
-        if (m_pushTime >= 0.2f) return;
+        if (m_pushTime >= 0.2f || Dir == 0) return;
         GetPlayer.Attack();
         GameManager.Instance.GoSystem(IManage.Systems.TimeRate);
     }
