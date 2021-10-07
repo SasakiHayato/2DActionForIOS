@@ -12,3 +12,9 @@ public interface IDamageble
     float AddDamage();
     void GetDamage(float damage);
 }
+
+public interface IManager
+{
+    bool Do { get; set; }
+    void Execution();
+}

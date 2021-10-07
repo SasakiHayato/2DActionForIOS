@@ -1,39 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    float m_rate = 0;
+    [SerializeReference, SubclassSelector] 
+    List<IManager> m_execution = new List<IManager>();
 
     bool m_setRate = false;
     public bool SetRate { private get => m_setRate; set { m_setRate = value; } }
 
-    void Update()
-    {
-        if (m_setRate)
-            SetTimeRate();
-    }
-
-    void SetTimeRate()
-    {
-        //m_rate += Time.deltaTime * 2;
-        //float rate = m_curve.Evaluate(m_rate);
-        
-        //Time.timeScale = rate;
-    }
-
     private void Awake()
     {
-        if (Instance != null)
+        foreach (IManager ex in m_execution)
         {
-            Destroy(Instance);
-            return;
+            ex.Do = false;
         }
+    }
 
-        Instance = this;
-        DontDestroyOnLoad(Instance);
+    void Update()
+    {
+        foreach (IManager ex in m_execution)
+        {
+            ex.Execution();
+        }
     }
 }
