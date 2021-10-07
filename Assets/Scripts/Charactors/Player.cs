@@ -161,6 +161,7 @@ public class Flick
     {
         if (m_pushTime >= 0.2f) return;
         GetPlayer.Attack();
-        GameManager.Instance.SetRate = true;
+        Debug.Log("a");
+        GameManager.Instance.DoSet(true, 0);
     }
 }

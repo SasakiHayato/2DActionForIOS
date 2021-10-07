@@ -56,4 +56,16 @@ namespace EnemyType
     }
 }
 
+namespace SystemType
+{
+    public enum Systems
+    {
+        A,
+        B,
+        TimeRate,
+        None,
+    }
+       
+}
+
 
