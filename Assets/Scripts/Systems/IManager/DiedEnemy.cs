@@ -32,7 +32,7 @@ public class DiedEnemy : IManager
             blood.transform.localRotation = q;
 
             FadeClass fade = blood.AddComponent<FadeClass>();
-            fade.SetFadeTarget<SpriteRenderer>(blood.GetComponent<SpriteRenderer>(), true);
+            fade.SetFadeTarget<SpriteRenderer>(blood.GetComponent<SpriteRenderer>(), blood);
         }
     }
 

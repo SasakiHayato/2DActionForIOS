@@ -383,6 +383,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
+      propertyPath: m_execution.Array.data[0].m_spriteScale
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
       propertyPath: m_curve.m_Curve.Array.data[0].tangentMode
       value: 0
       objectReference: {fileID: 0}
@@ -668,6 +672,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 438771133508990770, guid: 0b20f0d770fd7f14abce4213b9f12a67, type: 3}
+      propertyPath: m_type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 438771133508990771, guid: 0b20f0d770fd7f14abce4213b9f12a67, type: 3}
       propertyPath: m_Name
       value: Enemy (1)
@@ -678,7 +686,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 438771133508990777, guid: 0b20f0d770fd7f14abce4213b9f12a67, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.5
+      value: -2.88
       objectReference: {fileID: 0}
     - target: {fileID: 438771133508990777, guid: 0b20f0d770fd7f14abce4213b9f12a67, type: 3}
       propertyPath: m_LocalPosition.y
