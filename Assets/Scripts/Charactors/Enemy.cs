@@ -16,8 +16,9 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
 
     void Update()
     {
+        if (!base.GroundRay(transform)) return;
+
         FindPlayer();
-        base.GroundRay(transform);
         m_rb.velocity = new Vector2(Speed, m_rb.velocity.y);
     }
 

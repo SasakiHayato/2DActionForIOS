@@ -9,15 +9,14 @@ public class EnemyBase : MonoBehaviour
     EnemyData m_data = new EnemyData();
     [SerializeField] Type m_type;
 
-    Vector2 m_rayDir = new Vector2(0, -2);
+    Vector2 m_rayDir = new Vector2(0, -1);
     LayerMask m_groundMask; 
 
     float m_hp;
     float m_speed;
-    float m_defSpeed;
 
     public float Hp { get => m_hp; set { m_hp = value; } }
-    public float Speed { get => m_speed; private set { m_speed = value; } }
+    public float Speed { get => m_speed; set { m_speed = value; } }
     public bool IsDied { get; private set; }
 
     GameObject m_player;
@@ -29,7 +28,6 @@ public class EnemyBase : MonoBehaviour
         m_data.Set(m_type, ref m_hp, ref m_speed);
         m_player = GameObject.FindGameObjectWithTag("Player");
         m_groundMask = LayerMask.GetMask("Ground");
-        m_defSpeed = m_speed;
     }
 
     public virtual void Died(GameObject target)
@@ -39,14 +37,12 @@ public class EnemyBase : MonoBehaviour
         Destroy(target);
     }
 
-    public virtual void GroundRay(Transform target)
+    public virtual bool GroundRay(Transform target)
     {
-        RaycastHit2D hit = Physics2D.Raycast(target.position, m_rayDir, m_rayDir.magnitude * 2, m_groundMask);
+        RaycastHit2D hit = Physics2D.Raycast(target.position, m_rayDir, m_rayDir.magnitude * 1, m_groundMask);
 
-        if (!hit.collider)
-            Speed = 0;
-        else
-            Speed = m_defSpeed;
+        if (!hit.collider) return false;
+        else return true;
     }
 }
 

@@ -22,7 +22,7 @@ public class Player : MonoBehaviour, IDamageble
         m_flick.GetPlayer = this;
         m_teleportTime /= 60;
     }
-
+    
     void Update()
     {
         if (Input.GetMouseButtonDown(0)) 
