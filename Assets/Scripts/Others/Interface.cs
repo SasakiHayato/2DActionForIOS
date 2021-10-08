@@ -17,3 +17,9 @@ public interface IManager
 {
     void Execution();
 }
+
+public interface IConditional
+{
+    bool Request();
+    void Answer();
+}

@@ -32,14 +32,14 @@ public class EnemyBase : MonoBehaviour
         m_defSpeed = m_speed;
     }
 
-    public void Died(GameObject target)
+    public virtual void Died(GameObject target)
     {
         IsDied = true;
         GameManager.Instance.GoSystem(IManage.Systems.DiedEnemy);
         Destroy(target);
     }
 
-    public void GroundRay(Transform target)
+    public virtual void GroundRay(Transform target)
     {
         RaycastHit2D hit = Physics2D.Raycast(target.position, m_rayDir, m_rayDir.magnitude * 2, m_groundMask);
 

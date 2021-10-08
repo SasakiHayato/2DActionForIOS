@@ -17,6 +17,8 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
     void Update()
     {
         FindPlayer();
+        base.GroundRay(transform);
+        m_rb.velocity = new Vector2(Speed, m_rb.velocity.y);
     }
 
     void FindPlayer()
@@ -42,6 +44,6 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
     {
         Hp -= damage;
         m_force.Set(m_rb, transform, Player.transform);
-        if(Hp <= 0) Died(gameObject);
+        if(Hp <= 0) base.Died(gameObject);
     }
 }
