@@ -21,7 +21,7 @@ public interface IManager
 public interface IConditional
 {
     bool Request();
-    IEnemysBehaviour.ActionType Answer();
+    List<IEnemysBehaviour.ActionType> Answer();
 }
 
 public interface IBehaviourAction

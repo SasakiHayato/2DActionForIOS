@@ -48,9 +48,9 @@ class ConditionalNode
         return check;
     }
 
-    public ActionType GetAnswer(List<IBehaviourAction> actions)
+    public List<ActionType> GetAnswer(List<IBehaviourAction> actions)
     {
-        ActionType answer = m_set.Answer();
+        List<ActionType> answer = m_set.Answer();
         return answer;
     }
 }
@@ -59,11 +59,21 @@ class SequenceNode
 {
     public void Sequence(ConditionalNode condition, List<IBehaviourAction> actions)
     {
+        ActionNode action = new ActionNode();
         bool check = condition.And();
         if (check)
         {
-            condition.GetAnswer(actions);
+            List<ActionType> get = condition.GetAnswer(actions);
+            action.Set(actions, get);
         }
+    }
+}
+
+class ActionNode
+{
+    public void Set(List<IBehaviourAction> actions, List<ActionType> types)
+    {
+
     }
 }
 
