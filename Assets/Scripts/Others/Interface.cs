@@ -21,5 +21,10 @@ public interface IManager
 public interface IConditional
 {
     bool Request();
-    void Answer();
+    IEnemysBehaviour.ActionType Answer();
+}
+
+public interface IBehaviourAction
+{
+    void Execution();
 }

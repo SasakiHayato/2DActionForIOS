@@ -65,7 +65,18 @@ namespace IManage
 
         None,
     }
-       
 }
+
+namespace IEnemysBehaviour
+{
+    public enum ActionType
+    {
+        Attack,
+        Move,
+
+        None,
+    }
+}
+
 
 
