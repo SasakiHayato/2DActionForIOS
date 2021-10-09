@@ -16,8 +16,8 @@ public class AddForce
             angle = Random.Range(25, 50);
 
         float rad = angle * Mathf.Deg2Rad;
-        Vector2 force = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
+        Vector2 forceAngle = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
 
-        targetRb.velocity = force * m_power;
+        targetRb.velocity = forceAngle * m_power;
     }
 }

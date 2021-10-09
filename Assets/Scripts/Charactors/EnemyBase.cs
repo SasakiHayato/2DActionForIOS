@@ -14,6 +14,7 @@ public class EnemyBase : MonoBehaviour
 
     float m_hp;
     float m_speed;
+    float m_defSpeed;
 
     public float Hp { get => m_hp; set { m_hp = value; } }
     public float Speed { get => m_speed; set { m_speed = value; } }

@@ -9,32 +9,42 @@ class TimeRate : IManager
 
     public void Execution()
     {
-        EnemyBase[] enemyBase = GameObject.FindObjectsOfType<EnemyBase>();
-
         GameObject set = new GameObject();
         set.name = "RateSyastem";
 
         RateControl rate = set.AddComponent<RateControl>();
         rate.Target = set;
-        rate.Set(m_curve, enemyBase);
+        rate.Set(m_curve);
     }
 }
 
 class RateControl : MonoBehaviour
 {
-    float m_rate = 0;
+    // Š„‡
+    float m_rate = 1;
+
     float m_rateSpeed = 0.05f;
+    float m_minValu = 0.15f;
 
     public GameObject Target { private get; set; }
 
-    public void Set(AnimationCurve curve, EnemyBase[] enemy)
+    public void Set(AnimationCurve curve)
     {
-        StartCoroutine(SetTime(curve, enemy));
+        StartCoroutine(SetTime(curve));
     }
 
-    IEnumerator SetTime(AnimationCurve curve, EnemyBase[] enemy)
+    IEnumerator SetTime(AnimationCurve curve)
     {
-        yield return new WaitForSeconds(2f);
+        float rate = float.MaxValue;
+        while (rate > m_minValu)
+        {
+            m_rate = Mathf.Clamp(m_rate - m_rateSpeed, m_minValu, 1);
+            Time.timeScale = curve.Evaluate(m_rate);
+            
+            rate = m_rate;
+            yield return new WaitForSeconds(0.05f);
+        }
+
         Destroy(Target);
     }
 }
