@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 class TimeRate : IManager
 {
     [SerializeField] AnimationCurve m_curve = null;
+    [SerializeField] float m_resetTime;
 
     public void Execution()
     {
@@ -14,7 +15,7 @@ class TimeRate : IManager
 
         RateControl rate = set.AddComponent<RateControl>();
         rate.Target = set;
-        rate.Set(m_curve);
+        rate.Set(m_curve, m_resetTime);
     }
 }
 
@@ -28,12 +29,12 @@ class RateControl : MonoBehaviour
 
     public GameObject Target { private get; set; }
 
-    public void Set(AnimationCurve curve)
+    public void Set(AnimationCurve curve, float reset)
     {
-        StartCoroutine(SetTime(curve));
+        StartCoroutine(SetTime(curve, reset));
     }
 
-    IEnumerator SetTime(AnimationCurve curve)
+    IEnumerator SetTime(AnimationCurve curve, float reset)
     {
         float rate = float.MaxValue;
         while (rate > m_minValu)
@@ -45,6 +46,19 @@ class RateControl : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
 
+        StartCoroutine(ResetRate(reset));
+    }
+
+    IEnumerator ResetRate(float reset)
+    {
+        float time = 0;
+        while (time < reset)
+        {
+            time += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        Time.timeScale = 1;
         Destroy(Target);
     }
 }

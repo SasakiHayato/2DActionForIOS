@@ -367,6 +367,10 @@ PrefabInstance:
       value: -1.4590416
       objectReference: {fileID: 0}
     - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
+      propertyPath: m_execution.Array.data[1].m_resetTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
       propertyPath: m_curve.m_Curve.Array.data[0].outSlope
       value: 0
       objectReference: {fileID: 0}
