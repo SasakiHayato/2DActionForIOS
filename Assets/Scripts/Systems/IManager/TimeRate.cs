@@ -7,12 +7,18 @@ class TimeRate : IManager
     [SerializeField] AnimationCurve m_curve = null;
     [SerializeField] float m_resetTime;
 
+    static bool m_isRunning = false;
+
     public void Execution()
     {
+        if (m_isRunning) return;
+        m_isRunning = true;
+
         GameObject set = new GameObject();
         set.name = "RateSyastem";
 
         RateControl rate = set.AddComponent<RateControl>();
+        rate.Running = m_isRunning;
         rate.Target = set;
         rate.Set(m_curve, m_resetTime);
     }
@@ -27,6 +33,7 @@ class RateControl : MonoBehaviour
     float m_minValu = 0.15f;
 
     public GameObject Target { private get; set; }
+    public bool Running { private get; set; }
 
     public void Set(AnimationCurve curve, float reset)
     {
@@ -57,6 +64,7 @@ class RateControl : MonoBehaviour
             yield return null;
         }
 
+        Running = false;
         Time.timeScale = 1;
         Destroy(Target);
     }

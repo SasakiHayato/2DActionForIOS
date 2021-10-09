@@ -28,10 +28,17 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
         Transform playerPos = Player.transform;
 
         if (transform.position.x < playerPos.position.x)
+        {
             q = Quaternion.Euler(0, 0, 0);
-
+            if (Speed < 0)
+                Speed *= -1;
+        }
         else if (transform.position.x > playerPos.position.x)
+        {
             q = Quaternion.Euler(0, 180, 0);
+            if (Speed > 0)
+                Speed *= -1;
+        }
 
         transform.localRotation = q;
     }
