@@ -11,7 +11,6 @@ class TimeRate : IManager
 
     public void Execution()
     {
-        Debug.Log(IsRunning);
         if (IsRunning) return;
         IsRunning = true;
         GameObject set = new GameObject();

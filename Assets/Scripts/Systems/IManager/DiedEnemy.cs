@@ -7,22 +7,22 @@ public class DiedEnemy : IManager
 {
     [SerializeField] Sprite m_blood = null;
     [SerializeField] float m_spriteScale;
-    List<Vector2> m_diedPosArray = new List<Vector2>();
 
     int m_dirId = 0;
 
     public void Execution()
     {
+        List<Vector2> diedPosArray = new List<Vector2>();
         Transform playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         EnemyBase[] enemies = GameObject.FindObjectsOfType<EnemyBase>();
 
         foreach (EnemyBase enemy in enemies)
         {
             if (!enemy.IsDied) continue;
-            m_diedPosArray.Add(enemy.transform.position);
+            diedPosArray.Add(enemy.transform.position);
         }
 
-        foreach (Vector2 pos in m_diedPosArray)
+        foreach (Vector2 pos in diedPosArray)
         {
             GameObject blood = SetSprite();
             Quaternion q = CheckDir(playerPos.position, pos);
