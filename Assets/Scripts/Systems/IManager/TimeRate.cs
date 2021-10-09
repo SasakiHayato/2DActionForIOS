@@ -7,18 +7,18 @@ class TimeRate : IManager
     [SerializeField] AnimationCurve m_curve = null;
     [SerializeField] float m_resetTime;
 
-    static bool m_isRunning = false;
+    public bool IsRunning { get; set; } = false;
 
     public void Execution()
     {
-        if (m_isRunning) return;
-        m_isRunning = true;
-
+        Debug.Log(IsRunning);
+        if (IsRunning) return;
+        IsRunning = true;
         GameObject set = new GameObject();
         set.name = "RateSyastem";
 
         RateControl rate = set.AddComponent<RateControl>();
-        rate.Running = m_isRunning;
+        rate.Rate = this;
         rate.Target = set;
         rate.Set(m_curve, m_resetTime);
     }
@@ -32,15 +32,18 @@ class RateControl : MonoBehaviour
     float m_rateSpeed = 0.05f;
     float m_minValu = 0.15f;
 
+    float m_resetTime;
+
     public GameObject Target { private get; set; }
-    public bool Running { private get; set; }
+    public TimeRate Rate { get; set; }
 
     public void Set(AnimationCurve curve, float reset)
     {
-        StartCoroutine(SetTime(curve, reset));
+        m_resetTime = reset;
+        StartCoroutine(SetTime(curve));
     }
 
-    IEnumerator SetTime(AnimationCurve curve, float reset)
+    IEnumerator SetTime(AnimationCurve curve)
     {
         float rate = float.MaxValue;
         while (rate > m_minValu)
@@ -52,20 +55,19 @@ class RateControl : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
 
-        StartCoroutine(ResetRate(reset));
+        StartCoroutine(ResetRate());
     }
 
-    IEnumerator ResetRate(float reset)
+    IEnumerator ResetRate()
     {
         float time = 0;
-        while (time < reset)
+        while (time < m_resetTime)
         {
             time += Time.unscaledDeltaTime;
             yield return null;
         }
-
-        Running = false;
         Time.timeScale = 1;
+        Rate.IsRunning = false;
         Destroy(Target);
     }
 }

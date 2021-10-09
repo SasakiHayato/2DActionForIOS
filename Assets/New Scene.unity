@@ -380,6 +380,10 @@ PrefabInstance:
       value: Assembly-CSharp GetTarget
       objectReference: {fileID: 0}
     - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
+      propertyPath: m_execution.Array.data[3]
+      value: Assembly-CSharp CameraControl
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988542569292624906, guid: 7e332e84a0311e4409ad936772eedd27, type: 3}
       propertyPath: m_manager.Array.data[0].data
       value: 
       objectReference: {fileID: 0}

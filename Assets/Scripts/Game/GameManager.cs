@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
             m_manage.AddDic(ex);
         }
             
-
         if (Instance != null)
         {
             Destroy(Instance);
@@ -30,6 +29,11 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(Instance);
+    }
+
+    void Update()
+    {
+        GoSystem(Systems.CameraControl);
     }
 
     public void GoSystem(Systems type) => m_manage.Request(type);

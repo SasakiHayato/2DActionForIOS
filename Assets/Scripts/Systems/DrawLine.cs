@@ -33,6 +33,7 @@ public class DrawLine
             m_endPos = new Vector2(0, 0),
         };
 
+        if (m_line == null) return;
         m_line.SetPositions(set);
     }
 }

@@ -8,17 +8,17 @@ public class GetTarget : IManager
     [SerializeField] Sprite m_sprite;
     [SerializeField] Color m_color;
 
-    static GameObject m_target;
-    static Player m_player;
+    GameObject m_target;
+    Player m_player;
 
     public void Execution()
     {
-        FirstCall();
+        Call();
 
         m_target.transform.position = m_player.NearEnemy;
     }
 
-    void FirstCall()
+    void Call()
     {
         if (m_target == null)
         {
