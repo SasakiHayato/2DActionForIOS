@@ -62,6 +62,7 @@ namespace IManage
     {
         DiedEnemy,
         TimeRate,
+        GetTarget,
 
         None,
     }

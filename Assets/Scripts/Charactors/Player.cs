@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using IManage;
+
 public class Player : MonoBehaviour, IDamageble
 {
     [SerializeField] float m_speed;
@@ -9,12 +11,15 @@ public class Player : MonoBehaviour, IDamageble
     [SerializeField] float m_attackRange;
 
     Rigidbody2D m_rb;
+
     Flick m_flick = new Flick();
     AttackClass m_attack = new AttackClass();
     DrawLine m_line = new DrawLine();
 
     float m_slideSpeed = 0;
     float m_attackDir = 0;
+
+    public Vector2 NearEnemy { get; private set; }
 
     void Start()
     {
@@ -62,10 +67,11 @@ public class Player : MonoBehaviour, IDamageble
                 {
                     posX = absX;
                     setVec = transform.position - check.GetPos();
+                    NearEnemy = check.GetPos();
                 }
             }
         }
-        
+        GameManager.Instance.GoSystem(Systems.GetTarget);
         SetDir(setVec);
     }
 
@@ -162,6 +168,6 @@ public class Flick
     {
         if (m_pushTime >= 0.2f || Dir == 0) return;
         GetPlayer.Attack();
-        GameManager.Instance.GoSystem(IManage.Systems.TimeRate);
+        GameManager.Instance.GoSystem(Systems.TimeRate);
     }
 }
