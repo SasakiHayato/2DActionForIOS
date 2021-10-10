@@ -30,6 +30,11 @@ public class EnemyBase : MonoBehaviour, ICharactors
         m_groundMask = LayerMask.GetMask("Ground");
     }
 
+    void Start()
+    {
+        GameManager.Instance.GoSystem(IManage.Systems.CameraManage);
+    }
+
     public virtual void Died(GameObject target)
     {
         IsDied = true;

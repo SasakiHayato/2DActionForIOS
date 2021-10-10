@@ -26,6 +26,8 @@ public class Player : MonoBehaviour, IDamageble, ICharactors
         m_rb = GetComponent<Rigidbody2D>();
         m_flick.GetPlayer = this;
         m_teleportTime /= 60;
+
+        GameManager.Instance.GoSystem(Systems.CameraManage);
     }
     
     void Update()
