@@ -72,7 +72,6 @@ public class DiedEnemy : IManager
             q = Quaternion.Euler(0, 180, 0);
             m_dirId = 2;
         }
-            
 
         return q;
     }

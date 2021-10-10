@@ -41,7 +41,7 @@ public class CameraControl : MonoBehaviour
 
     float GetDistance()
     {
-        Bounds bounds = new Bounds(m_setList[0].transform.position, Vector3.zero);
+        Bounds bounds = new Bounds();
         foreach (GameObject target in m_setList)
         {
             Vector2 set = target.transform.position;
