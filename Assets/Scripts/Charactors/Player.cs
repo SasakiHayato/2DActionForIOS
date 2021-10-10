@@ -4,7 +4,7 @@ using UnityEngine;
 
 using IManage;
 
-public class Player : MonoBehaviour, IDamageble
+public class Player : MonoBehaviour, IDamageble, ICharactors
 {
     [SerializeField] float m_speed;
     [SerializeField] float m_teleportTime;
@@ -123,6 +123,7 @@ public class Player : MonoBehaviour, IDamageble
         Debug.Log("PlayerŽ€‚ñ‚¾");
     }
 
+    public GameObject GetObject() => gameObject;
 }
 
 public class Flick

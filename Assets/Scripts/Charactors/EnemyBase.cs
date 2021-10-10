@@ -4,7 +4,7 @@ using UnityEngine;
 
 using EnemyType;
 
-public class EnemyBase : MonoBehaviour
+public class EnemyBase : MonoBehaviour, ICharactors
 {
     EnemyData m_data = new EnemyData();
     [SerializeField] Type m_type;
@@ -44,5 +44,7 @@ public class EnemyBase : MonoBehaviour
         if (!hit.collider) return false;
         else return true;
     }
+
+    public GameObject GetObject() => gameObject;
 }
 

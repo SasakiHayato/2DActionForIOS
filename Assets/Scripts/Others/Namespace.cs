@@ -63,7 +63,7 @@ namespace IManage
         DiedEnemy,
         TimeRate,
         GetTarget,
-        CameraControl,
+        CameraManage,
 
         None,
     }

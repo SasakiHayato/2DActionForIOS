@@ -7,6 +7,11 @@ public interface IEnemys
     Vector3 GetPos();
 }
 
+public interface ICharactors
+{
+    GameObject GetObject();
+}
+
 public interface IDamageble
 {
     float AddDamage();

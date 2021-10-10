@@ -31,11 +31,6 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(Instance);
     }
 
-    void Update()
-    {
-        GoSystem(Systems.CameraControl);
-    }
-
     public void GoSystem(Systems type) => m_manage.Request(type);
 }
 
