@@ -55,7 +55,9 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
     public void GetDamage(float damage)
     {
         Hp -= damage;
+        if (Hp <= 0) base.Died(gameObject);
+
+        m_rb.velocity = Vector2.zero;
         m_force.Set(m_rb, transform, Player.transform);
-        if(Hp <= 0) base.Died(gameObject);
     }
 }

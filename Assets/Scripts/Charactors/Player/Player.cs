@@ -19,7 +19,8 @@ public class Player : MonoBehaviour, IDamageble, ICharactors
     FindEnemy m_find = new FindEnemy();
 
     float m_slideSpeed = 0;
-    float m_attackDir = 0;
+
+    Vector2 m_dir = Vector2.zero;
 
     public Vector2[] NearEnemy { get; set; } = new Vector2[2] { Vector2.zero, Vector2.zero };
 
@@ -41,7 +42,7 @@ public class Player : MonoBehaviour, IDamageble, ICharactors
         else if (Input.GetMouseButton(0))
         {
             m_flick.Pressing();
-            m_line.Draw(gameObject.transform, new Vector2(m_attackDir, 0), m_attackRange);
+            m_line.Draw(gameObject.transform, m_dir, m_attackRange);
         }
             
         if (Input.GetMouseButtonUp(0))
@@ -64,12 +65,12 @@ public class Player : MonoBehaviour, IDamageble, ICharactors
         
         if (NearEnemy[0].x > transform.position.x)
         {
-            m_attackDir = 1;
+            m_dir = Vector2.right;
             q = Quaternion.Euler(0, 0, 0);
         }
         else if (NearEnemy[0].x < transform.position.x)
         {
-            m_attackDir = -1;
+            m_dir = Vector2.left;
             q = Quaternion.Euler(0, 180, 0);
         }
 
@@ -78,9 +79,7 @@ public class Player : MonoBehaviour, IDamageble, ICharactors
 
     public void Attack()
     {
-        Vector2 dir = new Vector2(m_attackDir, 0);
-        m_attack.Set(gameObject, dir, m_attackRange, GetParent.Parent.Player);
-
+        m_attack.Set(gameObject, m_dir, m_attackRange, GetParent.Parent.Player);
         SetPos();
     }
 
