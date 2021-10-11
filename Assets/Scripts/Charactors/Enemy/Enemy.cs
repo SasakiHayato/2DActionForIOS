@@ -7,7 +7,11 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
     AddForce m_force = new AddForce();
 
     Rigidbody2D m_rb;
-    public Vector3 GetPos() => transform.position;
+    public Transform GetPos()
+    {
+        if (this == null) return null;
+        return transform;
+    }
 
     void Start()
     {

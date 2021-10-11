@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IEnemys
 {
-    Vector3 GetPos();
+    Transform GetPos();
 }
 
 public interface ICharactors

@@ -50,23 +50,24 @@ public class Player : MonoBehaviour, IDamageble, ICharactors
             m_line.DeleteLine();
         }
         m_find.Find(transform);
-        SetDir(NearEnemy[0]);
+        SetDir();
+
         float speed = m_flick.Dir * m_speed + m_slideSpeed;
         m_rb.velocity = new Vector2(speed, m_rb.velocity.y);
 
         GameManager.Instance.GoSystem(Systems.GetTarget);
     }
 
-    void SetDir(Vector2 get)
+    void SetDir()
     {
         Quaternion q = Quaternion.identity;
-
-        if (get.x < 0)
+        
+        if (NearEnemy[0].x > transform.position.x)
         {
             m_attackDir = 1;
             q = Quaternion.Euler(0, 0, 0);
         }
-        else if (get.x > 0)
+        else if (NearEnemy[0].x < transform.position.x)
         {
             m_attackDir = -1;
             q = Quaternion.Euler(0, 180, 0);

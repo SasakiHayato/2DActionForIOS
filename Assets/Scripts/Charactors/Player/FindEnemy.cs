@@ -23,12 +23,20 @@ class FindEnemy
                 Check(iEnemy);
             }
         }
+        if (m_target.Count == 0) return;
+        if (m_target[0].GetPos() == null)
+        {
+            m_target[0] = m_target[1];
+            m_target.Remove(m_target.Last());
+        }
 
         for (int count = 0; count < m_target.Count; count++)
         {
-            if (m_target[count] == null) return;
-            Player.NearEnemy[count] = m_target[count].GetPos();
+            if (m_target[count] == null) break;
+            Player.NearEnemy[count] = m_target[count].GetPos().position;
         }
+        
+        Sort();
     }
 
     void Check(IEnemys iEnemy)
@@ -52,20 +60,17 @@ class FindEnemy
             m_target.Add(iEnemy);
             return;
         }
-
-        Sort(iEnemy);
+        m_target.Add(iEnemy);
     }
 
-    void Sort(IEnemys target)
+    void Sort()
     {
-        m_target.Add(target);
-
         for (int i = 0; i < m_target.Count; i++)
         {
             for (int x = i + 1; x < m_target.Count; x++)
             {
-                float dis1 = Vector2.Distance(m_parent.position, m_target[i].GetPos());
-                float dis2 = Vector2.Distance(m_parent.position, m_target[x].GetPos());
+                float dis1 = Vector2.Distance(m_parent.position, m_target[i].GetPos().position);
+                float dis2 = Vector2.Distance(m_parent.position, m_target[x].GetPos().position);
 
                 if (dis1 > dis2)
                 {
@@ -76,6 +81,7 @@ class FindEnemy
             }
         }
 
-        m_target.Remove(m_target.Last());
+        if (m_target.Count <= 2)
+            m_target.Remove(m_target.Last());
     }
 }
