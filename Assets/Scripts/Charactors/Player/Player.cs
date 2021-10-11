@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 using IManage;
 
@@ -12,20 +13,22 @@ public class Player : MonoBehaviour, IDamageble, ICharactors
 
     Rigidbody2D m_rb;
 
-    Flick m_flick = new Flick();
+    FlickControl m_flick = new FlickControl();
     AttackClass m_attack = new AttackClass();
     DrawLine m_line = new DrawLine();
+    FindEnemy m_find = new FindEnemy();
 
     float m_slideSpeed = 0;
     float m_attackDir = 0;
 
-    public Vector2 NearEnemy { get; private set; }
+    public Vector2[] NearEnemy { get; set; } = new Vector2[2] { Vector2.zero, Vector2.zero };
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
         m_flick.GetPlayer = this;
         m_teleportTime /= 60;
+        m_find.Player = this;
 
         GameManager.Instance.GoSystem(Systems.CameraManage);
     }
@@ -46,35 +49,12 @@ public class Player : MonoBehaviour, IDamageble, ICharactors
             m_flick.Separated();
             m_line.DeleteLine();
         }
-            
-
+        m_find.Find(transform);
+        SetDir(NearEnemy[0]);
         float speed = m_flick.Dir * m_speed + m_slideSpeed;
         m_rb.velocity = new Vector2(speed, m_rb.velocity.y);
-    }
 
-    private void FixedUpdate() => FindEnemyToLook();
-    void FindEnemyToLook()
-    {
-        float posX = float.MaxValue;
-        Vector3 setVec = Vector3.zero;
-        EnemyBase[] enemys = FindObjectsOfType<EnemyBase>();
-
-        foreach (EnemyBase get in enemys)
-        {
-            IEnemys check = get.GetComponent<IEnemys>();
-            if (check != null)
-            {
-                float absX = Mathf.Abs(transform.position.x - check.GetPos().x);
-                if (posX > absX)
-                {
-                    posX = absX;
-                    setVec = transform.position - check.GetPos();
-                    NearEnemy = check.GetPos();
-                }
-            }
-        }
         GameManager.Instance.GoSystem(Systems.GetTarget);
-        SetDir(setVec);
     }
 
     void SetDir(Vector2 get)
@@ -126,51 +106,4 @@ public class Player : MonoBehaviour, IDamageble, ICharactors
     }
 
     public GameObject GetObject() => gameObject;
-}
-
-public class Flick
-{
-    public Player GetPlayer {private get; set; }
-
-    Vector2 m_startPos = Vector2.zero;
-    Vector2 m_endPos = Vector2.zero;
-
-    float m_pushTime;
-    public float Dir { get; private set; }
-
-    public void Pushed()
-    {
-        m_startPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    }
-
-    public void Pressing()
-    {
-        m_endPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        m_pushTime += Time.deltaTime;
-
-        SetDir();
-    }
-
-    public void Separated()
-    {
-        FlickCheck();
-        Dir = 0;
-        m_pushTime = 0;
-    }
-
-    private void SetDir()
-    {
-        float check = m_startPos.x - m_endPos.x;
-
-        if (check > 1.5f) Dir = -1;
-        else if (check < -1.5f) Dir = 1;
-        else Dir = 0;
-    }
-
-    private void FlickCheck()
-    {
-        if (m_pushTime >= 0.2f || Dir == 0) return;
-        GetPlayer.Attack();
-        GameManager.Instance.GoSystem(Systems.TimeRate);
-    }
 }

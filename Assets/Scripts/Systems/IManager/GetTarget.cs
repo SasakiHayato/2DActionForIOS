@@ -15,7 +15,7 @@ public class GetTarget : IManager
     {
         Call();
 
-        m_target.transform.position = m_player.NearEnemy;
+        m_target.transform.position = m_player.NearEnemy[0];
     }
 
     void Call()
