@@ -5,6 +5,7 @@ using UnityEngine;
 public class FlickControl
 {
     public Player GetPlayer { private get; set; }
+    FlickUi m_control;
 
     Vector2 m_startPos = Vector2.zero;
     Vector2 m_endPos = Vector2.zero;
@@ -15,6 +16,10 @@ public class FlickControl
     public void Pushed()
     {
         m_startPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //if (m_control == null)
+        //    m_control = GameObject.FindObjectOfType<FlickUi>();
+
+        //m_control.Set();
     }
 
     public void Pressing()

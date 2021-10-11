@@ -31,6 +31,7 @@ class RateControl : MonoBehaviour
     float m_rateSpeed = 0.05f;
     float m_minValu = 0.15f;
 
+    float m_waitTime = 0.05f;
     float m_resetTime;
 
     public GameObject Target { private get; set; }
@@ -51,7 +52,7 @@ class RateControl : MonoBehaviour
             Time.timeScale = curve.Evaluate(m_rate);
             
             rate = m_rate;
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(m_waitTime);
         }
 
         StartCoroutine(ResetRate());
