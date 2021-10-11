@@ -7,6 +7,7 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
     AddForce m_force = new AddForce();
 
     Rigidbody2D m_rb;
+
     public Transform GetPos()
     {
         if (this == null) return null;
@@ -20,7 +21,7 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
 
     void Update()
     {
-        if (!base.GroundRay(transform)) return;
+        if (!IsGround) return;
 
         FindPlayer();
         m_rb.velocity = new Vector2(Speed, m_rb.velocity.y);
@@ -55,9 +56,8 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
     public void GetDamage(float damage)
     {
         Hp -= damage;
-        if (Hp <= 0) base.Died(gameObject);
 
-        m_rb.velocity = Vector2.zero;
-        m_force.Set(m_rb, transform, Player.transform);
+        m_force.Set<Enemy>(m_rb, transform, this);
+        if(Hp <= 0) base.Died(gameObject);
     }
 }

@@ -9,25 +9,24 @@ public class EnemyBase : MonoBehaviour, ICharactors
     EnemyData m_data = new EnemyData();
     [SerializeField] Type m_type;
 
-    Vector2 m_rayDir = new Vector2(0, -1);
-    LayerMask m_groundMask; 
-
     float m_hp;
     float m_speed;
+    float m_defSpeed;
 
     public float Hp { get => m_hp; set { m_hp = value; } }
     public float Speed { get => m_speed; set { m_speed = value; } }
-    public bool IsDied { get; private set; }
+    public bool IsDied { get; private set; } = false;
+    public bool IsGround { get; private set; }
 
     GameObject m_player;
     public GameObject Player { get => m_player; set { m_player = value; } }
 
     private void Awake()
     {
-        IsDied = false;
         m_data.Set(m_type, ref m_hp, ref m_speed);
+        m_defSpeed = Speed;
+
         m_player = GameObject.FindGameObjectWithTag("Player");
-        m_groundMask = LayerMask.GetMask("Ground");
     }
 
     void Start()
@@ -42,14 +41,21 @@ public class EnemyBase : MonoBehaviour, ICharactors
         Destroy(target);
     }
 
-    public virtual bool GroundRay(Transform target)
-    {
-        RaycastHit2D hit = Physics2D.Raycast(target.position, m_rayDir, m_rayDir.magnitude * 1, m_groundMask);
+    public GameObject GetObject() => gameObject;
 
-        if (!hit.collider) return false;
-        else return true;
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            IsGround = true;
+            Speed = m_defSpeed;
+        }
     }
 
-    public GameObject GetObject() => gameObject;
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+            IsGround = false;
+    }
 }
 

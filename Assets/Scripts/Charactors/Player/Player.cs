@@ -50,6 +50,7 @@ public class Player : MonoBehaviour, IDamageble, ICharactors
             m_flick.Separated();
             m_line.DeleteLine();
         }
+
         m_find.Find(transform);
         SetDir();
 
@@ -88,7 +89,7 @@ public class Player : MonoBehaviour, IDamageble, ICharactors
         if (m_attack.HitPos == null) return;
 
         float distance = m_attack.HitPos.position.x - transform.position.x;
-        StartCoroutine(Move(distance / (m_teleportTime)));
+        StartCoroutine(Move(distance / m_teleportTime));
         m_attack.HitPos = null;
     }
 
