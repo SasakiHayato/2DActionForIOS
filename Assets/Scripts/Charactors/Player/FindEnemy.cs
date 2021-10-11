@@ -23,7 +23,11 @@ class FindEnemy
                 Check(iEnemy);
             }
         }
-        if (m_target.Count == 0) return;
+        if (m_target.Count == 0)
+        {
+            Player.NearEnemy[0] = Vector2.zero;
+            return;
+        }
         if (m_target[0].GetPos() == null)
         {
             m_target[0] = m_target[1];
@@ -32,7 +36,6 @@ class FindEnemy
 
         for (int count = 0; count < m_target.Count; count++)
         {
-            if (m_target[count] == null) break;
             Player.NearEnemy[count] = m_target[count].GetPos().position;
         }
         

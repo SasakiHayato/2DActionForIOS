@@ -15,6 +15,11 @@ public class GetTarget : IManager
     {
         Call();
 
+        if (m_player.NearEnemy[0] == Vector2.zero)
+            m_target.SetActive(false);
+        else
+            m_target.SetActive(true);
+
         m_target.transform.position = m_player.NearEnemy[0];
     }
 
