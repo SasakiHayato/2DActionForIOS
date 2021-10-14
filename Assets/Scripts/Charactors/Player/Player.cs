@@ -21,7 +21,6 @@ public class Player : MonoBehaviour, IDamageble, ICharactors
     float m_slideSpeed = 0;
 
     Vector2 m_dir = Vector2.zero;
-
     public Vector2[] NearEnemy { get; set; } = new Vector2[2] { Vector2.zero, Vector2.zero };
 
     void Start()

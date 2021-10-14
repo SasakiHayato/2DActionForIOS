@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class GetTarget : IManager
 {
     [SerializeField] Sprite m_sprite;
-    [SerializeField] Color m_color;
-
+    [SerializeField] Color m_defColor;
+    
     GameObject m_target;
     Player m_player;
 
@@ -67,6 +67,7 @@ public class GetTarget : IManager
         rect.offsetMax = Vector2.zero;
 
         setImage.sprite = m_sprite;
-        setImage.color = m_color;
+        setImage.color = m_defColor;
     }
 }
+

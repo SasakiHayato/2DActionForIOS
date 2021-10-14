@@ -5,7 +5,6 @@ using UnityEngine;
 public class Enemy : EnemyBase, IEnemys, IDamageble
 {
     AddForce m_force = new AddForce();
-
     Rigidbody2D m_rb;
 
     public Transform GetPos()
