@@ -68,12 +68,31 @@ namespace PlayersSpace
 
             float diff = Vector2.Distance(currentPos, m_savePos);
             if (m_savePos == Vector2.zero) diff = 0;
-            m_savePos = currentPos;
+            
 
-            Debug.Log(diff);
+            if (diff == 0) return;
+            if (diff < 1.5f)
+            {
+                Debug.Log("Move");
+                SetMoveDir(NewSetAngle(currentPos));
+            }
+            else
+            {
+                Debug.Log("Attack");
+            }
+
+            m_savePos = currentPos;
         }
 
-
+        float NewSetAngle(Vector2 mouse)
+        {
+            m_distance = Vector2.Distance(m_savePos, mouse);
+            Vector2 distance = m_savePos - mouse;
+            distance.x *= -1;
+            Debug.Log(distance);
+            float angle = Mathf.Atan2(distance.x, distance.y) * Mathf.Rad2Deg;
+            return angle - 90;
+        }
 
 
 
