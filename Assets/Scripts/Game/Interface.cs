@@ -1,6 +1,7 @@
+using UnityEngine;
 
-public interface IAttack
+public interface IEnemys
 {
-    public void SetUpToAttack();
-    public void SetPlayAttack();
+    GameObject GetObj();
+    bool IsRockOn { get; set; }
 }

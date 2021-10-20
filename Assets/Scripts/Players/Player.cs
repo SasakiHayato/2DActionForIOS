@@ -10,30 +10,45 @@ public class Player : MonoBehaviour
 
     [SerializeField] Collider2D m_attackCol;
     Rigidbody2D m_rb;
-    Control m_control = new Control();
 
-    public List<IAttack> IAttacks { get; set; } = new List<IAttack>();
-    bool m_isMove = false;
+    Control m_control = new Control();
+    PlayerAI m_ai = new PlayerAI();
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
         m_attackCol.enabled = false;
+
         m_control.SetUp(this);
+        m_ai.SetUp(gameObject);
     }
     
     void Update()
     {
-        m_control.Pressing();
+        m_ai.UpDate();
+        SetDir();
+
+        float h = Input.GetAxisRaw("Horizontal");
+        m_rb.velocity = new Vector2(h * 6, m_rb.velocity.y);
     }
 
-    public void Move()
+    void SetDir()
     {
-        if (m_isMove) return;
+        if (m_ai.NearEnemy == null) return;
+
+        float enemyPosX = m_ai.NearEnemy.GetObj().transform.position.x;
+        Quaternion dir = Quaternion.identity;
+
+        if (enemyPosX < transform.position.x) dir = Quaternion.Euler(0, 180, 0);
+        else dir = Quaternion.Euler(0, 0, 0);
         
-        m_isMove = true;
-        float speed = m_moveDis / 0.2f;
-        StartCoroutine(SetUpMove(speed, m_control.MoveDir));
+        transform.localRotation = dir;
+    }
+
+    public void Move(Vector2 dir)
+    {
+        //float speed = m_moveDis / 0.2f;
+        //StartCoroutine(SetUpMove(speed, dir));
     }
 
     IEnumerator SetUpMove(float speed, Vector2 setVce)
@@ -41,12 +56,11 @@ public class Player : MonoBehaviour
         m_rb.velocity = setVce * speed;
         yield return new WaitForSeconds(0.2f);
         m_rb.velocity = Vector2.zero;
-        m_isMove = false;
     }
 
     public void Attack()
     {
-        IAttacks[0].SetUpToAttack();
+        //IAttacks[0].SetUpToAttack();
         //StartCoroutine(SetUpAttack(m_control.AttackDir));
     }
 
@@ -56,6 +70,7 @@ public class Player : MonoBehaviour
         m_attackCol.offset = setVec * 2;
         yield return new WaitForSeconds(0.3f);
         m_attackCol.enabled = false;
+        
     }
 }
 
@@ -63,13 +78,12 @@ namespace PlayersSpace
 {
     class Control
     {
-        public Vector2 AttackDir { get => m_attackDir; }
         public Vector2 MoveDir { get; private set; } = Vector2.zero;
 
         Vector2 m_attackDir;
         Vector2 m_savePos = Vector2.zero;
         
-        Player m_player;
+        Player m_player;  
         public void SetUp(Player player) => m_player = player;
 
         public void Pressing()
@@ -87,15 +101,15 @@ namespace PlayersSpace
             
             if (diff != 0)
             {
-                if (diff > 1.5f)
+                if (diff > 2.5f)
                 {
                     SetAttackDir(SetAngle(currentPos));
                     m_player.Attack();
                 }
-                else if (diff > 0.3f && diff <= 1.5f)
+                else if (diff > 0.3f && diff <= 2f)
                 {
                     SetMoveDir(SetAngle(currentPos));
-                    m_player.Move();
+                    m_player.Move(MoveDir);
                 }
             }
             
