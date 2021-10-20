@@ -44,7 +44,16 @@ class CreateEnemys
         int set = Random.Range(0, _datas.DataLength);
         GameObject obj = MonoBehaviour.Instantiate(_datas.GetData(set).Obj);
         IEnemys enemy = obj.GetComponent<IEnemys>();
-        
+
+        SetData(obj, set);
         if (enemy != null) _enemysList.Add(enemy);
+    }
+
+    void SetData(GameObject obj, int id)
+    {
+        EnemyBase eBase = obj.GetComponent<EnemyBase>();
+
+        eBase.Hp = _datas.GetData(id).Hp;
+        eBase.Speed = _datas.GetData(id).Speed;
     }
 }

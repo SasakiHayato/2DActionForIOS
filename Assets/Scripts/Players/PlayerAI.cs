@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Œã‚©‚ç‚Å‚à‚æ‚µ
 public class PlayerAI
 {
     Player _player;
@@ -30,7 +31,7 @@ public class PlayerAI
         if (diff < 5) 
         {
 
-            _player.Move();
+            
         }
     }
 

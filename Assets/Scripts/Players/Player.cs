@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
         m_ai.UpDate();
         SetDir();
 
+        // ‰¼‚Ì‹““®
         float h = Input.GetAxisRaw("Horizontal");
         m_rb.velocity = new Vector2(h * 6, m_rb.velocity.y);
     }
