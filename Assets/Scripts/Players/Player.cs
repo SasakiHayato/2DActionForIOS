@@ -4,7 +4,7 @@ using UnityEngine;
 using PlayersSpace;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageble
 {
     [SerializeField] float m_moveDis;
 
@@ -31,6 +31,12 @@ public class Player : MonoBehaviour
         // ‰¼‚Ì‹““®
         float h = Input.GetAxisRaw("Horizontal");
         m_rb.velocity = new Vector2(h * 6, m_rb.velocity.y);
+    }
+
+    public float AddDamage() => 1;
+    public void GetDamage()
+    {
+
     }
 
     void SetDir()
