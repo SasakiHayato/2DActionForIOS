@@ -4,7 +4,7 @@ using UnityEngine;
 using PlayersSpace;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : MonoBehaviour, IDamageble
+public class Player : MonoBehaviour, IDamageble, IState
 {
     [SerializeField] float _moveDis;
 
@@ -13,6 +13,8 @@ public class Player : MonoBehaviour, IDamageble
 
     Control _control = new Control();
     PlayerAI _ai = new PlayerAI();
+
+    public State Current { get; private set; } = State.IsFloating;
 
     void Start()
     {
@@ -33,9 +35,19 @@ public class Player : MonoBehaviour, IDamageble
         float h = Input.GetAxisRaw("Horizontal");
         m_rb.velocity = new Vector2(h * 6, m_rb.velocity.y);
     }
-
-    public int AddDamage() => 1;
+ 
+    public int AddDamage()
+    {
+        ChangeState();
+        return 1;
+    }
+    
     public void GetDamage(float damage)
+    {
+        Debug.Log("ƒ_ƒ[ƒW");
+    }
+
+    public void ChangeState()
     {
 
     }
@@ -58,16 +70,9 @@ public class Player : MonoBehaviour, IDamageble
         
     }
 
-    public void Attack()
+    public void Attack(State my, State other)
     {
-        StartCoroutine(GoAttack());
-    }
 
-    IEnumerator GoAttack()
-    {
-        _attackCol.enabled = true;
-        yield return new WaitForSeconds(1);
-        _attackCol.enabled = false;
     }
 }
 
@@ -101,7 +106,7 @@ namespace PlayersSpace
                 if (diff > 2.5f)
                 {
                     SetAttackDir(SetAngle(currentPos));
-                    m_player.Attack();
+                    //m_player.Attack(m_player.Current, );
                 }
                 else if (diff > 0.3f && diff <= 2f)
                 {

@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : EnemyBase, IEnemys, IDamageble
+public class Enemy : EnemyBase, IEnemys, IDamageble, IState
 {
     Rigidbody2D _rb;
-
+    public State Current { get; private set; } = State.IsGround;
+    
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -25,7 +26,17 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
     public int AddDamage() => 1;
     public void GetDamage(float damage)
     {
-        Debug.Log("aaa");
+
+    }
+
+    public void Attack(State my, State other)
+    {
+
+    }
+
+    public void ChangeState()
+    {
+
     }
     
     public bool IsRockOn { get; set; }
