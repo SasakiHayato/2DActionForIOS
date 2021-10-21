@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum State
+{
+    IsGround,
+    IsFloating,
+}
+
 public class GameManegement : MonoBehaviour
 {
     static GameManegement _instnce = new GameManegement();
@@ -14,9 +20,11 @@ public class GameManegement : MonoBehaviour
 
     static CreateEnemys _enemys = new CreateEnemys();
     public List<IEnemys> GetIEnemyList { get => _enemys.EnemyLength; }
+
     private void Awake()
     {
         _enemys.SetUp(_data);
+        _enemys.Create();
     }
 
     void Update()

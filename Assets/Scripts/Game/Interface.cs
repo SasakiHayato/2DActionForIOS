@@ -8,6 +8,6 @@ public interface IEnemys
 
 public interface IDamageble
 {
-    float AddDamage();
-    void GetDamage();
+    int AddDamage();
+    void GetDamage(float damage);
 }

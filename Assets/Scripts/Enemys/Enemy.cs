@@ -22,10 +22,10 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
         _rb.velocity = new Vector2(Speed, _rb.velocity.y);
     }
 
-    public float AddDamage() => 1;
-    public void GetDamage()
+    public int AddDamage() => 1;
+    public void GetDamage(float damage)
     {
-
+        Debug.Log("aaa");
     }
     
     public bool IsRockOn { get; set; }

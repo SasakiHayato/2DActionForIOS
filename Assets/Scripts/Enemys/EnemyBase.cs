@@ -8,7 +8,7 @@ public abstract class EnemyBase : MonoBehaviour
 
     public int Hp { get; set; }
     public float Speed { get; set; }
-
+    
     private void Awake()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
