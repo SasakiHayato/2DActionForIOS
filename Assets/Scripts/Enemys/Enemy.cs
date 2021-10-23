@@ -28,7 +28,7 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
 
     }
 
-    public override void Attack(State state)
+    public override void Attack(State other)
     {
 
     }

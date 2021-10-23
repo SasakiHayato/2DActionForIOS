@@ -13,7 +13,6 @@ public class Player : CharaBase, IDamageble
 
     Control _control = new Control();
     PlayerAI _ai = new PlayerAI();
-    AttackSystem _attack = new AttackSystem();
 
     public GameObject AttackCol { get => _attackCol; }
 
@@ -65,12 +64,10 @@ public class Player : CharaBase, IDamageble
         
     }
 
-    public override void Attack(State state)
+    public override void Attack(State other)
     {
-        Debug.Log("aaa");
-        AttackSystem.Attack.Set(gameObject);
-        //_attack.Set();
-        //_attackCol.SetActive(false);
+        Debug.Log(other);
+        
     }
 }
 
@@ -104,8 +101,7 @@ namespace PlayersSpace
                 if (diff > 2.5f)
                 {
                     SetAttackDir(SetAngle(currentPos));
-                    _player.Attack(State.IsFloating);
-                    //_player.AttackCol.SetActive(true);
+                    _player.AttackCol.SetActive(true);
                     
                 }
                 else if (diff > 0.3f && diff <= 2f)

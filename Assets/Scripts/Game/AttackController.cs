@@ -7,12 +7,12 @@ public class AttackController : MonoBehaviour
     [SerializeField] GameObject _parent;
     
     IDamageble _damageble;
-    IState _state;
+    CharaBase _chara;
 
     void Start()
     {
         _damageble = _parent.GetComponent<IDamageble>();
-        _state = _parent.GetComponent<IState>();
+        _chara = _parent.GetComponent<CharaBase>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -22,7 +22,11 @@ public class AttackController : MonoBehaviour
 
         if (damageble == null || state == null) return;
 
+        _chara.Attack(state.Current);
+
         float add = _damageble.AddDamage();
         damageble.GetDamage(add);
+
+        gameObject.SetActive(false);
     }
 }

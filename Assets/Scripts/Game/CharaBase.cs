@@ -20,5 +20,5 @@ public abstract class CharaBase : MonoBehaviour, IState
         }
     }
 
-    public abstract void Attack(State state);
+    public abstract void Attack(State other);
 }
