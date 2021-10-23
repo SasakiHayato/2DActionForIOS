@@ -5,7 +5,7 @@ using UnityEngine;
 public class AttackController : MonoBehaviour
 {
     [SerializeField] GameObject _parent;
-    //StateContol _state;
+    
     IDamageble _damageble;
     IState _state;
 
@@ -24,7 +24,5 @@ public class AttackController : MonoBehaviour
 
         float add = _damageble.AddDamage();
         damageble.GetDamage(add);
-
-        _state.Attack(_state.Current, state.Current);
     }
 }

@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : EnemyBase, IEnemys, IDamageble, IState
+public class Enemy : EnemyBase, IEnemys, IDamageble
 {
     Rigidbody2D _rb;
-    public State Current { get; private set; } = State.IsGround;
     
     void Start()
     {
@@ -29,12 +28,7 @@ public class Enemy : EnemyBase, IEnemys, IDamageble, IState
 
     }
 
-    public void Attack(State my, State other)
-    {
-
-    }
-
-    public void ChangeState()
+    public override void Attack(State state)
     {
 
     }

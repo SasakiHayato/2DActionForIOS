@@ -243,7 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveDis: 0
-  _attackCol: {fileID: 5963331736265554363}
+  _attackCol: {fileID: 1364594536007102400}
 --- !u!70 &1190544916167493456
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

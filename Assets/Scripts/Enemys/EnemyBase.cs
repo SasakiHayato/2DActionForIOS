@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class EnemyBase : MonoBehaviour
+public abstract class EnemyBase : CharaBase
 {
     GameObject _player;
 
@@ -14,7 +14,6 @@ public abstract class EnemyBase : MonoBehaviour
         _player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    public abstract void Move();
     public virtual void FindPlayer(Transform thisT)
     {
         Quaternion dir = Quaternion.identity;
@@ -33,4 +32,5 @@ public abstract class EnemyBase : MonoBehaviour
 
         thisT.localRotation = dir;
     }
+    public abstract void Move();
 }

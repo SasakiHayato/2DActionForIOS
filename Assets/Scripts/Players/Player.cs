@@ -4,23 +4,24 @@ using UnityEngine;
 using PlayersSpace;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : MonoBehaviour, IDamageble, IState
+public class Player : CharaBase, IDamageble
 {
     [SerializeField] float _moveDis;
+    [SerializeField] GameObject _attackCol;
 
-    [SerializeField] Collider2D _attackCol;
     Rigidbody2D m_rb;
 
     Control _control = new Control();
     PlayerAI _ai = new PlayerAI();
+    AttackSystem _attack = new AttackSystem();
 
-    public State Current { get; private set; } = State.IsFloating;
+    public GameObject AttackCol { get => _attackCol; }
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
-        _attackCol.enabled = false;
-
+        _attackCol.SetActive(false);
+       
         _control.SetUp(this);
         _ai.SetUp(gameObject);
     }
@@ -32,24 +33,18 @@ public class Player : MonoBehaviour, IDamageble, IState
         SetDir();
 
         // ‰¼‚Ì‹““®
-        float h = Input.GetAxisRaw("Horizontal");
-        m_rb.velocity = new Vector2(h * 6, m_rb.velocity.y);
+        //float h = Input.GetAxisRaw("Horizontal");
+        //m_rb.velocity = new Vector2(h * 6, m_rb.velocity.y);
     }
  
     public int AddDamage()
     {
-        ChangeState();
         return 1;
     }
     
     public void GetDamage(float damage)
     {
         Debug.Log("ƒ_ƒ[ƒW");
-    }
-
-    public void ChangeState()
-    {
-
     }
 
     void SetDir()
@@ -65,14 +60,17 @@ public class Player : MonoBehaviour, IDamageble, IState
         transform.localRotation = dir;
     }
 
-    public void Move(Vector2 dir)
+    public  void Move(Vector2 dir)
     {
         
     }
 
-    public void Attack(State my, State other)
+    public override void Attack(State state)
     {
-
+        Debug.Log("aaa");
+        AttackSystem.Attack.Set(gameObject);
+        //_attack.Set();
+        //_attackCol.SetActive(false);
     }
 }
 
@@ -85,8 +83,8 @@ namespace PlayersSpace
         Vector2 m_attackDir;
         Vector2 m_savePos = Vector2.zero;
         
-        Player m_player;
-        public void SetUp(Player player) => m_player = player;
+        Player _player;
+        public void SetUp(Player player) => _player = player;
 
         public void Pressing()
         {
@@ -106,12 +104,14 @@ namespace PlayersSpace
                 if (diff > 2.5f)
                 {
                     SetAttackDir(SetAngle(currentPos));
-                    //m_player.Attack(m_player.Current, );
+                    _player.Attack(State.IsFloating);
+                    //_player.AttackCol.SetActive(true);
+                    
                 }
                 else if (diff > 0.3f && diff <= 2f)
                 {
                     SetMoveDir(SetAngle(currentPos));
-                    m_player.Move(MoveDir);
+                    _player.Move(MoveDir);
                 }
             }
             

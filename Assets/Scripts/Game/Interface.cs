@@ -16,5 +16,4 @@ public interface IState
 {
     State Current { get; }
     void ChangeState();
-    void Attack(State my, State other);
 }
