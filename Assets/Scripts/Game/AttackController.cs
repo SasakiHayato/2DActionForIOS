@@ -22,8 +22,6 @@ public class AttackController : MonoBehaviour
 
         if (damageble == null || state == null) return;
 
-        _chara.Attack(state.Current);
-
         float add = _damageble.AddDamage();
         damageble.GetDamage(add);
 

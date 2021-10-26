@@ -30,10 +30,6 @@ public class Player : CharaBase, IDamageble
         _control.Pressing();
         _ai.UpDate();
         SetDir();
-
-        // ‰¼‚Ì‹““®
-        //float h = Input.GetAxisRaw("Horizontal");
-        //m_rb.velocity = new Vector2(h * 6, m_rb.velocity.y);
     }
  
     public int AddDamage()
@@ -64,10 +60,25 @@ public class Player : CharaBase, IDamageble
         
     }
 
-    public override void Attack(State other)
+    public void Setter()
     {
-        Debug.Log(other);
-        
+        GameObject enemy = _ai.NearEnemy.GetObj();
+        IState state = enemy.GetComponent<IState>();
+
+        GoAttack(state.Current, enemy);
+    }
+
+    void GoAttack(State othres, GameObject enemy)
+    {
+        IState chenge = enemy.GetComponent<IState>();
+        if (Current == State.IsGround && Current == othres)
+        {
+            chenge.ChangeState(State.IsFloating);
+            FloatingSystem floating = new FloatingSystem();
+            floating.Set(enemy);
+        }
+
+        AttackCol.SetActive(true);
     }
 }
 
@@ -101,8 +112,7 @@ namespace PlayersSpace
                 if (diff > 2.5f)
                 {
                     SetAttackDir(SetAngle(currentPos));
-                    _player.AttackCol.SetActive(true);
-                    
+                    _player.Setter();
                 }
                 else if (diff > 0.3f && diff <= 2f)
                 {

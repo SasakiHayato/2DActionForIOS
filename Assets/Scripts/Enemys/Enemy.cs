@@ -19,7 +19,21 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
 
     public override void Move()
     {
-        _rb.velocity = new Vector2(Speed, _rb.velocity.y);
+        if (Current == State.IsGround)
+        {
+            _rb.gravityScale = 1;
+            _rb.velocity = new Vector2(Speed, _rb.velocity.y);
+        }
+        else if (Current == State.IsFloating)
+        {
+            _rb.gravityScale = 0;
+            Debug.Log("•‚—V");
+        }
+    }
+
+    public override void Attack()
+    {
+       
     }
 
     public int AddDamage() => 1;
@@ -28,11 +42,6 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
 
     }
 
-    public override void Attack(State other)
-    {
-
-    }
-    
     public bool IsRockOn { get; set; }
     public GameObject GetObj() => gameObject;
 }

@@ -15,5 +15,5 @@ public interface IDamageble
 public interface IState
 {
     State Current { get; }
-    void ChangeState();
+    State ChangeState(State get);
 }

@@ -33,4 +33,5 @@ public abstract class EnemyBase : CharaBase
         thisT.localRotation = dir;
     }
     public abstract void Move();
+    public abstract void Attack();
 }
