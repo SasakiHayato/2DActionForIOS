@@ -27,6 +27,7 @@ public class Player : CharaBase, IDamageble
     
     void Update()
     {
+        _control.Pressed();
         _control.Pressing();
         _ai.UpDate();
         SetDir();
@@ -71,11 +72,22 @@ public class Player : CharaBase, IDamageble
     void GoAttack(State othres, GameObject enemy)
     {
         IState chenge = enemy.GetComponent<IState>();
-        if (Current == State.IsGround && Current == othres)
+        if (Current == State.IsGround && othres == State.IsGround)
         {
             chenge.ChangeState(State.IsFloating);
             FloatingSystem floating = new FloatingSystem();
             floating.Set(enemy);
+        }
+        else if (Current == State.IsGround && othres == State.IsFloating)
+        {
+            Current = State.IsFloating;
+            Debug.Log("UŒ‚‚Q");
+        }
+        else if (Current == State.IsFloating && othres == State.IsFloating)
+        {
+            Current = State.IsGround;
+            chenge.ChangeState(State.IsGround);
+            Debug.Log("UŒ‚3");
         }
 
         AttackCol.SetActive(true);
@@ -90,9 +102,16 @@ namespace PlayersSpace
 
         Vector2 m_attackDir;
         Vector2 m_savePos = Vector2.zero;
+
+        bool _isPressed = false;
         
         Player _player;
         public void SetUp(Player player) => _player = player;
+
+        public void Pressed()
+        {
+            if (Input.GetMouseButtonDown(0)) _isPressed = true;
+        }
 
         public void Pressing()
         {
@@ -111,6 +130,8 @@ namespace PlayersSpace
             {
                 if (diff > 2.5f)
                 {
+                    if (!_isPressed) return;
+                    _isPressed = false;
                     SetAttackDir(SetAngle(currentPos));
                     _player.Setter();
                 }
