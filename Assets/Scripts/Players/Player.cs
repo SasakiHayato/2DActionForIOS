@@ -13,12 +13,14 @@ public class Player : CharaBase, IDamageble
 
     Control _control = new Control();
     PlayerAI _ai = new PlayerAI();
+    PlayerAttack _attack;
 
     public GameObject AttackCol { get => _attackCol; }
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
+        _attack = gameObject.AddComponent<PlayerAttack>();
         _attackCol.SetActive(false);
        
         _control.SetUp(this);
@@ -58,7 +60,7 @@ public class Player : CharaBase, IDamageble
 
     public  void Move(Vector2 dir)
     {
-        
+       
     }
 
     public void Setter()
@@ -75,13 +77,15 @@ public class Player : CharaBase, IDamageble
         if (Current == State.IsGround && othres == State.IsGround)
         {
             chenge.ChangeState(State.IsFloating);
-            FloatingSystem floating = new FloatingSystem();
-            floating.Set(enemy);
+            Debug.Log("çUåÇÇP");
+            AddForce.Set(enemy, transform.localRotation);
+            _attack.GroundAttack();
         }
         else if (Current == State.IsGround && othres == State.IsFloating)
         {
             Current = State.IsFloating;
             Debug.Log("çUåÇÇQ");
+            _attack.FloatingAttack();
         }
         else if (Current == State.IsFloating && othres == State.IsFloating)
         {

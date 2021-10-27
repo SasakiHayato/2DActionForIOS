@@ -27,7 +27,7 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
         else if (Current == State.IsFloating)
         {
             _rb.gravityScale = 0;
-            _rb.velocity = Vector2.zero;
+            //_rb.velocity = Vector2.zero;
             Debug.Log("•‚—V");
         }
     }
