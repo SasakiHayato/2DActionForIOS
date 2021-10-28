@@ -16,8 +16,9 @@ public class PlayerAttack : MonoBehaviour
         yield return new WaitForSeconds(1f);
     }
 
-    public void FloatingAttack()
+    public void FloatingAttack(GameObject player)
     {
-
+        Transform target = GameObject.Find("Collect").transform;
+        player.transform.position = new Vector2(target.position.x, target.position.y + 5);
     }
 }

@@ -28,7 +28,6 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
         {
             _rb.gravityScale = 0;
             _rb.velocity = Vector2.zero;
-            Debug.Log("•‚—V");
         }
     }
 

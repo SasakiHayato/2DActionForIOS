@@ -9,7 +9,7 @@ public class Player : CharaBase, IDamageble
     [SerializeField] float _moveDis;
     [SerializeField] GameObject _attackCol;
 
-    Rigidbody2D m_rb;
+    Rigidbody2D _rb;
 
     Control _control = new Control();
     PlayerAI _ai = new PlayerAI();
@@ -19,7 +19,7 @@ public class Player : CharaBase, IDamageble
 
     void Start()
     {
-        m_rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
         _attack = gameObject.AddComponent<PlayerAttack>();
         _attackCol.SetActive(false);
        
@@ -80,21 +80,21 @@ public class Player : CharaBase, IDamageble
         if (Current == State.IsGround && othres == State.IsGround)
         {
             chenge.ChangeState(State.IsFloating);
-            Debug.Log("çUåÇÇP");
             MoveFloating.SetEnemy(enemy);
             _attack.GroundAttack(distance);
         }
         else if (Current == State.IsGround && othres == State.IsFloating)
         {
             Current = State.IsFloating;
-            Debug.Log("çUåÇÇQ");
-            _attack.FloatingAttack();
+            _rb.gravityScale = 0;
+            _attack.FloatingAttack(gameObject);
         }
         else if (Current == State.IsFloating && othres == State.IsFloating)
         {
             Current = State.IsGround;
+            _rb.gravityScale = 1;
             chenge.ChangeState(State.IsGround);
-            Debug.Log("çUåÇ3");
+            MoveFloating.DeleteList();
         }
 
         AttackCol.SetActive(true);
