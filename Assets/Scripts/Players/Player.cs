@@ -67,19 +67,22 @@ public class Player : CharaBase, IDamageble
     {
         GameObject enemy = _ai.NearEnemy.GetObj();
         IState state = enemy.GetComponent<IState>();
+        float dis = Vector2.Distance(transform.position, enemy.transform.position);
+        Debug.Log(dis);
+        if (dis > 5) return;
 
-        GoAttack(state.Current, enemy);
+        GoAttack(state.Current, enemy, dis);
     }
 
-    void GoAttack(State othres, GameObject enemy)
+    void GoAttack(State othres, GameObject enemy, float distance)
     {
         IState chenge = enemy.GetComponent<IState>();
         if (Current == State.IsGround && othres == State.IsGround)
         {
             chenge.ChangeState(State.IsFloating);
             Debug.Log("çUåÇÇP");
-            AddForce.Set(enemy, transform.localRotation);
-            _attack.GroundAttack();
+            MoveFloating.SetEnemy(enemy);
+            _attack.GroundAttack(distance);
         }
         else if (Current == State.IsGround && othres == State.IsFloating)
         {
