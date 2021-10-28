@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class MoveFloating : MonoBehaviour
+public class AttackSystems : MonoBehaviour
 {
-    private static MoveFloating _floating = new MoveFloating();
-    public static MoveFloating Instance => _floating;
+    private static AttackSystems _instance = new AttackSystems();
+    public static AttackSystems Instance => _instance;
 
     GameObject _collect = null;
     List<GameObject> _enemys = new List<GameObject>();
+
     void Update()
     {
         if (Instance._enemys.Count <= 0) return;
 
         foreach (GameObject enemy in Instance._enemys)
         {
-            Debug.Log("a");
             Vector2 pos = enemy.transform.position;
             enemy.transform.position = Vector2.
                 MoveTowards(pos, Instance._collect.transform.position, Time.deltaTime * 10);
@@ -45,7 +45,7 @@ public class MoveFloating : MonoBehaviour
     {
         GameObject set = new GameObject();
         set.name = "Collect";
-        set.AddComponent<MoveFloating>();
+        set.AddComponent<AttackSystems>();
 
         Transform player = GameObject.FindGameObjectWithTag("Player").transform;
         set.transform.position = new Vector2(player.position.x, player.position.y + 5);

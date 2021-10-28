@@ -58,9 +58,17 @@ public class Player : CharaBase, IDamageble
         transform.localRotation = dir;
     }
 
-    public  void Move(Vector2 dir)
+    public void Move(Vector2 dir)
     {
-       
+        float speed = _moveDis / 0.2f;
+        StartCoroutine(SetUpMove(speed, dir));
+    }
+
+    IEnumerator SetUpMove(float speed, Vector2 setVce)
+    {
+        _rb.velocity = setVce * speed;
+        yield return new WaitForSeconds(0.2f);
+        _rb.velocity = Vector2.zero;
     }
 
     public void Setter()
@@ -80,7 +88,7 @@ public class Player : CharaBase, IDamageble
         if (Current == State.IsGround && othres == State.IsGround)
         {
             chenge.ChangeState(State.IsFloating);
-            MoveFloating.SetEnemy(enemy);
+            AttackSystems.SetEnemy(enemy);
             _attack.GroundAttack(distance);
         }
         else if (Current == State.IsGround && othres == State.IsFloating)
@@ -94,7 +102,7 @@ public class Player : CharaBase, IDamageble
             Current = State.IsGround;
             _rb.gravityScale = 1;
             chenge.ChangeState(State.IsGround);
-            MoveFloating.DeleteList();
+            AttackSystems.DeleteList();
         }
 
         AttackCol.SetActive(true);
