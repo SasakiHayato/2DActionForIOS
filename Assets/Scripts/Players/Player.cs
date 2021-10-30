@@ -153,7 +153,7 @@ namespace PlayersSpace
                 else if (diff > 0.3f && diff <= 2f)
                 {
                     SetMoveDir(SetAngle(currentPos));
-                    _player.Move(MoveDir);
+                    //_player.Move(MoveDir);
                 }
             }
             
