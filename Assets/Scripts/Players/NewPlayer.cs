@@ -14,12 +14,14 @@ public class NewPlayer : MonoBehaviour
 
     Rigidbody2D _rb;
     Controller _crtl = new Controller();
+    Animator _anim;
 
     float _flickMove;
 
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _anim = GetComponent<Animator>();
 
         _crtl.FlickTime = _flickTime;
         _crtl.FlickLimit = _flickLimit;
@@ -28,6 +30,8 @@ public class NewPlayer : MonoBehaviour
 
     void Update()
     {
+        if (!_crtl.IsMove) _anim.Play("Player_idle");
+        
         _crtl.Pressed();
         _crtl.Pressing();
         _crtl.Released();
@@ -46,9 +50,31 @@ public class NewPlayer : MonoBehaviour
     IEnumerator GoMove(float dirX, float speed)
     {
         _flickMove = dirX * speed;
+        CheckDir(dirX);
+        
         yield return new WaitForSeconds(_moveTime);
         _flickMove = 0;
         _crtl.IsMove = false;
+    }
+
+    void CheckDir(float dir)
+    {
+        if (transform.localScale.x == 1 && dir == 1)
+        {
+            _anim.Play("Player_MoveFront");
+        }
+        else if (transform.localScale.x == 1 && dir == -1)
+        {
+            _anim.Play("Player_MoveBack");
+        }
+        else if (transform.localScale.x == -1 && dir == 1)
+        {
+            _anim.Play("Player_MoveFront");
+        }
+        else if (transform.localScale.x == -1 && dir == -1)
+        {
+            _anim.Play("Player_MoveBack");
+        }
     }
 
     public void Attack()
@@ -70,7 +96,7 @@ namespace Players
 
         public float FlickTime { private get; set; } = 0;
         public float FlickLimit { private get; set; } = 0;
-        public bool IsMove { private get; set; } = false;
+        public bool IsMove { get; set; } = false;
 
         public NewPlayer Player { private get; set; } = null;
 
