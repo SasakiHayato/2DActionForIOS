@@ -14,12 +14,6 @@ public class Test : MonoBehaviour
 
     void Update()
     {
-        float h = Input.GetAxisRaw("Horizontal");
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            //AnimState.SetAnimOneShot(gameObject, "Player_attack");
-        }
         
-        _rb.velocity = new Vector2(h, _rb.velocity.y);
     }
 }
