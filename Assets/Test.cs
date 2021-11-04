@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
+    [SerializeField] AnimationState _state;
     Rigidbody2D _rb;
     
     void Start()
@@ -16,8 +17,9 @@ public class Test : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            AnimationState.SetAnim(gameObject, "Player_attack");
+            //AnimState.SetAnimOneShot(gameObject, "Player_attack");
         }
+        
         _rb.velocity = new Vector2(h, _rb.velocity.y);
     }
 }
