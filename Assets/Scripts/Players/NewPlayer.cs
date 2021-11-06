@@ -59,22 +59,10 @@ public class NewPlayer : MonoBehaviour
 
     void CheckDir(float dir)
     {
-        if (transform.localScale.x == 1 && dir == 1)
-        {
+        if (transform.localScale.x == 1 && dir == 1 || transform.localScale.x == -1 && dir == 1) 
             _anim.Play("Player_MoveFront");
-        }
-        else if (transform.localScale.x == 1 && dir == -1)
-        {
+        else if (transform.localScale.x == 1 && dir == -1 || transform.localScale.x == -1 && dir == -1) 
             _anim.Play("Player_MoveBack");
-        }
-        else if (transform.localScale.x == -1 && dir == 1)
-        {
-            _anim.Play("Player_MoveFront");
-        }
-        else if (transform.localScale.x == -1 && dir == -1)
-        {
-            _anim.Play("Player_MoveBack");
-        }
     }
 
     public void Attack()
