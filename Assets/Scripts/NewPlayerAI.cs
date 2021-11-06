@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NewPlayerAI
 {
-    IEnemys _near;
+    public IEnemys NearEnemy { get; private set; } = null;
     
     public void SetNiarEnemy(Transform player)
     {
@@ -13,12 +13,11 @@ public class NewPlayerAI
         float check = float.MaxValue;
         FieldManagement.EnmysList.ForEach(e => 
         {
-            Debug.Log(e.GetObj().transform.position);
             float distance = Vector2.Distance(player.position, e.GetObj().transform.position);
             if (check > distance)
             {
                 check = distance;
-                _near = e;
+                NearEnemy = e;
             }
         });
     }

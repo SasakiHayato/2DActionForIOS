@@ -1,193 +1,145 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using PlayersSpace;
+
+using Players;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : CharaBase, IDamageble
+public class Player : MonoBehaviour
 {
-    [SerializeField] float _moveDis;
-    [SerializeField] GameObject _attackCol;
+    [SerializeField] float _flickTime;
+    [SerializeField] float _flickLimit;
+    [SerializeField] float _moveDistance;
+    [SerializeField] float _moveTime;
 
     Rigidbody2D _rb;
+    Controller _crtl = new Controller();
+    NewPlayerAI _ai = new NewPlayerAI();
+    Animator _anim;
 
-    Control _control = new Control();
-    PlayerAI _ai = new PlayerAI();
-    PlayerAttack _attack;
-
-    public GameObject AttackCol { get => _attackCol; }
+    float _flickMove;
 
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _attack = gameObject.AddComponent<PlayerAttack>();
-        _attackCol.SetActive(false);
-       
-        _control.SetUp(this);
-        _ai.SetUp(gameObject);
+        _anim = GetComponent<Animator>();
+
+        _crtl.FlickTime = _flickTime;
+        _crtl.FlickLimit = _flickLimit;
+        _crtl.Player = this;
     }
-    
+
     void Update()
     {
-        _control.Pressed();
-        _control.Pressing();
-        _ai.UpDate();
+        if (!_crtl.IsMove) _anim.Play("Player_idle");
+
         SetDir();
-    }
- 
-    public int AddDamage()
-    {
-        return 1;
-    }
-    
-    public void GetDamage(float damage)
-    {
-        Debug.Log("É_ÉÅÅ[ÉW");
+
+        _ai.SetNiarEnemy(transform);
+        _crtl.SetUp();
+
+        _rb.velocity = new Vector2(0 + _flickMove, _rb.velocity.y);
     }
 
     void SetDir()
     {
         if (_ai.NearEnemy == null) return;
+        float dir = transform.position.x - _ai.NearEnemy.GetObj().transform.position.x;
 
-        float enemyPosX = _ai.NearEnemy.GetObj().transform.position.x;
-        Quaternion dir = Quaternion.identity;
-
-        if (enemyPosX < transform.position.x) dir = Quaternion.Euler(0, 180, 0);
-        else dir = Quaternion.Euler(0, 0, 0);
-        
-        transform.localRotation = dir;
+        if (dir < 0) transform.localScale = Vector2.one;
+        else transform.localScale = new Vector2(-1, 1);
     }
 
     public void Move(Vector2 dir)
     {
-        float speed = _moveDis / 0.2f;
-        StartCoroutine(SetUpMove(speed, dir));
+        _crtl.IsMove = true;
+        float speed = _moveDistance / _moveTime;
+        
+        StartCoroutine(GoMove(dir.x, speed));
     }
 
-    IEnumerator SetUpMove(float speed, Vector2 setVce)
+    IEnumerator GoMove(float dirX, float speed)
     {
-        _rb.velocity = setVce * speed;
-        yield return new WaitForSeconds(0.2f);
-        _rb.velocity = Vector2.zero;
+        _flickMove = dirX * speed;
+        CheckDir(dirX);
+        
+        yield return new WaitForSeconds(_moveTime);
+        _flickMove = 0;
+        _crtl.IsMove = false;
     }
 
-    public void Setter()
+    void CheckDir(float dir)
     {
-        GameObject enemy = _ai.NearEnemy.GetObj();
-        IState state = enemy.GetComponent<IState>();
-        float dis = Vector2.Distance(transform.position, enemy.transform.position);
-        Debug.Log(dis);
-        if (dis > 5) return;
-
-        GoAttack(state.Current, enemy, dis);
+        if (transform.localScale.x == 1 && dir == 1 || transform.localScale.x == -1 && dir == 1) 
+            _anim.Play("Player_MoveFront");
+        else if (transform.localScale.x == 1 && dir == -1 || transform.localScale.x == -1 && dir == -1) 
+            _anim.Play("Player_MoveBack");
     }
 
-    void GoAttack(State othres, GameObject enemy, float distance)
+    public void Attack()
     {
-        IState chenge = enemy.GetComponent<IState>();
-        if (Current == State.IsGround && othres == State.IsGround)
-        {
-            chenge.ChangeState(State.IsFloating);
-            AttackSystems.SetEnemy(enemy);
-            _attack.GroundAttack(distance);
-        }
-        else if (Current == State.IsGround && othres == State.IsFloating)
-        {
-            Current = State.IsFloating;
-            _rb.gravityScale = 0;
-            _attack.FloatingAttack(gameObject);
-        }
-        else if (Current == State.IsFloating && othres == State.IsFloating)
-        {
-            Current = State.IsGround;
-            _rb.gravityScale = 1;
-            chenge.ChangeState(State.IsGround);
-            AttackSystems.DeleteList();
-        }
-
-        AttackCol.SetActive(true);
+        Debug.Log("çUåÇ");
     }
 }
 
-namespace PlayersSpace
+namespace Players
 {
-    class Control
+    public class Controller
     {
-        public Vector2 MoveDir { get; private set; } = Vector2.zero;
+        bool _isPress = false;
 
-        Vector2 m_attackDir;
-        Vector2 m_savePos = Vector2.zero;
+        Vector2 _setUpPos = Vector2.zero;
+        Vector2 _currentPos = Vector2.zero;
 
-        bool _isPressed = false;
-        
-        Player _player;
-        public void SetUp(Player player) => _player = player;
+        float _time;
 
-        public void Pressed()
+        public float FlickTime { private get; set; } = 0;
+        public float FlickLimit { private get; set; } = 0;
+        public bool IsMove { get; set; } = false;
+
+        public Player Player { private get; set; } = null;
+
+        public void SetUp()
         {
-            if (Input.GetMouseButtonDown(0)) _isPressed = true;
+            Pressed();
+            Pressing();
+            Released();
         }
 
-        public void Pressing()
+        void Pressed()
         {
-            if (!Input.GetMouseButton(0))
+            if (IsMove) return;
+            if (Input.GetMouseButtonDown(0))
             {
-                m_savePos = Vector2.zero;
-                return;
+                _isPress = true;
+                _setUpPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             }
+        }
 
-            Vector2 currentPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        void Pressing()
+        {
+            if (!_isPress) return;
 
-            float diff = Vector2.Distance(currentPos, m_savePos);
-            if (m_savePos == Vector2.zero) diff = 0;
-            
-            if (diff != 0)
+            _currentPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _time += Time.deltaTime;
+        }
+
+        void Released()
+        {
+            if (Input.GetMouseButtonUp(0))
             {
-                if (diff > 2.5f)
+                float diff = _setUpPos.x - _currentPos.x;
+
+                if (_time < FlickTime)
                 {
-                    if (!_isPressed) return;
-                    _isPressed = false;
-                    SetAttackDir(SetAngle(currentPos));
-                    _player.Setter();
+                    if (diff < FlickLimit * -1) Player.Move(Vector2.right);
+                    else if (diff > FlickLimit) Player.Move(Vector2.right * -1);
+                    else Player.Attack();
                 }
-                else if (diff > 0.3f && diff <= 2f)
-                {
-                    SetMoveDir(SetAngle(currentPos));
-                    //_player.Move(MoveDir);
-                }
+
+                _isPress = false;
+                _time = 0;
             }
-            
-            m_savePos = currentPos;
-        }
-
-        float SetAngle(Vector2 mouse)
-        {
-            Vector2 distance = mouse - m_savePos;
-            float angle = Mathf.Atan2(distance.x, distance.y) * Mathf.Rad2Deg;
-            return angle - 90;
-        }
-
-        void SetAttackDir(float angle)
-        {
-            if (-45 <= angle && angle < 45)
-                m_attackDir = Vector2.right;
-            else if (45 <= angle || angle < -225)
-                m_attackDir = Vector2.up;
-            else if (-225 <= angle && angle < -135)
-                m_attackDir = Vector2.left;
-            else if (-135 <= angle && angle < -45)
-                m_attackDir = Vector2.down;
-
-            m_attackDir.y *= -1;
-        }
-
-        void SetMoveDir(float angle)
-        {
-            if (-90 <= angle && angle < 90)
-                MoveDir = Vector2.right;
-
-            else if (90 <= angle || angle < -90)
-                MoveDir = Vector2.left;
         }
     }
 }

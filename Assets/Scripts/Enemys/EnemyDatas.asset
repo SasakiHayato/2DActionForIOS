@@ -17,3 +17,11 @@ MonoBehaviour:
     _obj: {fileID: 7983298352107012673, guid: 9d9a6a84683869b44a026fc95d8c67a4, type: 3}
     _hp: 3
     _speed: 3
+  - _name: Test
+    _obj: {fileID: 4593765809870595845, guid: 89a00984a32ee8941a13f92131ab623a, type: 3}
+    _hp: 3
+    _speed: 3
+  - _name: Test
+    _obj: {fileID: 3148989097402029636, guid: 53703fe82bb522c43b24185159e9933a, type: 3}
+    _hp: 3
+    _speed: 3
