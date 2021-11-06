@@ -14,6 +14,7 @@ public class NewPlayer : MonoBehaviour
 
     Rigidbody2D _rb;
     Controller _crtl = new Controller();
+    NewPlayerAI _ai = new NewPlayerAI();
     Animator _anim;
 
     float _flickMove;
@@ -31,10 +32,9 @@ public class NewPlayer : MonoBehaviour
     void Update()
     {
         if (!_crtl.IsMove) _anim.Play("Player_idle");
-        
-        _crtl.Pressed();
-        _crtl.Pressing();
-        _crtl.Released();
+
+        _ai.SetNiarEnemy(transform);
+        _crtl.SetUp();
 
         _rb.velocity = new Vector2(0 + _flickMove, _rb.velocity.y);
     }
@@ -88,7 +88,14 @@ namespace Players
 
         public NewPlayer Player { private get; set; } = null;
 
-        public void Pressed()
+        public void SetUp()
+        {
+            Pressed();
+            Pressing();
+            Released();
+        }
+
+        void Pressed()
         {
             if (IsMove) return;
             if (Input.GetMouseButtonDown(0))
@@ -98,7 +105,7 @@ namespace Players
             }
         }
 
-        public void Pressing()
+        void Pressing()
         {
             if (!_isPress) return;
 
@@ -106,7 +113,7 @@ namespace Players
             _time += Time.deltaTime;
         }
 
-        public void Released()
+        void Released()
         {
             if (Input.GetMouseButtonUp(0))
             {

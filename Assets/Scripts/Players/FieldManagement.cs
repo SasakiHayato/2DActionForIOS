@@ -10,7 +10,7 @@ public class FieldManagement : MonoBehaviour
     private static FieldManagement _instance = new FieldManagement();
     public static FieldManagement Instance => _instance;
 
-    public static List<IEnemys> IEnmysList { get; set; } = new List<IEnemys>(); 
+    public static List<IEnemys> EnmysList { get; set; } = new List<IEnemys>(); 
     EnemyController _enemyctrl = new EnemyController();
 
     void Start()
@@ -18,9 +18,9 @@ public class FieldManagement : MonoBehaviour
         _enemyctrl.SetUpEnemy = _enemyData;
     }
 
-    public void CreateEnemys()
+    public void CreateEnemys(int id = -1)
     {
-        _enemyctrl.Create();
+        _enemyctrl.Create(id);
         _enemyctrl.SetUp(_setPos);
     }
 }
@@ -32,13 +32,14 @@ class EnemyController
     GameObject _setEnemy = default;
     Enemys.Data _data = null;
 
-    public void Create()
+    int _count;
+
+    public void Create(int id)
     {
         int set = Random.Range(0, SetUpEnemy.DataLength);
         _data = SetUpEnemy.GetData(set);
         GameObject obj = _data.Obj;
-        IEnemys ienemy = obj.GetComponent<IEnemys>();
-        if (ienemy != null) FieldManagement.IEnmysList.Add(ienemy);
+        
         _setEnemy = obj;
     }
 
@@ -47,6 +48,10 @@ class EnemyController
         if (_setEnemy == null || _data == null) return;
 
         GameObject get = MonoBehaviour.Instantiate(_setEnemy, pos, Quaternion.identity);
+        
+        IEnemys iEnemy = get.GetComponent<IEnemys>();
+        if (iEnemy != null) FieldManagement.EnmysList.Add(iEnemy);
+        
         EnemyBase enemy = get.GetComponent<EnemyBase>();
         enemy.Speed = _data.Speed;
         enemy.Hp = _data.Hp;
