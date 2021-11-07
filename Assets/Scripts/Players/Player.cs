@@ -31,7 +31,7 @@ public class Player : CharaBase
 
     void Update()
     {
-        if (!_crtl.IsMove) _anim.Play("Player_idle");
+        if (!_crtl.IsMove) _anim.Play("TestPlayer_Idle");
 
         SetDir();
 
@@ -70,17 +70,17 @@ public class Player : CharaBase
 
     void CheckDir(float dir)
     {
-        if (transform.localScale.x == 1 && dir == 1 || transform.localScale.x == -1 && dir == 1) 
-            _anim.Play("Player_MoveFront");
-        else if (transform.localScale.x == 1 && dir == -1 || transform.localScale.x == -1 && dir == -1) 
-            _anim.Play("Player_MoveBack");
+        if (transform.localScale.x == 1 && dir == 1 || transform.localScale.x == -1 && dir == 1)
+            _anim.Play("TestPlayer_Run");
+        else if (transform.localScale.x == 1 && dir == -1 || transform.localScale.x == -1 && dir == -1)
+            _anim.Play("TestPlayer_Run");
     }
 
     public void Attack()
     {
         if (_ai.NearEnemy == null) return;
-        //_crtl.IsMove = true;
-        _anim.Play("Player_attack");
+        _crtl.IsMove = true;
+        _anim.Play("TestPlayer_Attack1");
         IState enemyState = _ai.NearEnemy.GetObj().GetComponent<IState>();
 
         if (Current == State.IsGround && enemyState.Current == State.IsGround)
@@ -91,11 +91,12 @@ public class Player : CharaBase
         else if (Current == State.IsGround && enemyState.Current == State.IsFloating)
         {
             ChangeState(State.IsFloating);
-
+            AttackSystems.MoveAttack(gameObject, 2);
         }
         else if (Current == State.IsFloating && enemyState.Current == State.IsFloating)
         {
             ChangeState(State.IsGround);
+            AttackSystems.MoveAttack(gameObject, -4);
             AttackSystems.DeleteList();
         }
     }

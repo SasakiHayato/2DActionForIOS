@@ -19,7 +19,7 @@ public class AttackSystems : MonoBehaviour
         {
             Vector2 pos = enemy.transform.position;
             enemy.transform.position = Vector2.
-                MoveTowards(pos, Instance._collect.transform.position, Time.deltaTime * 10);
+                MoveTowards(pos, Instance._collect.transform.position, Time.deltaTime * 20);
         }
     }
 
@@ -35,11 +35,24 @@ public class AttackSystems : MonoBehaviour
         {
             IState state = Instance._enemys.First().GetComponent<IState>();
             state.ChangeState(State.IsGround);
+            Instance.Force(Instance._enemys.First());
             Instance._enemys.Remove(Instance._enemys.First());
         }
 
         Destroy(Instance._collect);
         Instance._collect = null;
+    }
+
+    void Force(GameObject enemy)
+    {
+        Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
+        
+    }
+
+    public static void MoveAttack(GameObject player, float setY)
+    {
+        Transform collect = GameObject.Find("Collect").transform;
+        player.transform.position = new Vector2(collect.transform.position.x, collect.transform.position.y + setY);
     }
 
     void Create()

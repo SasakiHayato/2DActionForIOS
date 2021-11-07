@@ -32,11 +32,10 @@ class EnemyController
     GameObject _setEnemy = default;
     Enemys.Data _data = null;
 
-    int _count;
-
     public void Create(int id)
     {
         int set = Random.Range(0, SetUpEnemy.DataLength);
+        if (id >= 0) set = id;
         _data = SetUpEnemy.GetData(set);
         GameObject obj = _data.Obj;
         
