@@ -26,7 +26,6 @@ public class AttackSystems : MonoBehaviour
     public static void SetEnemy(GameObject target)
     {
         if (Instance._collect == null) Instance.Create();
-
         Instance._enemys.Add(target);
     }
 
@@ -34,6 +33,8 @@ public class AttackSystems : MonoBehaviour
     {
         while (Instance._enemys.Count > 0)
         {
+            IState state = Instance._enemys.First().GetComponent<IState>();
+            state.ChangeState(State.IsGround);
             Instance._enemys.Remove(Instance._enemys.First());
         }
 

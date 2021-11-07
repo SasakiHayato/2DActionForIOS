@@ -5,7 +5,7 @@ using UnityEngine;
 using Players;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : MonoBehaviour
+public class Player : CharaBase
 {
     [SerializeField] float _flickTime;
     [SerializeField] float _flickLimit;
@@ -78,7 +78,31 @@ public class Player : MonoBehaviour
 
     public void Attack()
     {
-        Debug.Log("çUåÇ");
+        if (_ai.NearEnemy == null) return;
+        //_crtl.IsMove = true;
+        _anim.Play("Player_attack");
+        IState enemyState = _ai.NearEnemy.GetObj().GetComponent<IState>();
+
+        if (Current == State.IsGround && enemyState.Current == State.IsGround)
+        {
+            enemyState.ChangeState(State.IsFloating);
+            AttackSystems.SetEnemy(_ai.NearEnemy.GetObj());
+        }
+        else if (Current == State.IsGround && enemyState.Current == State.IsFloating)
+        {
+            ChangeState(State.IsFloating);
+
+        }
+        else if (Current == State.IsFloating && enemyState.Current == State.IsFloating)
+        {
+            ChangeState(State.IsGround);
+            AttackSystems.DeleteList();
+        }
+    }
+
+    public void SetAttackCol()
+    {
+
     }
 }
 
