@@ -2,23 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewPlayerAI
+namespace Players
 {
-    public IEnemys NearEnemy { get; private set; } = null;
-    
-    public void SetNiarEnemy(Transform player)
+    public class NewPlayerAI
     {
-        if (FieldManagement.EnmysList.Count <= 0) return;
+        public IEnemys NearEnemy { get; private set; } = null;
 
-        float check = float.MaxValue;
-        FieldManagement.EnmysList.ForEach(e => 
+        public void SetNiarEnemy(Transform player)
         {
-            float distance = Vector2.Distance(player.position, e.GetObj().transform.position);
-            if (check > distance)
+            if (FieldManagement.EnmysList.Count <= 0) return;
+
+            float check = float.MaxValue;
+            FieldManagement.EnmysList.ForEach(e =>
             {
-                check = distance;
-                NearEnemy = e;
-            }
-        });
+                float distance = Vector2.Distance(player.position, e.GetObj().transform.position);
+                if (check > distance)
+                {
+                    check = distance;
+                    NearEnemy = e;
+                }
+            });
+        }
     }
 }

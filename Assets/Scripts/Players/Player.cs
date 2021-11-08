@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Cinemachine;
 using Players;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : CharaBase
+public class Player : CharaBase, IDamageble
 {
     [SerializeField] float _flickTime;
     [SerializeField] float _flickLimit;
     [SerializeField] float _moveDistance;
     [SerializeField] float _moveTime;
 
+    CircleCollider2D _atkCol;
+
     Rigidbody2D _rb;
-    Controller _crtl = new Controller();
+    Controller _ctrl = new Controller();
     NewPlayerAI _ai = new NewPlayerAI();
     Animator _anim;
 
@@ -24,19 +26,22 @@ public class Player : CharaBase
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
 
-        _crtl.FlickTime = _flickTime;
-        _crtl.FlickLimit = _flickLimit;
-        _crtl.Player = this;
+        _atkCol = transform.GetChild(0).GetComponent<CircleCollider2D>();
+        _atkCol.enabled = false;
+
+        _ctrl.FlickTime = _flickTime;
+        _ctrl.FlickLimit = _flickLimit;
+        _ctrl.Player = this;
     }
 
     void Update()
     {
-        if (!_crtl.IsMove) _anim.Play("TestPlayer_Idle");
+        if (!_ctrl.IsMove) _anim.Play("TestPlayer_Idle");
 
         SetDir();
 
         _ai.SetNiarEnemy(transform);
-        _crtl.SetUp();
+        _ctrl.SetUp();
 
         _rb.velocity = new Vector2(0 + _flickMove, _rb.velocity.y);
     }
@@ -52,7 +57,7 @@ public class Player : CharaBase
 
     public void Move(Vector2 dir)
     {
-        _crtl.IsMove = true;
+        _ctrl.IsMove = true;
         float speed = _moveDistance / _moveTime;
         
         StartCoroutine(GoMove(dir.x, speed));
@@ -65,7 +70,7 @@ public class Player : CharaBase
         
         yield return new WaitForSeconds(_moveTime);
         _flickMove = 0;
-        _crtl.IsMove = false;
+        _ctrl.IsMove = false;
     }
 
     void CheckDir(float dir)
@@ -78,32 +83,37 @@ public class Player : CharaBase
 
     public void Attack()
     {
-        if (_ai.NearEnemy == null) return;
-        _crtl.IsMove = true;
+        if (_ai.NearEnemy == null || _ctrl.IsMove) return;
+        _ctrl.IsMove = true;
         _anim.Play("TestPlayer_Attack1");
-        IState enemyState = _ai.NearEnemy.GetObj().GetComponent<IState>();
-
-        if (Current == State.IsGround && enemyState.Current == State.IsGround)
-        {
-            enemyState.ChangeState(State.IsFloating);
-            AttackSystems.SetEnemy(_ai.NearEnemy.GetObj());
-        }
-        else if (Current == State.IsGround && enemyState.Current == State.IsFloating)
-        {
-            ChangeState(State.IsFloating);
-            AttackSystems.MoveAttack(gameObject, 2);
-        }
-        else if (Current == State.IsFloating && enemyState.Current == State.IsFloating)
-        {
-            ChangeState(State.IsGround);
-            AttackSystems.MoveAttack(gameObject, -4);
-            AttackSystems.DeleteList();
-        }
+        StartCoroutine(EndAnim());
     }
 
     public void SetAttackCol()
     {
+        if (!_atkCol.enabled) _atkCol.enabled = true;
+        else _atkCol.enabled = false;
+    }
 
+    public int AddDamage() => 1;
+
+    public void GetDamage(int damage)
+    {
+
+    }
+
+    IEnumerator EndAnim()
+    {
+        
+        bool check = false;
+        while (!check)
+        {
+            AnimatorStateInfo info = _anim.GetCurrentAnimatorStateInfo(0);
+            if (info.normalizedTime > 1) check = true;
+            Debug.Log(info.normalizedTime);
+            yield return null;
+        }
+        _ctrl.IsMove = false;
     }
 }
 
@@ -153,12 +163,12 @@ namespace Players
         {
             if (Input.GetMouseButtonUp(0))
             {
-                float diff = _setUpPos.x - _currentPos.x;
+                float diffX = _setUpPos.x - _currentPos.x;
 
                 if (_time < FlickTime)
                 {
-                    if (diff < FlickLimit * -1) Player.Move(Vector2.right);
-                    else if (diff > FlickLimit) Player.Move(Vector2.right * -1);
+                    if (diffX < FlickLimit * -1) Player.Move(Vector2.right);
+                    else if (diffX > FlickLimit) Player.Move(Vector2.right * -1);
                     else Player.Attack();
                 }
 

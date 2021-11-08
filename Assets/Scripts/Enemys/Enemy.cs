@@ -37,7 +37,7 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
     }
 
     public int AddDamage() => 1;
-    public void GetDamage(float damage)
+    public void GetDamage(int damage)
     {
 
     }

@@ -9,7 +9,7 @@ public interface IEnemys
 public interface IDamageble
 {
     int AddDamage();
-    void GetDamage(float damage);
+    void GetDamage(int damage);
 }
 
 public interface IState
