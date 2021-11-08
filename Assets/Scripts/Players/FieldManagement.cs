@@ -70,15 +70,13 @@ public class FieldManagement : MonoBehaviour
         if (_targetGroup.m_Targets.Length <= 1)
         {
             _brain.enabled = false;
-            _camera.orthographicSize = 7;
+            _camera.orthographicSize = 10;
             Vector2 playerPos = _player.transform.position;
             _mainCamera.transform.position = new Vector3(playerPos.x, playerPos.y, -10);
-            
         }
         else
         {
             _brain.enabled = true;
-
         }
     }
 }

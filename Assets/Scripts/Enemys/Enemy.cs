@@ -39,7 +39,7 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
     public int AddDamage() => 1;
     public void GetDamage(int damage)
     {
-
+        Debug.Log($"ƒ_ƒ[ƒW : {damage} {gameObject.name}");
     }
 
     public bool IsRockOn { get; set; }

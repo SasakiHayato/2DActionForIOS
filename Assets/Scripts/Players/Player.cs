@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Cinemachine;
 using Players;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -18,20 +17,35 @@ public class Player : CharaBase, IDamageble
     Controller _ctrl = new Controller();
     NewPlayerAI _ai = new NewPlayerAI();
     Animator _anim;
+    AtkCtrlToPlayer _atkCtrl;
 
     float _flickMove;
+
+    delegate void SetAnimEvent();
+    SetAnimEvent _animEvent;
 
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
+        _atkCtrl = transform.GetChild(0).GetComponent<AtkCtrlToPlayer>();
 
-        _atkCol = transform.GetChild(0).GetComponent<CircleCollider2D>();
-        _atkCol.enabled = false;
+        SetUpAtkCol();
+        SetUpCtrl();
 
+        _animEvent += SetAttackCol;
+    }
+
+    void SetUpCtrl()
+    {
         _ctrl.FlickTime = _flickTime;
         _ctrl.FlickLimit = _flickLimit;
         _ctrl.Player = this;
+    }
+    void SetUpAtkCol()
+    {
+        _atkCol = transform.GetChild(0).GetComponent<CircleCollider2D>();
+        _atkCol.enabled = false;
     }
 
     void Update()
@@ -81,22 +95,58 @@ public class Player : CharaBase, IDamageble
             _anim.Play("TestPlayer_Run");
     }
 
-    public void Attack()
+    public void Attack(Vector2 dir)
     {
         if (_ai.NearEnemy == null || _ctrl.IsMove) return;
+        _animEvent += SetHitStop;
+        if (dir == Vector2.up) _animEvent += StateCheck;
+        else _anim.Play("TestPlayer_Attack2");
         _ctrl.IsMove = true;
-        _anim.Play("TestPlayer_Attack1");
+        
         StartCoroutine(EndAnim());
     }
 
-    public void SetAttackCol()
+    // AnimetionEvent‚Å‚ÌŒÄ‚Ño‚µ
+    public void RequestAnimEvent() => _animEvent.Invoke();
+
+    void SetAttackCol()
     {
         if (!_atkCol.enabled) _atkCol.enabled = true;
         else _atkCol.enabled = false;
     }
 
-    public int AddDamage() => 1;
+    void StateCheck()
+    {
+        _anim.Play("TestPlayer_Attack1");
+        IState other = _ai.NearEnemy.GetObj().GetComponent<IState>();
+        if (Current == State.IsGround && other.Current == State.IsGround)
+        {
+            other.ChangeState(State.IsFloating);
+            AttackSystems.SetEnemy(_ai.NearEnemy.GetObj());
+        }
+        //else if (Current == State.IsGround && other.Current == State.IsFloating)
+        //{
+        //    ChangeState(State.IsFloating);
+        //    AttackSystems.MoveAttack(gameObject, 2);
+        //}
+        //else if (Current == State.IsFloating && other.Current == State.IsFloating)
+        //{
+        //    ChangeState(State.IsGround);
+        //    AttackSystems.MoveAttack(gameObject, -4);
+        //    AttackSystems.DeleteList();
+        //}
 
+        _animEvent -= StateCheck;
+    }
+
+    void SetHitStop()
+    {
+        if (_atkCtrl.IsHit) Debug.Log("aaa");
+        _atkCtrl.IsHit = false;
+        _animEvent -= SetHitStop;
+    }
+
+    public int AddDamage() => 1;
     public void GetDamage(int damage)
     {
 
@@ -104,15 +154,14 @@ public class Player : CharaBase, IDamageble
 
     IEnumerator EndAnim()
     {
-        
         bool check = false;
         while (!check)
         {
             AnimatorStateInfo info = _anim.GetCurrentAnimatorStateInfo(0);
             if (info.normalizedTime > 1) check = true;
-            Debug.Log(info.normalizedTime);
             yield return null;
         }
+
         _ctrl.IsMove = false;
     }
 }
@@ -164,12 +213,14 @@ namespace Players
             if (Input.GetMouseButtonUp(0))
             {
                 float diffX = _setUpPos.x - _currentPos.x;
+                float diffY = _setUpPos.y - _currentPos.y;
 
                 if (_time < FlickTime)
                 {
                     if (diffX < FlickLimit * -1) Player.Move(Vector2.right);
                     else if (diffX > FlickLimit) Player.Move(Vector2.right * -1);
-                    else Player.Attack();
+                    else if (diffY * -1 > FlickLimit) Player.Attack(Vector2.up);
+                    else Player.Attack(Vector2.zero);
                 }
 
                 _isPress = false;
