@@ -876,7 +876,6 @@ MonoBehaviour:
   _createTime: 2
   _enemyData: {fileID: 11400000, guid: 7cac6a97e5e3d2840bcb48d1eb501af7, type: 2}
   _setPos: {x: 7, y: 0}
-  _mainCamera: {fileID: 637734892}
 --- !u!4 &2072615306
 Transform:
   m_ObjectHideFlags: 0

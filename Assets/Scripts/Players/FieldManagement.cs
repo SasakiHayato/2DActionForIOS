@@ -8,23 +8,28 @@ public class FieldManagement : MonoBehaviour
     [SerializeField] float _createTime;
     [SerializeField] EnemyData _enemyData;
     [SerializeField] Vector2 _setPos;
-    
-    float _timer;
 
-    private static FieldManagement _instance = new FieldManagement();
+    private static FieldManagement _instance = null;
     public static FieldManagement Instance => _instance;
+    private FieldManagement() { }
 
     public static List<IEnemys> EnmysList { get; set; } = new List<IEnemys>();
 
-    EnemyController _enemyctrl = new EnemyController();
-    CameraController _camera = new CameraController();
+    EnemyController _enemyctrl;
+    CameraController _camera;
 
-    void Start()
+    float _timer;
+
+    private void Awake()
     {
+        _instance = this;
+        _enemyctrl = new EnemyController();
+        _camera = new CameraController();
+        
         _camera.SetUp();
         SetUpEnemyContrl();
     }
-    
+
     void SetUpEnemyContrl()
     {
         _enemyctrl.SetUpEnemy = _enemyData;
@@ -43,13 +48,33 @@ public class FieldManagement : MonoBehaviour
         _camera.Mode();
     }
 
-    void CreateEnemys(int id = -1)
+    // id => Debug用ID. Debug時にボタン呼び出し.
+    public void CreateEnemys(int id = -1)
     {
         _enemyctrl.Create(id);
         _enemyctrl.SetUp(_setPos);
     }
 
-    public static void ReqestShakeCamera() => Instance._camera.Shake();
+    public static void ReqestShakeCm() => Instance.SetShakeCm();
+   
+    void SetShakeCm()
+    {
+        Vector3 setVec = _camera.SetUpShake();
+        StartCoroutine(Instance.GoShake(setVec));
+    }
+
+    IEnumerator GoShake(Vector3 set)
+    {
+        float time = 0;
+        while (0.15f > time)
+        {
+            time += Time.deltaTime;
+            _camera.IsShake(set);
+            yield return null;
+        }
+        
+        _camera.EndShake();
+    }
 }
 
 class EnemyController
@@ -90,27 +115,27 @@ class EnemyController
 
 class CameraController
 {
-    Camera _camera;
+    Camera _mainCamera;
     Camera _shakeCm;
     CinemachineBrain _brain;
     public CinemachineTargetGroup TargetGroup { get; private set; }
 
     GameObject _player;
-    GameObject _mainCamera;
+    GameObject _cameraObj;
 
     bool _isShake = false;
-    bool _shakeCmSetUp = false;
-
+    string _shakeCmName = "ShekeCamera";
+    
     public void SetUp()
     {
-        _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        _cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
 
         TargetGroup = GameObject.Find("TargetGroup").GetComponent<CinemachineTargetGroup>();
         _player = GameObject.FindGameObjectWithTag("Player");
         TargetGroup.AddMember(_player.transform, 1, 0);
 
-        _brain = _mainCamera.GetComponent<CinemachineBrain>();
-        _camera = _mainCamera.GetComponent<Camera>();
+        _brain = _cameraObj.GetComponent<CinemachineBrain>();
+        _mainCamera = _cameraObj.GetComponent<Camera>();
     }
 
     public void Mode()
@@ -129,39 +154,61 @@ class CameraController
         }
     }
 
-    public void Shake()
+    public Vector3 SetUpShake()
     {
+        GameObject shakeCm = GameObject.Find(_shakeCmName);
+        if (shakeCm == null) CreateShakeCamera();
+
+        _shakeCm.transform.position = _cameraObj.transform.position;
+        _shakeCm.orthographicSize = _mainCamera.orthographicSize;
+
         _isShake = true;
-        if (!_shakeCmSetUp)
-        {
-            _shakeCmSetUp = true;
-            CreateShakeCamera();
-        }
+        _mainCamera.enabled = false;
+        _brain.enabled = false;
+
+        _shakeCm.enabled = true;
+
+        return _cameraObj.transform.position;
+    }
+
+    public void IsShake(Vector3 set)
+    {
+        float x = Random.Range(-1, 1);
+        float y = Random.Range(-1, 1);
+
+        Vector3 setVec = new Vector3(set.x + x, set.y + y, set.z);
+        _shakeCm.transform.position = setVec;
+    }
+
+    public void EndShake()
+    {
+        _isShake = false;
+        _mainCamera.enabled = true;
+        _brain.enabled = true;
+        _shakeCm.enabled = false;
     }
 
     void CreateShakeCamera()
     {
-        GameObject shakeCm = new GameObject("ShekeCamera");
+        GameObject shakeCm = new GameObject(_shakeCmName);
         _shakeCm = shakeCm.AddComponent<Camera>();
-        Debug.Log($"{_mainCamera} {_camera}");
-        _shakeCm.transform.position = _mainCamera.transform.position;
-        _shakeCm.backgroundColor = _camera.backgroundColor;
+        
+        _shakeCm.backgroundColor = _mainCamera.backgroundColor;
         _shakeCm.orthographic = true;
-        _shakeCm.orthographicSize = _camera.orthographicSize;
     }
 
     void Noarmal()
     {
         float posX = 0;
 
-        _camera.orthographicSize = 10;
+        _mainCamera.orthographicSize = 10;
         Vector2 playerPos = _player.transform.position;
         Vector2 playerScale = _player.transform.localScale;
 
         if (playerScale.x > 0) posX = 2;
         else posX = -2;
 
-        _mainCamera.transform.position = new Vector3(playerPos.x + posX, playerPos.y, -10);
+        _cameraObj.transform.position = new Vector3(playerPos.x + posX, playerPos.y, -10);
     }
 
     void Target()

@@ -148,11 +148,8 @@ public class Player : CharaBase, IDamageble
 
     void SetHitStop()
     {
-        if (_atkCtrl.IsHit)
-        {
-            //FieldManagement.ReqestShakeCamera();
-            Debug.Log("aaa");
-        }
+        if (_atkCtrl.IsHit) FieldManagement.ReqestShakeCm();
+
         _atkCtrl.IsHit = false;
         _animEvent -= SetHitStop;
     }
