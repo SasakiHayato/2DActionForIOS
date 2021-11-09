@@ -106,9 +106,6 @@ public class Player : CharaBase, IDamageble
         StartCoroutine(EndAnim());
     }
 
-    // AnimetionEvent‚Å‚ÌŒÄ‚Ño‚µ
-    public void RequestAnimEvent() => _animEvent.Invoke();
-
     void SetAttackCol()
     {
         if (!_atkCol.enabled) _atkCol.enabled = true;
@@ -141,7 +138,11 @@ public class Player : CharaBase, IDamageble
 
     void SetHitStop()
     {
-        if (_atkCtrl.IsHit) Debug.Log("aaa");
+        if (_atkCtrl.IsHit)
+        {
+            FieldManagement.Instance.ReqestShakeCamera();
+            Debug.Log("aaa");
+        }
         _atkCtrl.IsHit = false;
         _animEvent -= SetHitStop;
     }
@@ -164,6 +165,9 @@ public class Player : CharaBase, IDamageble
 
         _ctrl.IsMove = false;
     }
+
+    // AnimetionEvent‚Å‚ÌŒÄ‚Ño‚µ
+    public void RequestAnimEvent() => _animEvent.Invoke();
 }
 
 namespace Players

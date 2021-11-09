@@ -9,42 +9,27 @@ public class FieldManagement : MonoBehaviour
     [SerializeField] EnemyData _enemyData;
     [SerializeField] Vector2 _setPos;
     [SerializeField] GameObject _mainCamera;
-
-    CinemachineTargetGroup _targetGroup;
-    Camera _camera;
-    CinemachineBrain _brain;
-
-    GameObject _player;
     
     float _timer;
 
     private static FieldManagement _instance = new FieldManagement();
     public static FieldManagement Instance => _instance;
 
-    public static List<IEnemys> EnmysList { get; set; } = new List<IEnemys>(); 
+    public static List<IEnemys> EnmysList { get; set; } = new List<IEnemys>();
+
     EnemyController _enemyctrl = new EnemyController();
+    CameraController _camera = new CameraController();
 
     void Start()
     {
-        _targetGroup = GameObject.Find("TargetGroup").GetComponent<CinemachineTargetGroup>();
-        _player = GameObject.FindGameObjectWithTag("Player");
-        _targetGroup.AddMember(_player.transform, 1, 0);
-
+        _camera.SetUp(_mainCamera);
         SetUpEnemyContrl();
-        SetUpCamera();
     }
     
     void SetUpEnemyContrl()
     {
         _enemyctrl.SetUpEnemy = _enemyData;
-        _enemyctrl.Group = _targetGroup;
-    }
-
-    void SetUpCamera()
-    {
-        _camera = _mainCamera.GetComponent<Camera>();
-        _brain = _mainCamera.GetComponent<CinemachineBrain>();
-        _brain.enabled = false;
+        _enemyctrl.Group = _camera.TargetGroup;
     }
 
     void Update()
@@ -56,7 +41,7 @@ public class FieldManagement : MonoBehaviour
             CreateEnemys();
         }
 
-        CameraMode();
+        _camera.Mode();
     }
 
     void CreateEnemys(int id = -1)
@@ -65,20 +50,7 @@ public class FieldManagement : MonoBehaviour
         _enemyctrl.SetUp(_setPos);
     }
 
-    void CameraMode()
-    {
-        if (_targetGroup.m_Targets.Length <= 1)
-        {
-            _brain.enabled = false;
-            _camera.orthographicSize = 10;
-            Vector2 playerPos = _player.transform.position;
-            _mainCamera.transform.position = new Vector3(playerPos.x, playerPos.y, -10);
-        }
-        else
-        {
-            _brain.enabled = true;
-        }
-    }
+    public void ReqestShakeCamera() => _camera.Shake();
 }
 
 class EnemyController
@@ -116,3 +88,67 @@ class EnemyController
         _data = null;
     }
 }
+
+class CameraController
+{
+    Camera _camera;
+    CinemachineBrain _brain;
+    public CinemachineTargetGroup TargetGroup { get; private set; }
+
+    GameObject _player;
+    GameObject _mainCamera;
+
+    bool _isShake = false;
+
+    public void SetUp(GameObject cameraObj)
+    {
+        _mainCamera = cameraObj;
+        TargetGroup = GameObject.Find("TargetGroup").GetComponent<CinemachineTargetGroup>();
+        _player = GameObject.FindGameObjectWithTag("Player");
+        TargetGroup.AddMember(_player.transform, 1, 0);
+        _brain = cameraObj.GetComponent<CinemachineBrain>();
+        _camera = cameraObj.GetComponent<Camera>();
+    }
+
+    public void Mode()
+    {
+        if (_isShake) return;
+
+        if (TargetGroup.m_Targets.Length <= 1)
+        {
+            _brain.enabled = false;
+            Noarmal();
+        }
+        else
+        {
+            _brain.enabled = true;
+            Target();
+        }
+    }
+
+    public void Shake()
+    {
+        _isShake = true;
+
+    }
+
+    void Noarmal()
+    {
+        float posX = 0;
+
+        _camera.orthographicSize = 10;
+        Vector2 playerPos = _player.transform.position;
+        Vector2 playerScale = _player.transform.localScale;
+
+        if (playerScale.x > 0) posX = 2;
+        else posX = -2;
+
+        _mainCamera.transform.position = new Vector3(playerPos.x + posX, playerPos.y, -10);
+    }
+
+    void Target()
+    {
+        
+    }
+}
+
