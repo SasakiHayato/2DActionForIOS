@@ -13,7 +13,7 @@ namespace Players
         float _setSpeed = 1.2f;
         float _setDis = 7;
 
-        public void SetNiarEnemy(Transform player)
+        public void SetNearEnemy(Transform player)
         {
             if (FieldManagement.EnmysList.Count <= 0) return;
 

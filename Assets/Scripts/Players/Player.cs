@@ -6,17 +6,19 @@ using Players;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : CharaBase, IDamageble
 {
-    [SerializeField] float _flickTime;
-    [SerializeField] float _flickLimit;
-    [SerializeField] float _moveDistance;
-    [SerializeField] float _moveTime;
+    [SerializeField] float _flickTime = 0.2f;
+    [SerializeField] float _flickLimit = 3;
+    [SerializeField] float _moveDistance = 5;
+    [SerializeField] float _moveTime = 0.2f;
 
     CircleCollider2D _atkCol;
 
     Rigidbody2D _rb;
+    Animator _anim;
+
     Controller _ctrl = new Controller();
     PlayerAI _ai = new PlayerAI();
-    Animator _anim;
+    
     AtkCtrlToPlayer _atkCtrl;
 
     float _flickMove;
@@ -29,7 +31,7 @@ public class Player : CharaBase, IDamageble
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         _atkCtrl = transform.GetChild(0).GetComponent<AtkCtrlToPlayer>();
-
+        
         SetUpAtkCol();
         SetUpCtrl();
 
@@ -58,7 +60,7 @@ public class Player : CharaBase, IDamageble
         SetDir();
 
         _ai.SupportMove(transform, _ctrl.IsPress, _ctrl.IsMove);
-        _ai.SetNiarEnemy(transform);
+        _ai.SetNearEnemy(transform);
 
         _ctrl.SetUp();
         
@@ -126,11 +128,12 @@ public class Player : CharaBase, IDamageble
     void StateCheck()
     {
         IState other = _ai.NearEnemy.GetObj().GetComponent<IState>();
-        if (Current == State.IsGround && other.Current == State.IsGround)
-        {
-            other.ChangeState(State.IsFloating);
-            AttackSystems.SetEnemy(_ai.NearEnemy.GetObj());
-        }
+        StateManager.SetState(gameObject, other);
+        //if (Current == State.IsGround && other.Current == State.IsGround)
+        //{
+        //    other.ChangeState(State.IsFloating);
+        //    //AttackSystems.SetEnemy(_ai.NearEnemy.GetObj());
+        //}
         //else if (Current == State.IsGround && other.Current == State.IsFloating)
         //{
         //    ChangeState(State.IsFloating);

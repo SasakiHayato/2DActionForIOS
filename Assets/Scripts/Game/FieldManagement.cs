@@ -7,8 +7,11 @@ public class FieldManagement : MonoBehaviour
 {
     [SerializeField] float _createTime;
     [SerializeField] EnemyData _enemyData;
+
+    // Debug—p
     [SerializeField] Vector2 _setPos;
 
+    // ‚Ç‚±‚©‚ç‚Å‚àŒÄ‚Ño‚¹‚é‚æ‚¤‚É
     private static FieldManagement _instance = null;
     public static FieldManagement Instance => _instance;
     private FieldManagement() { }
@@ -112,7 +115,6 @@ class EnemyController
         _data = null;
     }
 }
-
 class CameraController
 {
     Camera _mainCamera;
