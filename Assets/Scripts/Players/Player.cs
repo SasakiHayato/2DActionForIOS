@@ -50,16 +50,19 @@ public class Player : CharaBase, IDamageble
 
     void Update()
     {
-        if (!_ctrl.IsMove) _anim.Play("TestPlayer_Idle");
-        if (!_ctrl.IsPress && !_ctrl.IsMove) _ai.SupportMove();
+        float setX = _flickMove + _ai.Move;
+
+        if (!_ctrl.IsMove && setX == 0) _anim.Play("TestPlayer_Idle");
+        else if (setX != 0 && !_ctrl.IsMove) _anim.Play("TestPlayer_Run");
 
         SetDir();
 
+        _ai.SupportMove(transform, _ctrl.IsPress, _ctrl.IsMove);
         _ai.SetNiarEnemy(transform);
-        _ctrl.SetUp();
 
-        float setX = _flickMove + _ai.Move;
-        _rb.velocity = new Vector2( setX, _rb.velocity.y);
+        _ctrl.SetUp();
+        
+        _rb.velocity = new Vector2(setX, _rb.velocity.y);
     }
 
     void SetDir()
@@ -91,8 +94,10 @@ public class Player : CharaBase, IDamageble
 
     void CheckDir(float dir)
     {
+        // Front
         if (transform.localScale.x == 1 && dir == 1 || transform.localScale.x == -1 && dir == 1)
             _anim.Play("TestPlayer_Run");
+        // Back
         else if (transform.localScale.x == 1 && dir == -1 || transform.localScale.x == -1 && dir == -1)
             _anim.Play("TestPlayer_Run");
     }
