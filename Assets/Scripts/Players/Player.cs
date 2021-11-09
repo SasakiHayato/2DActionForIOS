@@ -15,7 +15,7 @@ public class Player : CharaBase, IDamageble
 
     Rigidbody2D _rb;
     Controller _ctrl = new Controller();
-    NewPlayerAI _ai = new NewPlayerAI();
+    PlayerAI _ai = new PlayerAI();
     Animator _anim;
     AtkCtrlToPlayer _atkCtrl;
 
@@ -51,13 +51,15 @@ public class Player : CharaBase, IDamageble
     void Update()
     {
         if (!_ctrl.IsMove) _anim.Play("TestPlayer_Idle");
+        if (!_ctrl.IsPress && !_ctrl.IsMove) _ai.SupportMove();
 
         SetDir();
 
         _ai.SetNiarEnemy(transform);
         _ctrl.SetUp();
 
-        _rb.velocity = new Vector2(0 + _flickMove, _rb.velocity.y);
+        float setX = _flickMove + _ai.Move;
+        _rb.velocity = new Vector2( setX, _rb.velocity.y);
     }
 
     void SetDir()
@@ -99,7 +101,11 @@ public class Player : CharaBase, IDamageble
     {
         if (_ai.NearEnemy == null || _ctrl.IsMove) return;
         _animEvent += SetHitStop;
-        if (dir == Vector2.up) _animEvent += StateCheck;
+        if (dir == Vector2.up)
+        {
+            _anim.Play("TestPlayer_Attack1");
+            _animEvent += StateCheck;
+        }
         else _anim.Play("TestPlayer_Attack2");
         _ctrl.IsMove = true;
         
@@ -114,7 +120,6 @@ public class Player : CharaBase, IDamageble
 
     void StateCheck()
     {
-        _anim.Play("TestPlayer_Attack1");
         IState other = _ai.NearEnemy.GetObj().GetComponent<IState>();
         if (Current == State.IsGround && other.Current == State.IsGround)
         {
@@ -140,7 +145,7 @@ public class Player : CharaBase, IDamageble
     {
         if (_atkCtrl.IsHit)
         {
-            FieldManagement.Instance.ReqestShakeCamera();
+            //FieldManagement.ReqestShakeCamera();
             Debug.Log("aaa");
         }
         _atkCtrl.IsHit = false;
@@ -184,6 +189,7 @@ namespace Players
         public float FlickTime { private get; set; } = 0;
         public float FlickLimit { private get; set; } = 0;
         public bool IsMove { get; set; } = false;
+        public bool IsPress { get => _isPress; }
 
         public Player Player { private get; set; } = null;
 

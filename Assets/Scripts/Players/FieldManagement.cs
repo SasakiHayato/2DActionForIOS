@@ -8,7 +8,6 @@ public class FieldManagement : MonoBehaviour
     [SerializeField] float _createTime;
     [SerializeField] EnemyData _enemyData;
     [SerializeField] Vector2 _setPos;
-    [SerializeField] GameObject _mainCamera;
     
     float _timer;
 
@@ -22,7 +21,7 @@ public class FieldManagement : MonoBehaviour
 
     void Start()
     {
-        _camera.SetUp(_mainCamera);
+        _camera.SetUp();
         SetUpEnemyContrl();
     }
     
@@ -50,7 +49,7 @@ public class FieldManagement : MonoBehaviour
         _enemyctrl.SetUp(_setPos);
     }
 
-    public void ReqestShakeCamera() => _camera.Shake();
+    public static void ReqestShakeCamera() => Instance._camera.Shake();
 }
 
 class EnemyController
@@ -92,6 +91,7 @@ class EnemyController
 class CameraController
 {
     Camera _camera;
+    Camera _shakeCm;
     CinemachineBrain _brain;
     public CinemachineTargetGroup TargetGroup { get; private set; }
 
@@ -99,15 +99,18 @@ class CameraController
     GameObject _mainCamera;
 
     bool _isShake = false;
+    bool _shakeCmSetUp = false;
 
-    public void SetUp(GameObject cameraObj)
+    public void SetUp()
     {
-        _mainCamera = cameraObj;
+        _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+
         TargetGroup = GameObject.Find("TargetGroup").GetComponent<CinemachineTargetGroup>();
         _player = GameObject.FindGameObjectWithTag("Player");
         TargetGroup.AddMember(_player.transform, 1, 0);
-        _brain = cameraObj.GetComponent<CinemachineBrain>();
-        _camera = cameraObj.GetComponent<Camera>();
+
+        _brain = _mainCamera.GetComponent<CinemachineBrain>();
+        _camera = _mainCamera.GetComponent<Camera>();
     }
 
     public void Mode()
@@ -129,7 +132,22 @@ class CameraController
     public void Shake()
     {
         _isShake = true;
+        if (!_shakeCmSetUp)
+        {
+            _shakeCmSetUp = true;
+            CreateShakeCamera();
+        }
+    }
 
+    void CreateShakeCamera()
+    {
+        GameObject shakeCm = new GameObject("ShekeCamera");
+        _shakeCm = shakeCm.AddComponent<Camera>();
+        Debug.Log($"{_mainCamera} {_camera}");
+        _shakeCm.transform.position = _mainCamera.transform.position;
+        _shakeCm.backgroundColor = _camera.backgroundColor;
+        _shakeCm.orthographic = true;
+        _shakeCm.orthographicSize = _camera.orthographicSize;
     }
 
     void Noarmal()

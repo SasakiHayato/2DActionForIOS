@@ -4,9 +4,19 @@ using UnityEngine;
 
 namespace Players
 {
-    public class NewPlayerAI
+    public class PlayerAI
     {
         public IEnemys NearEnemy { get; private set; } = null;
+        public float Move
+        {
+            get
+            {
+                if (_isSupport) return 1;
+                else return 0;
+            }
+        }
+
+        bool _isSupport = false;
 
         public void SetNiarEnemy(Transform player)
         {
@@ -22,6 +32,11 @@ namespace Players
                     NearEnemy = e;
                 }
             });
+        }
+
+        public void SupportMove()
+        {
+            _isSupport = true;
         }
     }
 }
