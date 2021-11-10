@@ -8,10 +8,20 @@ public abstract class EnemyBase : CharaBase
 
     public int Hp { get; set; }
     public float Speed { get; set; }
+
+    protected bool IsMove { get; private set; } = false;
     
     private void Awake()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
+        StartCoroutine(Wait());
+    }
+
+    IEnumerator Wait()
+    {
+        IsMove = false;
+        yield return new WaitForSeconds(1f);
+        IsMove = true;
     }
 
     public virtual void FindPlayer(Transform thisT)

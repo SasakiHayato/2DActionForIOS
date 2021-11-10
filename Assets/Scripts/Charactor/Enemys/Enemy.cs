@@ -14,6 +14,8 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
     void Update()
     {
         base.FindPlayer(transform);
+        if (!IsMove) return;
+        
         Move();
     }
 

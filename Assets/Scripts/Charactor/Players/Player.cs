@@ -36,8 +36,6 @@ public class Player : CharaBase, IDamageble
         SetUpCtrl();
 
         _animEvent += SetAttackCol;
-        _animEvent += SetHitStop;
-        _animEvent += StateCheck;
     }
 
     void SetUpCtrl()

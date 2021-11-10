@@ -20,5 +20,11 @@ public class AtkCtrlToPlayer : MonoBehaviour
         IsHit = true;
         int add = _damageble.AddDamage();
         damageble.GetDamage(add);
+        Force(collision.gameObject);
+    }
+
+    void Force(GameObject enemy)
+    {
+
     }
 }
