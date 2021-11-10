@@ -36,6 +36,8 @@ public class Player : CharaBase, IDamageble
         SetUpCtrl();
 
         _animEvent += SetAttackCol;
+        _animEvent += SetHitStop;
+        _animEvent += StateCheck;
     }
 
     void SetUpCtrl()
@@ -108,6 +110,7 @@ public class Player : CharaBase, IDamageble
     {
         if (_ai.NearEnemy == null || _ctrl.IsMove) return;
         _animEvent += SetHitStop;
+
         if (dir == Vector2.up)
         {
             _anim.Play("TestPlayer_Attack1");
@@ -129,23 +132,7 @@ public class Player : CharaBase, IDamageble
     {
         IState other = _ai.NearEnemy.GetObj().GetComponent<IState>();
         StateManager.SetState(gameObject, other);
-        //if (Current == State.IsGround && other.Current == State.IsGround)
-        //{
-        //    other.ChangeState(State.IsFloating);
-        //    //AttackSystems.SetEnemy(_ai.NearEnemy.GetObj());
-        //}
-        //else if (Current == State.IsGround && other.Current == State.IsFloating)
-        //{
-        //    ChangeState(State.IsFloating);
-        //    AttackSystems.MoveAttack(gameObject, 2);
-        //}
-        //else if (Current == State.IsFloating && other.Current == State.IsFloating)
-        //{
-        //    ChangeState(State.IsGround);
-        //    AttackSystems.MoveAttack(gameObject, -4);
-        //    AttackSystems.DeleteList();
-        //}
-
+        
         _animEvent -= StateCheck;
     }
 
