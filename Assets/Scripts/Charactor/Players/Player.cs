@@ -19,7 +19,7 @@ public class Player : CharaBase, IDamageble
     Controller _ctrl = new Controller();
     PlayerAI _ai = new PlayerAI();
     
-    AtkCtrlToPlayer _atkCtrl;
+    AttackSetting _atkSetting;
 
     float _flickMove;
 
@@ -30,7 +30,7 @@ public class Player : CharaBase, IDamageble
     {
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
-        _atkCtrl = transform.GetChild(0).GetComponent<AtkCtrlToPlayer>();
+        _atkSetting = GetComponent<AttackSetting>();
         
         SetUpAtkCol();
         SetUpCtrl();
@@ -59,7 +59,7 @@ public class Player : CharaBase, IDamageble
 
         SetDir();
 
-        _ai.SupportMove(transform, _ctrl.IsPress, _ctrl.IsMove);
+        //_ai.SupportMove(transform, _ctrl.IsPress, _ctrl.IsMove);
         _ai.SetNearEnemy(transform);
 
         _ctrl.SetUp();
@@ -107,14 +107,18 @@ public class Player : CharaBase, IDamageble
     public void Attack(Vector2 dir)
     {
         if (_ai.NearEnemy == null || _ctrl.IsMove) return;
-        _animEvent += SetHitStop;
+        //_animEvent += SetHitStop;
 
         if (dir == Vector2.up)
         {
-            _anim.Play("TestPlayer_Attack1");
-            _animEvent += StateCheck;
+            _atkSetting.RequestToAt(AttackSetting.ActionType.Floating);
+            //_animEvent += StateCheck;
         }
-        else _anim.Play("TestPlayer_Attack2");
+        else
+        {
+            _atkSetting.RequestToCombo();
+            //_anim.Play("TestPlayer_Attack2");
+        }
         _ctrl.IsMove = true;
         
         StartCoroutine(EndAnim());
@@ -126,21 +130,21 @@ public class Player : CharaBase, IDamageble
         else _atkCol.enabled = false;
     }
 
-    void StateCheck()
-    {
-        IState other = _ai.NearEnemy.GetObj().GetComponent<IState>();
-        StateManager.SetState(gameObject, other);
+    //void StateCheck()
+    //{
+    //    IState other = _ai.NearEnemy.GetObj().GetComponent<IState>();
+    //    StateManager.SetState(gameObject, other);
         
-        _animEvent -= StateCheck;
-    }
+    //    _animEvent -= StateCheck;
+    //}
 
-    void SetHitStop()
-    {
-        if (_atkCtrl.IsHit) FieldManagement.ReqestShakeCm();
+    //void SetHitStop()
+    //{
+    //    if (_atkCtrl.IsHit) FieldManagement.ReqestShakeCm();
 
-        _atkCtrl.IsHit = false;
-        _animEvent -= SetHitStop;
-    }
+    //    _atkCtrl.IsHit = false;
+    //    _animEvent -= SetHitStop;
+    //}
 
     public int AddDamage() => 1;
     public void GetDamage(int damage)

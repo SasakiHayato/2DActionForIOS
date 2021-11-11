@@ -74,6 +74,7 @@ GameObject:
   - component: {fileID: 6740420884246180365}
   - component: {fileID: 6740420884246180364}
   - component: {fileID: 6740420884246180363}
+  - component: {fileID: 5621373899508025863}
   m_Layer: 0
   m_Name: TestPlayer
   m_TagString: Player
@@ -230,3 +231,29 @@ MonoBehaviour:
   _flickLimit: 3
   _moveDistance: 5
   _moveTime: 0.2
+--- !u!114 &5621373899508025863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6740420884246180362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a8f4dc63ee01f849a6116d0672f8117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _setAction:
+  - ActionAnimName: TestPlayer_Attack1
+    Power: 1
+    Type: 1
+    aa: 0000000000000000
+  - ActionAnimName: 
+    Power: 0
+    Type: 0
+    aa: 
+  - ActionAnimName: 
+    Power: 0
+    Type: 0
+    aa: 
+  _chara: {fileID: 6740420884246180363}

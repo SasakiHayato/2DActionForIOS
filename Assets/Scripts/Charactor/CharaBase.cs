@@ -10,6 +10,8 @@ public enum State
 
 public abstract class CharaBase : MonoBehaviour, IState
 {
+    public int Power { protected get; set; } = 0;
+
     public State Current { get; set; } = State.IsGround;
     public virtual State ChangeState(State get) => Current = get;
 }
