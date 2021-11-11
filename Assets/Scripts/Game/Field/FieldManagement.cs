@@ -8,7 +8,6 @@ public class FieldManagement : MonoBehaviour
 {
     [SerializeField] float _createTime;
     [SerializeField] EnemyData _enemyData;
-    [SerializeField] GameObject _spawnLight;
     [SerializeField] GameObject _player;
 
     // Ç«Ç±Ç©ÇÁÇ≈Ç‡åƒÇ—èoÇπÇÈÇÊÇ§Ç…
@@ -38,7 +37,6 @@ public class FieldManagement : MonoBehaviour
     {
         _enemyctrl.SetUpEnemy = _enemyData;
         _enemyctrl.Group = _camera.TargetGroup;
-        _enemyctrl.SpawnPrefab = _spawnLight;
     }
 
     void Update()

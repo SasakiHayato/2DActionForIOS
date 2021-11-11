@@ -49,14 +49,14 @@ public class EffectSystems : MonoBehaviour
 
     void HitStop()
     {
-        _player._anim.speed = 0.1f;
+        _player.Anim.speed = 0.1f;
         StartCoroutine(WaitTime());
     }
 
     IEnumerator WaitTime()
     {
         yield return new WaitForSeconds(0.3f);
-        _player._anim.speed = 1;
+        _player.Anim.speed = 1;
     }
 
     void KnockBack()

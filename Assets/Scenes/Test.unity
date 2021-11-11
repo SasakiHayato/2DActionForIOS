@@ -875,7 +875,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _createTime: 3
   _enemyData: {fileID: 11400000, guid: 7cac6a97e5e3d2840bcb48d1eb501af7, type: 2}
-  _spawnLight: {fileID: 4942027104899359192, guid: 6324cfc967b13c348a439e3c8836ea9b, type: 3}
   _player: {fileID: 6740420884246180362, guid: 369f4fb9d93a5d34691bb70d0cc06c09, type: 3}
 --- !u!4 &2072615306
 Transform:

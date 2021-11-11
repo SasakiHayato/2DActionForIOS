@@ -10,7 +10,6 @@ namespace Fields
     {
         public EnemyData SetUpEnemy { private get; set; } = null;
         public Cinemachine.CinemachineTargetGroup Group { private get; set; } = null;
-        public GameObject SpawnPrefab { private get; set; } = null;
 
         GameObject _setEnemy = default;
         Enemys.Data _data = null;
@@ -67,7 +66,8 @@ namespace Fields
 
         void Light(Vector2 enemyPos)
         {
-            GameObject light = MonoBehaviour.Instantiate(SpawnPrefab);
+            GameObject spawnPrefab = (GameObject)Resources.Load("SpawnLight");
+            GameObject light = MonoBehaviour.Instantiate(spawnPrefab);
             light.transform.position = enemyPos;
             Fade.OutSingle(light.GetComponent<SpriteRenderer>(), 0.3f);
         }

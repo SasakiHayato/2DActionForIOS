@@ -88,6 +88,8 @@ public class AttackSetting : MonoBehaviour
 
     public void RequestToCombo() => SetDatas(0, _setAction[_GroungDataId]);
     public void RequestToAt(ActionType type) => _setAction.ForEach(d => { if (d.Action == type) SetDatas(1, d);});
+
+    // AnimatorEventÇ≈ÇÃåƒÇ—èoÇµ
     public void RequestAnimEvent()
     {
         _animEvent.Invoke();
@@ -108,14 +110,14 @@ public class AttackSetting : MonoBehaviour
         {
             case ActionType.Ground:
                 ComboSetting();
-                _chara.AttackMove(data.Action, _combo);
                 _chara.Power = data.Power;
                 _effectSetting.Set(ref _animEvent, data.Effect);
                 _anim.Play(data.ActionAnimName);
                 break;
 
             case ActionType.Floating:
-                _chara.AttackMove(data.Action);
+                ComboSetting();
+                _chara.AttackMove(data.Action, _combo);
                 _chara.Power = data.Power;
                 _effectSetting.Set(ref _animEvent, data.Effect);
                 _anim.Play(data.ActionAnimName);
@@ -128,7 +130,7 @@ public class AttackSetting : MonoBehaviour
 
     void ComboSetting()
     {
-        for (int setCount = _GroungDataId; setCount < _setAction.Count; setCount++)
+        for (int setCount = _GroungDataId + 1; setCount < _setAction.Count; setCount++)
         {
             if (_setAction[setCount].Action == ActionType.Ground)
             {

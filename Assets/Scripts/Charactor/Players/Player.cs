@@ -14,7 +14,7 @@ public class Player : CharaBase, IDamageble
     CircleCollider2D _atkCol;
 
     Rigidbody2D _rb;
-    public Animator _anim { get; set; }
+    public Animator Anim { get; private set; }
 
     Controller _ctrl = new Controller();
     PlayerAI _ai = new PlayerAI();
@@ -26,7 +26,7 @@ public class Player : CharaBase, IDamageble
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _anim = GetComponent<Animator>();
+        Anim = GetComponent<Animator>();
         _atkSetting = GetComponent<AttackSetting>();
         
         SetUpAtkCol();
@@ -49,8 +49,8 @@ public class Player : CharaBase, IDamageble
     {
         float setX = _flickMove + _ai.Move;
 
-        if (!_ctrl.IsMove && setX == 0) _anim.Play("TestPlayer_Idle");
-        else if (setX != 0 && !_ctrl.IsMove) _anim.Play("TestPlayer_Run");
+        //if (!_ctrl.IsMove && setX == 0) Anim.Play("TestPlayer_Idle");
+        //else if (setX != 0 && !_ctrl.IsMove) Anim.Play("TestPlayer_Run");
 
         SetDir();
 
@@ -82,7 +82,7 @@ public class Player : CharaBase, IDamageble
     IEnumerator GoMove(float dirX, float speed)
     {
         _flickMove = dirX * speed;
-        CheckDir(dirX);
+        //CheckDir(dirX);
 
         yield return new WaitForSeconds(_moveTime);
         _flickMove = 0;
@@ -93,7 +93,18 @@ public class Player : CharaBase, IDamageble
     {
         if (type == AttackSetting.ActionType.Floating)
         {
-
+            switch (combo)
+            {
+                case 0:
+                    Debug.Log("a");
+                    break;
+                case 1:
+                    Debug.Log("b");
+                    break;
+                case 2:
+                    Debug.Log("c");
+                    break;
+            }
         }
     }
 
@@ -101,10 +112,10 @@ public class Player : CharaBase, IDamageble
     {
         // Front
         if (transform.localScale.x == 1 && dir == 1 || transform.localScale.x == -1 && dir == 1)
-            _anim.Play("TestPlayer_Run");
+            Anim.Play("TestPlayer_Run");
         // Back
         else if (transform.localScale.x == 1 && dir == -1 || transform.localScale.x == -1 && dir == -1)
-            _anim.Play("TestPlayer_Run");
+            Anim.Play("TestPlayer_Run");
     }
 
     public void Attack(Vector2 dir)
@@ -130,7 +141,7 @@ public class Player : CharaBase, IDamageble
         bool check = false;
         while (!check)
         {
-            AnimatorStateInfo info = _anim.GetCurrentAnimatorStateInfo(0);
+            AnimatorStateInfo info = Anim.GetCurrentAnimatorStateInfo(0);
             if (info.normalizedTime > 1) check = true;
             yield return null;
         }
