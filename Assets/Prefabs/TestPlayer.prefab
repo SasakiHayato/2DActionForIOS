@@ -60,6 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aa5c548b41444148b56b9af2eb61816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 6740420884246180362}
 --- !u!1 &6740420884246180362
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,14 +247,10 @@ MonoBehaviour:
   _setAction:
   - ActionAnimName: TestPlayer_Attack1
     Power: 1
-    Type: 1
-    aa: 0000000000000000
-  - ActionAnimName: 
-    Power: 0
-    Type: 0
-    aa: 
-  - ActionAnimName: 
-    Power: 0
-    Type: 0
-    aa: 
+    Action: 1
+    Effect: 
+  - ActionAnimName: TestPlayer_Attack2
+    Power: 1
+    Action: 0
+    Effect: 0000000002000000
   _chara: {fileID: 6740420884246180363}

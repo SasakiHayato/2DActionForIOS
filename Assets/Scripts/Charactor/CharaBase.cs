@@ -14,4 +14,6 @@ public abstract class CharaBase : MonoBehaviour, IState
 
     public State Current { get; set; } = State.IsGround;
     public virtual State ChangeState(State get) => Current = get;
+
+    public abstract void AttackMove(AttackSetting.ActionType type, int combo = 0);
 }

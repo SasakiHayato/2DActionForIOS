@@ -38,6 +38,11 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
        
     }
 
+    public override void AttackMove(AttackSetting.ActionType type, int combo = 0)
+    {
+        Debug.Log(combo);
+    }
+
     public int AddDamage() => 1;
     public void GetDamage(int damage)
     {

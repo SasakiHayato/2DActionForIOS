@@ -23,9 +23,6 @@ public class Player : CharaBase, IDamageble
 
     float _flickMove;
 
-    delegate void SetAnimEvent();
-    SetAnimEvent _animEvent;
-
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -34,8 +31,6 @@ public class Player : CharaBase, IDamageble
         
         SetUpAtkCol();
         SetUpCtrl();
-
-        _animEvent += SetAttackCol;
     }
 
     void SetUpCtrl()
@@ -88,10 +83,18 @@ public class Player : CharaBase, IDamageble
     {
         _flickMove = dirX * speed;
         CheckDir(dirX);
-        
+
         yield return new WaitForSeconds(_moveTime);
         _flickMove = 0;
         _ctrl.IsMove = false;
+    }
+
+    public override void AttackMove(AttackSetting.ActionType type, int combo = 0)
+    {
+        if (type == AttackSetting.ActionType.Floating)
+        {
+
+        }
     }
 
     void CheckDir(float dir)
@@ -107,46 +110,16 @@ public class Player : CharaBase, IDamageble
     public void Attack(Vector2 dir)
     {
         if (_ai.NearEnemy == null || _ctrl.IsMove) return;
-        //_animEvent += SetHitStop;
 
-        if (dir == Vector2.up)
-        {
-            _atkSetting.RequestToAt(AttackSetting.ActionType.Floating);
-            //_animEvent += StateCheck;
-        }
-        else
-        {
-            _atkSetting.RequestToCombo();
-            //_anim.Play("TestPlayer_Attack2");
-        }
+        if (dir != Vector2.up) _atkSetting.RequestToCombo();
+        else _atkSetting.RequestToAt(AttackSetting.ActionType.Floating);
+        
         _ctrl.IsMove = true;
         
         StartCoroutine(EndAnim());
     }
 
-    void SetAttackCol()
-    {
-        if (!_atkCol.enabled) _atkCol.enabled = true;
-        else _atkCol.enabled = false;
-    }
-
-    //void StateCheck()
-    //{
-    //    IState other = _ai.NearEnemy.GetObj().GetComponent<IState>();
-    //    StateManager.SetState(gameObject, other);
-        
-    //    _animEvent -= StateCheck;
-    //}
-
-    //void SetHitStop()
-    //{
-    //    if (_atkCtrl.IsHit) FieldManagement.ReqestShakeCm();
-
-    //    _atkCtrl.IsHit = false;
-    //    _animEvent -= SetHitStop;
-    //}
-
-    public int AddDamage() => 1;
+    public int AddDamage() => Power;
     public void GetDamage(int damage)
     {
 
@@ -165,8 +138,13 @@ public class Player : CharaBase, IDamageble
         _ctrl.IsMove = false;
     }
 
-    // AnimetionEvent‚Å‚ÌŒÄ‚Ño‚µ
-    public void RequestAnimEvent() => _animEvent.Invoke();
+    public IEnemys RequestIEnemy() => _ai.NearEnemy;
+    // AnimEvent‚ÅŒÄ‚Ñ‚¾‚µ
+    public void SetAttackCol()
+    {
+        if (!_atkCol.enabled) _atkCol.enabled = true;
+        else _atkCol.enabled = false;
+    }
 }
 
 namespace Players
