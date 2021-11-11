@@ -14,7 +14,7 @@ public class Player : CharaBase, IDamageble
     CircleCollider2D _atkCol;
 
     Rigidbody2D _rb;
-    Animator _anim;
+    public Animator _anim { get; set; }
 
     Controller _ctrl = new Controller();
     PlayerAI _ai = new PlayerAI();
