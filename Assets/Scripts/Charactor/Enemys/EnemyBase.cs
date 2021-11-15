@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public abstract class EnemyBase : CharaBase
 {
     GameObject _player;
+    protected Rigidbody2D RB { get; private set; }
 
     public int Hp { get; set; }
     public float Speed { get; set; }
@@ -14,6 +16,7 @@ public abstract class EnemyBase : CharaBase
     private void Awake()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
+        RB = GetComponent<Rigidbody2D>();
         StartCoroutine(Wait());
     }
 
@@ -44,4 +47,6 @@ public abstract class EnemyBase : CharaBase
     }
     public abstract void Move();
     public abstract void Attack();
+
+    public virtual void Force(Vector2 force, float power) => RB.AddForce(force * power, ForceMode2D.Impulse);
 }

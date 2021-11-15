@@ -31,6 +31,7 @@ public class AttackSetting : MonoBehaviour
         [SerializeField] public int Power;
         [SerializeField] public ActionType Action;
         [SerializeField] public EffectType[] Effect;
+        [SerializeField] public bool CallBackAttack;
     }
 
     class EffectSetting
@@ -68,9 +69,14 @@ public class AttackSetting : MonoBehaviour
 
     int _saveActionId = int.MaxValue;
     int _combo = 0;
-    int _GroungDataId;
+    int _groungDataId;
     int _setUpGroundData;
-    int _comboLength;
+
+    int _floatDataId;
+    int _setUpFloatDataId;
+
+    int _comboLengthGround;
+    int _comboLengthFloat;
 
     private void Awake()
     {
@@ -78,16 +84,26 @@ public class AttackSetting : MonoBehaviour
         {
             if (_setAction[setCount].Action == ActionType.Ground)
             {
-                _GroungDataId = setCount;
+                _groungDataId = setCount;
                 _setUpGroundData = setCount;
                 break;
             }
         }
-        _setAction.ForEach(a => { if (a.Action == ActionType.Ground) _comboLength++; });
+        for (int setCount = 0; setCount < _setAction.Count; setCount++)
+        {
+            if (_setAction[setCount].Action == ActionType.Floating)
+            {
+                _floatDataId = setCount;
+                _setUpFloatDataId = setCount;
+                break;
+            }
+        }
+        _setAction.ForEach(a => { if (a.Action == ActionType.Ground) _comboLengthGround++; });
+        _setAction.ForEach(a => { if (a.Action == ActionType.Floating) _comboLengthFloat++; });
     }
 
-    public void RequestToCombo() => SetDatas(0, _setAction[_GroungDataId]);
-    public void RequestToAt(ActionType type) => _setAction.ForEach(d => { if (d.Action == type) SetDatas(1, d);});
+    public void RequestToGround() => SetDatas(0, _setAction[_groungDataId]);
+    public void RequestToFloating() => SetDatas(1, _setAction[_floatDataId]);
 
     // AnimatorEvent‚Å‚ÌŒÄ‚Ño‚µ
     public void RequestAnimEvent()
@@ -109,40 +125,63 @@ public class AttackSetting : MonoBehaviour
         switch (data.Action)
         {
             case ActionType.Ground:
-                ComboSetting();
+                ComboSettingToGround();
                 _chara.Power = data.Power;
                 _effectSetting.Set(ref _animEvent, data.Effect);
                 _anim.Play(data.ActionAnimName);
                 break;
 
             case ActionType.Floating:
-                ComboSetting();
-                _chara.AttackMove(data.Action, _combo);
+                ComboSettingToFloating();
+                if (data.CallBackAttack) _animEvent += CallBack;
+                else _chara.AttackMove(_combo);
+                
                 _chara.Power = data.Power;
                 _effectSetting.Set(ref _animEvent, data.Effect);
                 _anim.Play(data.ActionAnimName);
                 break;
-
-            default:
-                break;
         }
     }
 
-    void ComboSetting()
+    void CallBack() => _chara.AttackMove(_combo);
+
+    void ComboSettingToGround()
     {
-        for (int setCount = _GroungDataId + 1; setCount < _setAction.Count; setCount++)
+        for (int setCount = _groungDataId + 1; setCount < _setAction.Count; setCount++)
         {
             if (_setAction[setCount].Action == ActionType.Ground)
             {
-                _GroungDataId = setCount;
+                _groungDataId = setCount;
                 break;
             }
         }
         
         _combo++;
-        if (_combo >= _comboLength)
+        if (_combo >= _comboLengthGround)
         {
-            _GroungDataId = _setUpGroundData;
+            _groungDataId = _setUpGroundData;
+            _combo = 0;
+        }
+    }
+
+    void ComboSettingToFloating()
+    {
+        Debug.Log(_floatDataId);
+        for (int setCount = _floatDataId + 1; setCount < _setAction.Count; setCount++)
+        {
+            if (_setAction[setCount].Action == ActionType.Floating)
+            {
+                Debug.Log(setCount);
+                _floatDataId = setCount;
+                break;
+            }
+        }
+        
+        _combo++;
+        
+        if (_combo >= _comboLengthFloat)
+        {
+            _floatDataId = _setUpFloatDataId;
             _combo = 0;
         }
     }

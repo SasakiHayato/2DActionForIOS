@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class Enemy : EnemyBase, IEnemys, IDamageble
 {
-    Rigidbody2D _rb;
-    
-    void Start()
-    {
-        _rb = GetComponent<Rigidbody2D>();
-    }
-
     void Update()
     {
         base.FindPlayer(transform);
@@ -23,13 +16,13 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
     {
         if (Current == State.IsGround)
         {
-            _rb.gravityScale = 1;
-            _rb.velocity = new Vector2(Speed, _rb.velocity.y);
+            RB.gravityScale = 1;
+            RB.velocity = new Vector2(Speed, RB.velocity.y);
         }
         else if (Current == State.IsFloating)
         {
-            _rb.gravityScale = 0;
-            _rb.velocity = Vector2.zero;
+            RB.velocity = new Vector2(0, RB.velocity.y);
+            if (RB.velocity.y < 0) RB.gravityScale = 0;
         }
     }
 
@@ -38,7 +31,7 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
        
     }
 
-    public override void AttackMove(AttackSetting.ActionType type, int combo = 0)
+    public override void AttackMove(int combo = 0)
     {
         Debug.Log(combo);
     }

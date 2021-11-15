@@ -53,8 +53,6 @@ public class Player : CharaBase, IDamageble
         //else if (setX != 0 && !_ctrl.IsMove) Anim.Play("TestPlayer_Run");
 
         SetDir();
-
-        //_ai.SupportMove(transform, _ctrl.IsPress, _ctrl.IsMove);
         _ai.SetNearEnemy(transform);
 
         _ctrl.SetUp();
@@ -82,29 +80,32 @@ public class Player : CharaBase, IDamageble
     IEnumerator GoMove(float dirX, float speed)
     {
         _flickMove = dirX * speed;
-        //CheckDir(dirX);
+        CheckDir(dirX);
 
         yield return new WaitForSeconds(_moveTime);
         _flickMove = 0;
         _ctrl.IsMove = false;
     }
 
-    public override void AttackMove(AttackSetting.ActionType type, int combo = 0)
+    public override void AttackMove(int combo)
     {
-        if (type == AttackSetting.ActionType.Floating)
+        switch (combo)
         {
-            switch (combo)
-            {
-                case 0:
-                    Debug.Log("a");
-                    break;
-                case 1:
-                    Debug.Log("b");
-                    break;
-                case 2:
-                    Debug.Log("c");
-                    break;
-            }
+            case 1:
+                Debug.Log("a");
+                ChangeState(State.IsFloating);
+                GameObject enemy = _ai.NearEnemy.GetObj();
+                enemy.GetComponent<IState>().ChangeState(State.IsFloating);
+                enemy.GetComponent<EnemyBase>().Force(new Vector2(0, 2.5f), 5);
+                break;
+            case 2:
+                Debug.Log("b");
+
+                break;
+            case 3:
+                Debug.Log("c");
+                ChangeState(State.IsGround);
+                break;
         }
     }
 
@@ -122,8 +123,8 @@ public class Player : CharaBase, IDamageble
     {
         if (_ai.NearEnemy == null || _ctrl.IsMove) return;
 
-        if (dir != Vector2.up) _atkSetting.RequestToCombo();
-        else _atkSetting.RequestToAt(AttackSetting.ActionType.Floating);
+        if (dir == Vector2.up || Current == State.IsFloating) _atkSetting.RequestToFloating();
+        else _atkSetting.RequestToGround();
         
         _ctrl.IsMove = true;
         

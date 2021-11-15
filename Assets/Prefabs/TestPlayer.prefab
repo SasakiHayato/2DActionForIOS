@@ -246,23 +246,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _setAction:
   - ActionAnimName: TestPlayer_Attack1
-    Power: 1
+    Power: 0
     Action: 1
     Effect: 0100000002000000
+    CallBackAttack: 1
   - ActionAnimName: TestPlayer_Attack2
     Power: 1
     Action: 1
     Effect: 0000000002000000
+    CallBackAttack: 0
   - ActionAnimName: TestPlayer_Attack1
     Power: 1
     Action: 1
     Effect: 000000000200000001000000
+    CallBackAttack: 0
   - ActionAnimName: TestPlayer_Attack2
     Power: 1
     Action: 0
     Effect: 000000000200000003000000
+    CallBackAttack: 0
   - ActionAnimName: TestPlayer_Attack1
     Power: 1
     Action: 0
     Effect: 00000000020000000300000001000000
+    CallBackAttack: 0
   _chara: {fileID: 6740420884246180363}
