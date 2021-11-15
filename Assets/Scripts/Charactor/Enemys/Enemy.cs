@@ -14,19 +14,20 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
 
     public override void Move()
     {
-        if (Current == State.IsGround)
+        switch (Current)
         {
-            RB.gravityScale = 1;
-            RB.velocity = new Vector2(Speed, RB.velocity.y);
-        }
-        else if (Current == State.IsFloating)
-        {
-            RB.velocity = new Vector2(0, RB.velocity.y);
-            if (RB.velocity.y <= 0) RB.gravityScale = 0;
-        }
-        else if (Current == State.Impact)
-        {
-            Debug.Log("Impact");
+            case State.IsGround:
+                RB.gravityScale = 1;
+                RB.velocity = new Vector2(Speed, RB.velocity.y);
+                break;
+            case State.IsFloating:
+                RB.velocity = new Vector2(0, RB.velocity.y);
+                if (RB.velocity.y <= 0) RB.gravityScale = 0;
+                break;
+            case State.Impact:
+                RB.gravityScale = 1;
+                Debug.Log("Impact");
+                break;
         }
     }
 

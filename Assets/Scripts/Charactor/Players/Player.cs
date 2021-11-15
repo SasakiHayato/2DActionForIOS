@@ -101,9 +101,12 @@ public class Player : CharaBase, IDamageble
                 break;
             case 3:
                 _rb.gravityScale = 1;
-                _rockOnEnemy.GetComponent<EnemyBase>().Force(_ctrl.ForceVec, 10);
+                Vector2 set = _rockOnEnemy.transform.position;
+                transform.position = new Vector2(set.x, set.y + 1);
+                _rockOnEnemy.GetComponent<EnemyBase>().Force(_ctrl.ForceVec, 30);
                 _rockOnEnemy.GetComponent<IState>().ChangeState(State.Impact);
                 _rockOnEnemy = null;
+                _ctrl.ForceVec = Vector2.zero;
                 ChangeState(State.IsGround);
                 break;
         }
@@ -165,7 +168,7 @@ namespace Players
         public bool IsMove { get; set; } = false;
         public bool IsPress { get => _isPress; }
 
-        public Vector2 ForceVec { get; private set; } = Vector2.zero;
+        public Vector2 ForceVec { get; set; } = Vector2.zero;
 
         public Player Player { private get; set; } = null;
 
@@ -215,7 +218,6 @@ namespace Players
 
                 _isPress = false;
                 _time = 0;
-                ForceVec = Vector2.zero;
             }
         }
     }
