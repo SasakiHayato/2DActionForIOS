@@ -259,7 +259,7 @@ MonoBehaviour:
     Power: 1
     Action: 1
     Effect: 000000000200000001000000
-    CallBackAttack: 0
+    CallBackAttack: 1
   - ActionAnimName: TestPlayer_Attack2
     Power: 1
     Action: 0

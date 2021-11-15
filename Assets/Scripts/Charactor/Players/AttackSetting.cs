@@ -166,20 +166,17 @@ public class AttackSetting : MonoBehaviour
 
     void ComboSettingToFloating()
     {
-        Debug.Log(_floatDataId);
         for (int setCount = _floatDataId + 1; setCount < _setAction.Count; setCount++)
         {
             if (_setAction[setCount].Action == ActionType.Floating)
             {
-                Debug.Log(setCount);
                 _floatDataId = setCount;
                 break;
             }
         }
-        
         _combo++;
         
-        if (_combo >= _comboLengthFloat)
+        if (_combo > _comboLengthFloat)
         {
             _floatDataId = _setUpFloatDataId;
             _combo = 0;

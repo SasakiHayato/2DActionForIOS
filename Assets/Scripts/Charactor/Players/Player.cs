@@ -20,6 +20,7 @@ public class Player : CharaBase, IDamageble
     PlayerAI _ai = new PlayerAI();
     
     AttackSetting _atkSetting;
+    GameObject _rockOnEnemy;
 
     float _flickMove;
 
@@ -47,17 +48,12 @@ public class Player : CharaBase, IDamageble
 
     void Update()
     {
-        float setX = _flickMove + _ai.Move;
-
-        //if (!_ctrl.IsMove && setX == 0) Anim.Play("TestPlayer_Idle");
-        //else if (setX != 0 && !_ctrl.IsMove) Anim.Play("TestPlayer_Run");
-
         SetDir();
         _ai.SetNearEnemy(transform);
 
-        _ctrl.SetUp();
+        _ctrl.Update();
         
-        _rb.velocity = new Vector2(setX, _rb.velocity.y);
+        _rb.velocity = new Vector2(_flickMove, _rb.velocity.y);
     }
 
     void SetDir()
@@ -80,7 +76,6 @@ public class Player : CharaBase, IDamageble
     IEnumerator GoMove(float dirX, float speed)
     {
         _flickMove = dirX * speed;
-        CheckDir(dirX);
 
         yield return new WaitForSeconds(_moveTime);
         _flickMove = 0;
@@ -92,38 +87,33 @@ public class Player : CharaBase, IDamageble
         switch (combo)
         {
             case 1:
-                Debug.Log("a");
                 ChangeState(State.IsFloating);
                 GameObject enemy = _ai.NearEnemy.GetObj();
                 enemy.GetComponent<IState>().ChangeState(State.IsFloating);
                 enemy.GetComponent<EnemyBase>().Force(new Vector2(0, 2.5f), 5);
+                _rockOnEnemy = enemy;
                 break;
             case 2:
-                Debug.Log("b");
-
+                _rb.gravityScale = 0;
+                Vector2 setVec = _rockOnEnemy.transform.position;
+                transform.position = new Vector2(setVec.x, setVec.y + 1);
+                _rb.velocity = Vector2.zero;
                 break;
             case 3:
-                Debug.Log("c");
+                _rb.gravityScale = 1;
+                _rockOnEnemy.GetComponent<EnemyBase>().Force(_ctrl.ForceVec, 10);
+                _rockOnEnemy.GetComponent<IState>().ChangeState(State.Impact);
+                _rockOnEnemy = null;
                 ChangeState(State.IsGround);
                 break;
         }
-    }
-
-    void CheckDir(float dir)
-    {
-        // Front
-        if (transform.localScale.x == 1 && dir == 1 || transform.localScale.x == -1 && dir == 1)
-            Anim.Play("TestPlayer_Run");
-        // Back
-        else if (transform.localScale.x == 1 && dir == -1 || transform.localScale.x == -1 && dir == -1)
-            Anim.Play("TestPlayer_Run");
     }
 
     public void Attack(Vector2 dir)
     {
         if (_ai.NearEnemy == null || _ctrl.IsMove) return;
 
-        if (dir == Vector2.up || Current == State.IsFloating) _atkSetting.RequestToFloating();
+        if (dir != Vector2.up || Current == State.IsFloating) _atkSetting.RequestToFloating();
         else _atkSetting.RequestToGround();
         
         _ctrl.IsMove = true;
@@ -175,9 +165,11 @@ namespace Players
         public bool IsMove { get; set; } = false;
         public bool IsPress { get => _isPress; }
 
+        public Vector2 ForceVec { get; private set; } = Vector2.zero;
+
         public Player Player { private get; set; } = null;
 
-        public void SetUp()
+        public void Update()
         {
             Pressed();
             Pressing();
@@ -206,19 +198,24 @@ namespace Players
         {
             if (Input.GetMouseButtonUp(0))
             {
-                float diffX = _setUpPos.x - _currentPos.x;
-                float diffY = _setUpPos.y - _currentPos.y;
-
                 if (_time < FlickTime)
                 {
+                    Vector2 diffVec = _currentPos - _setUpPos;
+                    float rad = Mathf.Atan2(diffVec.y, diffVec.x);
+                    ForceVec = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
+                    
+                    Player.Attack(ForceVec); 
+                }
+                else
+                {
+                    float diffX = _setUpPos.x - _currentPos.x;
                     if (diffX < FlickLimit * -1) Player.Move(Vector2.right);
                     else if (diffX > FlickLimit) Player.Move(Vector2.right * -1);
-                    else if (diffY * -1 > FlickLimit) Player.Attack(Vector2.up);
-                    else Player.Attack(Vector2.zero);
                 }
 
                 _isPress = false;
                 _time = 0;
+                ForceVec = Vector2.zero;
             }
         }
     }

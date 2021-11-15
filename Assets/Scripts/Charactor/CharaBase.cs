@@ -6,6 +6,7 @@ public enum State
 {
     IsGround,
     IsFloating,
+    Impact,
 }
 
 public abstract class CharaBase : MonoBehaviour, IState

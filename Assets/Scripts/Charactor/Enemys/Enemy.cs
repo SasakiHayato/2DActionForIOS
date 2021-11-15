@@ -22,7 +22,11 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
         else if (Current == State.IsFloating)
         {
             RB.velocity = new Vector2(0, RB.velocity.y);
-            if (RB.velocity.y < 0) RB.gravityScale = 0;
+            if (RB.velocity.y <= 0) RB.gravityScale = 0;
+        }
+        else if (Current == State.Impact)
+        {
+            Debug.Log("Impact");
         }
     }
 
@@ -39,7 +43,7 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
     public int AddDamage() => 1;
     public void GetDamage(int damage)
     {
-        Debug.Log($"É_ÉÅÅ[ÉW : {damage} {gameObject.name}");
+        
     }
 
     public bool IsRockOn { get; set; }
