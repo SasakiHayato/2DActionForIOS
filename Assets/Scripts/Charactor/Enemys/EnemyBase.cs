@@ -47,6 +47,7 @@ public abstract class EnemyBase : CharaBase
     public virtual void Deid(GameObject target)
     {
         FieldManagement.EnemysList.Remove(target.GetComponent<IEnemys>());
+        FieldManagement.FieldCharas.Remove(target);
         Player player = FindObjectOfType<Player>();
         player.SetIEnemy();
         Destroy(target);
