@@ -99,7 +99,8 @@ public class Player : CharaBase, IDamageble
                 _rb.velocity = Vector2.zero;
                 break;
             case 3:
-                _rb.gravityScale = 1;
+                _rb.gravityScale = 3;
+                if (_rockOnEnemy == null) return;
                 Vector2 set = _rockOnEnemy.transform.position;
                 transform.position = new Vector2(set.x, set.y + 1);
                 _rockOnEnemy.GetComponent<EnemyBase>().Force(_ctrl.ForceVec, 30);
@@ -114,9 +115,17 @@ public class Player : CharaBase, IDamageble
     public void Attack(Vector2 dir)
     {
         if (_ctrl.NearEnemy == null || _ctrl.IsMove) return;
+        if (Current == State.IsGround)
+        {
+            float dis = Vector2.Distance
+                (transform.position, _ctrl.NearEnemy.GetObj().transform.position);
+            
+            if (dis > 5) return;
+        }
+
         if (dir != Vector2.zero || Current == State.IsFloating) _atkSetting.RequestToFloating();
         else _atkSetting.RequestToGround();
-        
+
         _ctrl.IsMove = true;
         
         StartCoroutine(EndAnim());

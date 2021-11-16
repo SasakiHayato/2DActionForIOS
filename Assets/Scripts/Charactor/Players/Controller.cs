@@ -59,7 +59,7 @@ namespace Players
 
                 if (_time < FlickTime)
                 {
-                    if (Mathf.Abs(diffX) > FlickLimit && Mathf.Abs(diffY) > FlickLimit)
+                    if (Mathf.Abs(diffX) >= FlickLimit && Mathf.Abs(diffY) >= FlickLimit)
                     {
                         Vector2 diffVec = _currentPos - _setUpPos;
                         float rad = Mathf.Atan2(diffVec.y, diffVec.x);

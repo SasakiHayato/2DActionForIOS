@@ -6,7 +6,9 @@ public enum State
 {
     IsGround,
     IsFloating,
+    // Enemy
     Impact,
+    Deid,
 }
 
 [RequireComponent(typeof(Rigidbody2D))]

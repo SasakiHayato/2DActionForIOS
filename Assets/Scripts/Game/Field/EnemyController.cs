@@ -54,7 +54,7 @@ namespace Fields
             int[] setPosX = { _setXval * -1, _setXval };
             int randomX = Random.Range(0, setPosX.Length);
             
-            Light(Enemy(new Vector2(playerPos.x + setPosX[randomX], playerPos.y)));
+            Light(Enemy(new Vector2(playerPos.x + setPosX[randomX], -2)));
         }
 
         Vector2 Enemy(Vector2 setPos)

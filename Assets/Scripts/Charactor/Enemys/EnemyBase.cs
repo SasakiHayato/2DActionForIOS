@@ -58,6 +58,8 @@ public abstract class EnemyBase : CharaBase
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject get = collision.gameObject;
+        CharaBase chara = get.GetComponent<CharaBase>();
+        
         if (get.CompareTag("Ground") || get.CompareTag("Enemy")) ChangeState(State.IsGround);
     }
 }

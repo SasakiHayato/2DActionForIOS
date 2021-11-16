@@ -45,9 +45,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 2.82, y: 0}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.92
+  m_Radius: 4
 --- !u!114 &6740420882739890672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,8 +228,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4ce9cb8bd34b6e4b8c1ccd603a88efd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flickTime: 0.15
-  _flickLimit: 3
+  _flickTime: 0.2
+  _flickLimit: 2
   _moveDistance: 5
   _moveTime: 0.2
 --- !u!114 &5621373899508025863
@@ -250,24 +250,29 @@ MonoBehaviour:
     Action: 1
     Effect: 0100000002000000
     CallBackAttack: 1
+    ImputTime: 2
   - ActionAnimName: TestPlayer_Attack2
     Power: 1
     Action: 1
     Effect: 0000000002000000
     CallBackAttack: 0
+    ImputTime: 3
   - ActionAnimName: TestPlayer_Attack1
     Power: 1
     Action: 1
     Effect: 000000000200000001000000
     CallBackAttack: 1
+    ImputTime: 3
   - ActionAnimName: TestPlayer_Attack2
     Power: 1
     Action: 0
     Effect: 000000000200000003000000
     CallBackAttack: 0
+    ImputTime: 2
   - ActionAnimName: TestPlayer_Attack1
     Power: 1
     Action: 0
     Effect: 00000000020000000300000001000000
     CallBackAttack: 0
+    ImputTime: 2
   _chara: {fileID: 6740420884246180363}

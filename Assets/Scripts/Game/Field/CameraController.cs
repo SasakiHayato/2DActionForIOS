@@ -61,7 +61,7 @@ namespace Fields
 
         void Zoom(float distance)
         {
-            float z = Mathf.Lerp(10, 20, distance / 10);
+            float z = Mathf.Lerp(10, 16, distance / 10);
             _cm.orthographicSize = z;
         }
 

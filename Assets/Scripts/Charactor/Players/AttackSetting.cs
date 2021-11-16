@@ -32,6 +32,7 @@ public class AttackSetting : MonoBehaviour
         [SerializeField] public ActionType Action;
         [SerializeField] public EffectType[] Effect;
         [SerializeField] public bool CallBackAttack;
+        [SerializeField] public float ImputTime;
     }
 
     class EffectSetting
@@ -102,6 +103,21 @@ public class AttackSetting : MonoBehaviour
         _setAction.ForEach(a => { if (a.Action == ActionType.Floating) _comboLengthFloat++; });
     }
 
+    float _time;
+    float _resetCombTime = float.MaxValue;
+
+    void Update()
+    {
+        _time += Time.deltaTime;
+        if (_time >= _resetCombTime)
+        {
+            _groungDataId = _setUpGroundData;
+            _floatDataId = _setUpFloatDataId;
+            _combo = 0;
+            _time = 0;
+        }
+    }
+
     public void RequestToGround() => SetDatas(0, _setAction[_groungDataId]);
     public void RequestToFloating() => SetDatas(1, _setAction[_floatDataId]);
 
@@ -115,6 +131,8 @@ public class AttackSetting : MonoBehaviour
     void SetDatas(int requestId, Data data)
     {
         if (_anim == null) _anim = GetComponent<Animator>();
+        _time = 0;
+        _resetCombTime = data.ImputTime;
 
         if (_saveActionId != requestId)
         {
