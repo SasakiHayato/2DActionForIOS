@@ -17,7 +17,6 @@ public class Player : CharaBase, IDamageble
     public Animator Anim { get; private set; }
 
     Controller _ctrl = new Controller();
-    PlayerAI _ai = new PlayerAI();
     
     AttackSetting _atkSetting;
     GameObject _rockOnEnemy;
@@ -49,8 +48,7 @@ public class Player : CharaBase, IDamageble
     void Update()
     {
         SetDir();
-        _ai.SetNearEnemy(transform);
-
+        _ctrl.SetNearEnemy(transform);
         _ctrl.Update();
         
         _rb.velocity = new Vector2(_flickMove, _rb.velocity.y);
@@ -58,8 +56,9 @@ public class Player : CharaBase, IDamageble
 
     void SetDir()
     {
-        if (_ai.NearEnemy == null) return;
-        float dir = transform.position.x - _ai.NearEnemy.GetObj().transform.position.x;
+        if (_ctrl.NearEnemy == null) return;
+        
+        float dir = transform.position.x - _ctrl.NearEnemy.GetObj().transform.position.x;
 
         if (dir < 0) transform.localScale = Vector2.one;
         else transform.localScale = new Vector2(-1, 1);
@@ -88,7 +87,7 @@ public class Player : CharaBase, IDamageble
         {
             case 1:
                 ChangeState(State.IsFloating);
-                GameObject enemy = _ai.NearEnemy.GetObj();
+                GameObject enemy = _ctrl.NearEnemy.GetObj();
                 enemy.GetComponent<IState>().ChangeState(State.IsFloating);
                 enemy.GetComponent<EnemyBase>().Force(new Vector2(0, 2.5f), 5);
                 _rockOnEnemy = enemy;
@@ -114,9 +113,8 @@ public class Player : CharaBase, IDamageble
 
     public void Attack(Vector2 dir)
     {
-        if (_ai.NearEnemy == null || _ctrl.IsMove) return;
-
-        if (dir != Vector2.up || Current == State.IsFloating) _atkSetting.RequestToFloating();
+        if (_ctrl.NearEnemy == null || _ctrl.IsMove) return;
+        if (dir != Vector2.zero || Current == State.IsFloating) _atkSetting.RequestToFloating();
         else _atkSetting.RequestToGround();
         
         _ctrl.IsMove = true;
@@ -143,7 +141,8 @@ public class Player : CharaBase, IDamageble
         _ctrl.IsMove = false;
     }
 
-    public IEnemys RequestIEnemy() => _ai.NearEnemy;
+    public IEnemys RequestIEnemy() => _ctrl.NearEnemy;
+    public void SetIEnemy() => _ctrl.NearEnemy = null;
     // AnimEvent‚ÅŒÄ‚Ñ‚¾‚µ
     public void SetAttackCol()
     {
@@ -156,6 +155,8 @@ namespace Players
 {
     public class Controller
     {
+        public IEnemys NearEnemy { get; set; } = null;
+
         bool _isPress = false;
 
         Vector2 _setUpPos = Vector2.zero;
@@ -201,17 +202,25 @@ namespace Players
         {
             if (Input.GetMouseButtonUp(0))
             {
+                float diffX = _setUpPos.x - _currentPos.x;
+                float diffY = _setUpPos.y - _currentPos.y;
+
                 if (_time < FlickTime)
                 {
-                    Vector2 diffVec = _currentPos - _setUpPos;
-                    float rad = Mathf.Atan2(diffVec.y, diffVec.x);
-                    ForceVec = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
-                    
-                    Player.Attack(ForceVec); 
+                    if (Mathf.Abs(diffX) > FlickLimit && Mathf.Abs(diffY) > FlickLimit)
+                    {
+                        Vector2 diffVec = _currentPos - _setUpPos;
+                        float rad = Mathf.Atan2(diffVec.y, diffVec.x);
+                        ForceVec = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
+                    }
+                    else
+                        ForceVec = Vector2.zero;
+
+                    Player.Attack(ForceVec);
                 }
                 else
                 {
-                    float diffX = _setUpPos.x - _currentPos.x;
+                    
                     if (diffX < FlickLimit * -1) Player.Move(Vector2.right);
                     else if (diffX > FlickLimit) Player.Move(Vector2.right * -1);
                 }
@@ -219,6 +228,27 @@ namespace Players
                 _isPress = false;
                 _time = 0;
             }
+        }
+
+        public void SetNearEnemy(Transform player)
+        {
+            
+            if (FieldManagement.EnemysList.Count <= 0)
+            {
+                NearEnemy = null;
+                return;
+            }
+
+            float check = float.MaxValue;
+            FieldManagement.EnemysList.ForEach(e =>
+            {
+                float distance = Vector2.Distance(player.position, e.GetObj().transform.position);
+                if (check > distance)
+                {
+                    check = distance;
+                    NearEnemy = e;
+                }
+            });
         }
     }
 }

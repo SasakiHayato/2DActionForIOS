@@ -2,16 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public abstract class EnemyBase : CharaBase
 {
     GameObject _player;
     protected Rigidbody2D RB { get; private set; }
-
+    protected bool IsMove { get; private set; } = false;
     public int Hp { get; set; }
     public float Speed { get; set; }
-
-    protected bool IsMove { get; private set; } = false;
     
     private void Awake()
     {
@@ -47,6 +44,19 @@ public abstract class EnemyBase : CharaBase
     }
     public abstract void Move();
     public abstract void Attack();
+    public virtual void Deid(GameObject target)
+    {
+        FieldManagement.EnemysList.Remove(target.GetComponent<IEnemys>());
+        Player player = FindObjectOfType<Player>();
+        player.SetIEnemy();
+        Destroy(target);
+    }
 
     public virtual void Force(Vector2 force, float power) => RB.AddForce(force * power, ForceMode2D.Impulse);
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        GameObject get = collision.gameObject;
+        if (get.CompareTag("Ground") || get.CompareTag("Enemy")) ChangeState(State.IsGround);
+    }
 }

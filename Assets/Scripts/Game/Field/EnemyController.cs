@@ -40,7 +40,7 @@ namespace Fields
         void SetData()
         {
             IEnemys iEnemy = _setEnemy.GetComponent<IEnemys>();
-            if (iEnemy != null) FieldManagement.EnmysList.Add(iEnemy);
+            if (iEnemy != null) FieldManagement.EnemysList.Add(iEnemy);
 
             EnemyBase enemy = _setEnemy.GetComponent<EnemyBase>();
             enemy.Speed = _data.Speed;

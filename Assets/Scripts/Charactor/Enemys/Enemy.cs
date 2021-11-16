@@ -44,7 +44,8 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
     public int AddDamage() => 1;
     public void GetDamage(int damage)
     {
-        
+        Hp -= damage;
+        if (Hp <= 0) Deid(this.gameObject);
     }
 
     public bool IsRockOn { get; set; }

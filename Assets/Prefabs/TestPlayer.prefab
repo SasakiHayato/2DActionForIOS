@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4ce9cb8bd34b6e4b8c1ccd603a88efd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flickTime: 0.2
+  _flickTime: 0.15
   _flickLimit: 3
   _moveDistance: 5
   _moveTime: 0.2

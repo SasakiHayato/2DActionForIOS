@@ -15,7 +15,7 @@ public class FieldManagement : MonoBehaviour
     public static FieldManagement Instance => _instance;
     private FieldManagement() { }
 
-    public static List<IEnemys> EnmysList { get; set; } = new List<IEnemys>();
+    public static List<IEnemys> EnemysList { get; set; } = new List<IEnemys>();
 
     EnemyController _enemyctrl;
     CameraController _camera;
@@ -41,6 +41,7 @@ public class FieldManagement : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(EnemysList.Count);
         _timer += Time.deltaTime;
         if (_timer > _createTime)
         {

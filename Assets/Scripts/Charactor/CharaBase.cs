@@ -9,6 +9,7 @@ public enum State
     Impact,
 }
 
+[RequireComponent(typeof(Rigidbody2D))]
 public abstract class CharaBase : MonoBehaviour, IState
 {
     public int Power { protected get; set; } = 0;
