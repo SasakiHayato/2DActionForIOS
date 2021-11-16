@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _datas:
   - _name: Test
-    _obj: {fileID: 2136931683005721910, guid: 9d9a6a84683869b44a026fc95d8c67a4, type: 3}
+    _obj: {fileID: 7182620128938348911, guid: f5849915ec7bb4d4f8cbd17ed6c3f4b4, type: 3}
     _hp: 3
     _speed: 3

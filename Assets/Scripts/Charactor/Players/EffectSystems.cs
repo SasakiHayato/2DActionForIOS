@@ -40,6 +40,8 @@ public class EffectSystems : MonoBehaviour
 
     void Partical()
     {
+        if (_player.RequestIEnemy() == null) return;
+
         GameObject get = (GameObject)Resources.Load("Srash");
         Vector2 setPos = _player.RequestIEnemy().GetObj().transform.position;
         GameObject set = Instantiate(get, setPos, Quaternion.identity);
