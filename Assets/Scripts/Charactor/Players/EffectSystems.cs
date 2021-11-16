@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fields;
 
 public class EffectSystems : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class EffectSystems : MonoBehaviour
     private EffectSystems() { }
 
     Player _player;
-
+    
     private void Awake()
     {
         _instance = this;

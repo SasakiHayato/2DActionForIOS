@@ -58,7 +58,7 @@ public class AttackSetting : MonoBehaviour
             }
         }
 
-        void CameraShake() => FieldManagement.ReqestShakeCm();
+        void CameraShake() => FieldManagement.ShakeCm();
         void HitStop() => EffectSystems.RequestHitStop();
         void Partical() => EffectSystems.RequestPartical();
         void Knockback() => EffectSystems.RequestKnockBack();

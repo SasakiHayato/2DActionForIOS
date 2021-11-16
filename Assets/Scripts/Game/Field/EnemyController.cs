@@ -9,8 +9,7 @@ namespace Fields
     class EnemyController
     {
         public EnemyData SetUpEnemy { private get; set; } = null;
-        public Cinemachine.CinemachineTargetGroup Group { private get; set; } = null;
-
+        
         GameObject _setEnemy = default;
         Enemys.Data _data = null;
         SpriteRenderer _sprite;
@@ -32,9 +31,9 @@ namespace Fields
             GameObject obj = MonoBehaviour.Instantiate(_data.Obj);
             _sprite = obj.GetComponent<SpriteRenderer>();
             _sprite.enabled = false;
-            Group.AddMember(obj.transform, 1, 0);
-
+            
             _setEnemy = obj;
+            FieldManagement.FieldCharas.Add(obj);
         }
 
         void SetData()

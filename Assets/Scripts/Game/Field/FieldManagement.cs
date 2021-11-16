@@ -7,6 +7,7 @@ using Fields;
 public class FieldManagement : MonoBehaviour
 {
     [SerializeField] float _createTime;
+    [SerializeField] float _shakeTime;
     [SerializeField] EnemyData _enemyData;
     [SerializeField] GameObject _player;
 
@@ -16,6 +17,7 @@ public class FieldManagement : MonoBehaviour
     private FieldManagement() { }
 
     public static List<IEnemys> EnemysList { get; set; } = new List<IEnemys>();
+    public static List<GameObject> FieldCharas { get; set; } = new List<GameObject>();
 
     EnemyController _enemyctrl;
     CameraController _camera;
@@ -25,23 +27,17 @@ public class FieldManagement : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        Instantiate(_player);
+        GameObject player = Instantiate(_player);
+        FieldCharas.Add(player);
         _enemyctrl = new EnemyController();
         _camera = new CameraController();
         
         _camera.SetUp();
-        SetUpEnemyContrl();
-    }
-
-    void SetUpEnemyContrl()
-    {
         _enemyctrl.SetUpEnemy = _enemyData;
-        _enemyctrl.Group = _camera.TargetGroup;
     }
 
     void Update()
     {
-        Debug.Log(EnemysList.Count);
         _timer += Time.deltaTime;
         if (_timer > _createTime)
         {
@@ -52,24 +48,16 @@ public class FieldManagement : MonoBehaviour
         _camera.Mode();
     }
 
-    public static void ReqestShakeCm() => Instance.SetShakeCm();
-   
-    void SetShakeCm()
-    {
-        Vector3 setVec = _camera.SetUpShake();
-        StartCoroutine(Instance.GoShake(setVec));
-    }
-
-    IEnumerator GoShake(Vector3 set)
+    public static void ShakeCm() => Instance.StartCoroutine(Instance.Goshake());
+    IEnumerator Goshake()
     {
         float time = 0;
-        while (0.15f > time)
+        while (time < _shakeTime)
         {
             time += Time.deltaTime;
-            _camera.IsShake(set);
+            _camera.Shake();
             yield return null;
         }
-        
         _camera.EndShake();
     }
 }
