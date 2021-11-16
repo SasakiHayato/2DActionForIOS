@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EnemyAI
+namespace BehaviorTrees
 {
-    public interface IEnemyAI
+    public interface IBehaviorTree
     {
         void Set(IAction action);
     }
@@ -18,7 +18,7 @@ namespace EnemyAI
     {
         void Action();
         bool End();
-        bool Reset(bool set);
+        bool Reset { set; }
     }
 
     public class BehaviorTree : MonoBehaviour
@@ -33,6 +33,7 @@ namespace EnemyAI
 
             None,
         }
+
         State _state = State.None;
 
         [SerializeReference, SubclassSelector] List<IConditional> Conditional;
@@ -48,7 +49,7 @@ namespace EnemyAI
         SelectorNode _stN;
         ActionNode _aN;
 
-        public void Repeater<T>(T set) where T : IEnemyAI
+        public void Repeater<T>(T set) where T : IBehaviorTree
         {
             if (_state == State.Running || _state == State.Start)
             {
@@ -61,6 +62,7 @@ namespace EnemyAI
                 _sqN = new SequenceNode();
                 _stN = new SelectorNode();
                 _aN = new ActionNode();
+                
                 _state = State.Setting;
             }
             else
@@ -73,7 +75,11 @@ namespace EnemyAI
             {
                 ConditionalNade cN = new ConditionalNade();
                 IConditional result = cN.Set(cList);
-                if (result == null) return;
+                if (result == null)
+                {
+                    state = State.None;
+                    return;
+                }
                 else sqN.Set(result, cN.SetId,ref state);
             }
         }
@@ -139,13 +145,13 @@ namespace EnemyAI
 
         class ActionNode
         {
-            public void Set(IEnemyAI ai, IAction a,ref State state)
+            public void Set(IBehaviorTree ai, IAction a,ref State state)
             {
                 ai.Set(a);
                 if (a.End())
                 {
+                    a.Reset = false;
                     state = State.End;
-                    a.Reset(false);
                 }
             }
         }

@@ -179,7 +179,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78201133bc3b61f428e099c4ba9e37eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Conditional: []
-  Action: []
+  Conditional:
+  - id: 0
+  Action:
+  - id: 1
   references:
     version: 1
+    00000000:
+      type: {class: FindRange, ns: , asm: Assembly-CSharp}
+      data:
+        _range: 7
+        _my: {fileID: 8663902115027683161}
+    00000001:
+      type: {class: NormalAttack, ns: , asm: Assembly-CSharp}
+      data:
+        _my: {fileID: 7182620128938348911}
+        _animName: Enemy_Attack

@@ -12,7 +12,7 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
         Move();
     }
 
-    public override void Move()
+    public void Move()
     {
         switch (Current)
         {
@@ -31,7 +31,7 @@ public class Enemy : EnemyBase, IEnemys, IDamageble
         }
     }
 
-    public override void Attack()
+    public void Attack()
     {
        
     }

@@ -42,8 +42,7 @@ public abstract class EnemyBase : CharaBase
 
         thisT.localRotation = dir;
     }
-    public abstract void Move();
-    public abstract void Attack();
+    
     public virtual void Deid(GameObject target)
     {
         FieldManagement.EnemysList.Remove(target.GetComponent<IEnemys>());

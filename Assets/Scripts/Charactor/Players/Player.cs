@@ -120,7 +120,7 @@ public class Player : CharaBase, IDamageble
             float dis = Vector2.Distance
                 (transform.position, _ctrl.NearEnemy.GetObj().transform.position);
             
-            if (dis > 5) return;
+            if (dis > 8) return;
         }
 
         if (dir != Vector2.zero || Current == State.IsFloating) _atkSetting.RequestToFloating();
