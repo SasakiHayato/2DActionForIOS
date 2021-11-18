@@ -72,7 +72,6 @@ namespace Fields
             GameObject light = MonoBehaviour.Instantiate(spawnPrefab);
             light.transform.position = enemyPos;
 
-            UIManager.AddSprite(light.GetComponent<SpriteRenderer>());
             Fade.OutSingle(light.GetComponent<SpriteRenderer>(), 0.3f);
         }
     }

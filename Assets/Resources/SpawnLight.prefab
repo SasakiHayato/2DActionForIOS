@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2357943923230472390}
   - component: {fileID: 3519315291307231103}
+  - component: {fileID: -7033505454430159199}
   m_Layer: 0
   m_Name: SpawnLight
   m_TagString: Untagged
@@ -83,3 +84,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-7033505454430159199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4942027104899359192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c13c6a4234bb0f4db78652d80ff5eef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

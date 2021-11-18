@@ -74,6 +74,8 @@ public class AttackSetting : MonoBehaviour
     int _comboLengthGround;
     int _comboLengthFloat;
 
+    int _totalCombo = 0;
+
     private void Awake()
     {
         for (int setCount = 0; setCount < _setAction.Count; setCount++)
@@ -110,7 +112,7 @@ public class AttackSetting : MonoBehaviour
             _floatDataId = _setUpFloatDataId;
             _combo = 0;
             _time = 0;
-            UIManager.SetComboText(0);
+            UIManager.UpDateCombo(0);
         }
     }
 
@@ -128,6 +130,7 @@ public class AttackSetting : MonoBehaviour
     {
         if (_anim == null) _anim = GetComponent<Animator>();
         _time = 0;
+        _totalCombo++;
         _resetCombTime = data.ImputTime;
 
         if (_saveActionId != requestId)
@@ -135,9 +138,7 @@ public class AttackSetting : MonoBehaviour
             _saveActionId = requestId;
             _combo = 0;
         }
-
-        UIManager.SetComboText();
-
+        _animEvent += CallBackCombo;
         switch (data.Action)
         {
             case ActionType.Ground:
@@ -160,6 +161,7 @@ public class AttackSetting : MonoBehaviour
     }
 
     void CallBackFloat() => _player.FloatAttack(_combo);
+    void CallBackCombo() => UIManager.UpDateCombo(_totalCombo);
 
     void ComboSettingToGround()
     {

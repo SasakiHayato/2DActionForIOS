@@ -5,68 +5,28 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    // ‚Á”ò‚Î‚µ‚½‰ñ”
-    [SerializeField] Text _scoreText;
-    [SerializeField] Text _comboText;
+    [SerializeField] GameObject _comboObj;
+    [SerializeField] float _comboObjFadeTime;
 
     // ‚Ç‚±‚©‚ç‚Å‚àŒÄ‚Ño‚¹‚é‚æ‚¤‚É
     private static UIManager _instance = null;
     public static UIManager Instance => _instance;
     private UIManager() { }
 
-    List<SpriteRenderer> _spritesList = new List<SpriteRenderer>();
-    GameObject _deleteTarget = null;
-
-    int _count = 0;
-    int _updateCombo = 0;
-
+    ScoreManage _score;
+    
     private void Awake()
     {
         _instance = this;
-    }
-
-    void Update()
-    {
-        DeleteSprite();
-    }
-
-    public static void AddScore()
-    {
-        Instance._count++;
-        Instance._scoreText.text = $"Score : {Instance._count.ToString("d3")}" ;
-    }
-
-    public static void SetComboText(int num = 1)
-    {
-        Instance._updateCombo++;
-        if (num == 0) Instance._updateCombo = num;
         
-        Instance._comboText.text = $"{Instance._updateCombo} Combo";
+        _score = FindObjectOfType<ScoreManage>();
     }
 
-    public static void AddSprite(SpriteRenderer set) 
-        => Instance._spritesList.Add(set);
-
-    void DeleteSprite()
+    public static void UpDateScore() => Instance._score.Add();
+    public static void UpDateCombo(int count)
     {
-        bool set = false;
-        if (_spritesList.Count > 0)
-        {
-            _spritesList.ForEach(s =>
-            {
-                if (s.color.a <= 0 && !set)
-                {
-                    set = true;
-                    _deleteTarget = s.gameObject;
-                }
-            });
-
-            if (_deleteTarget != null)
-            {
-                _spritesList.Remove(_deleteTarget.GetComponent<SpriteRenderer>());
-                Destroy(_deleteTarget.gameObject);
-                _deleteTarget = null;
-            }
-        }
+        GameObject obj = Instantiate(Instance._comboObj);
+        obj.GetComponent<ComboUISetting>().GetData(count);
+        SimpleFade.Fade.OutSingle(obj.GetComponent<Image>(), Instance._comboObjFadeTime);
     }
 }
