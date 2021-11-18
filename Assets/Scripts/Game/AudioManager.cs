@@ -46,4 +46,10 @@ public class AudioManager : MonoBehaviour
 
         _source.Play();
     }
+
+    public static void PlayOneShot(AudioClip clip)
+    {
+        if (clip == null) return;
+        Instence._source.PlayOneShot(clip);
+    }
 }

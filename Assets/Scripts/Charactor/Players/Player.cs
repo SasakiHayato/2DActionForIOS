@@ -49,7 +49,7 @@ public class Player : CharaBase, IDamageble
         _ctrl.SetNearEnemy(transform);
         _ctrl.Update();
 
-        if (_rockOnEnemy == null) ChangeState(State.IsGround);
+        
         
         _rb.velocity = new Vector2(_flickMove, _rb.velocity.y);
     }
@@ -77,12 +77,14 @@ public class Player : CharaBase, IDamageble
                 break;
             case 2:
                 _rb.drag = 100;
+                if (_rockOnEnemy == null) ChangeState(State.IsGround);
                 Vector2 setVec = _rockOnEnemy.transform.position;
                 transform.position = new Vector2(setVec.x, setVec.y + 1);
                 _rb.velocity = Vector2.zero;
                 break;
             case 3:
                 _rb.drag = 0;
+                if (_rockOnEnemy == null) ChangeState(State.IsGround);
                 Vector2 set = _rockOnEnemy.transform.position;
                 transform.position = new Vector2(set.x, set.y + 1);
                 _rockOnEnemy.GetComponent<EnemyBase>().Force(_ctrl.ForceVec, 50);

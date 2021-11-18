@@ -31,6 +31,7 @@ public class AttackSetting : MonoBehaviour
         [SerializeField] public int Power;
         [SerializeField] public ActionType Action;
         [SerializeField] public EffectType[] Effect;
+        [SerializeField] public AudioClip SE;
         [SerializeField] public bool CallBackAttack;
         [SerializeField] public float ImputTime;
     }
@@ -62,6 +63,7 @@ public class AttackSetting : MonoBehaviour
 
     EffectSetting _effectSetting = new EffectSetting();
     Animator _anim = null;
+    Data _data = null;
 
     int _saveActionId = int.MaxValue;
     int _combo = 0;
@@ -124,11 +126,13 @@ public class AttackSetting : MonoBehaviour
     {
         _animEvent.Invoke();
         _animEvent = null;
+        _data = null;
     }
 
     void SetDatas(int requestId, Data data)
     {
         if (_anim == null) _anim = GetComponent<Animator>();
+        _data = data;
         _time = 0;
         _totalCombo++;
         _resetCombTime = data.ImputTime;
@@ -138,7 +142,10 @@ public class AttackSetting : MonoBehaviour
             _saveActionId = requestId;
             _combo = 0;
         }
+
+        _animEvent += CallBackSE;
         _animEvent += CallBackCombo;
+
         switch (data.Action)
         {
             case ActionType.Ground:
@@ -162,6 +169,7 @@ public class AttackSetting : MonoBehaviour
 
     void CallBackFloat() => _player.FloatAttack(_combo);
     void CallBackCombo() => UIManager.UpDateCombo(_totalCombo);
+    void CallBackSE() => AudioManager.PlayOneShot(_data.SE);
 
     void ComboSettingToGround()
     {

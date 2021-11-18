@@ -247,24 +247,28 @@ MonoBehaviour:
     Power: 0
     Action: 1
     Effect: 000000000200000001000000
+    SE: {fileID: 8300000, guid: 6fde2e6fc31d5e342b80e745f24a584d, type: 3}
     CallBackAttack: 1
     ImputTime: 5
   - ActionAnimName: TestPlayer_Attack2
     Power: 0
     Action: 1
     Effect: 0000000002000000
+    SE: {fileID: 8300000, guid: 6fde2e6fc31d5e342b80e745f24a584d, type: 3}
     CallBackAttack: 0
     ImputTime: 3
   - ActionAnimName: TestPlayer_Attack1
     Power: 0
     Action: 1
     Effect: 0000000002000000
+    SE: {fileID: 8300000, guid: 6fde2e6fc31d5e342b80e745f24a584d, type: 3}
     CallBackAttack: 1
     ImputTime: 3
   - ActionAnimName: TestPlayer_Attack2
     Power: 0
     Action: 0
     Effect: 000000000200000001000000
+    SE: {fileID: 8300000, guid: 6fde2e6fc31d5e342b80e745f24a584d, type: 3}
     CallBackAttack: 0
     ImputTime: 2
   _player: {fileID: 6740420884246180363}

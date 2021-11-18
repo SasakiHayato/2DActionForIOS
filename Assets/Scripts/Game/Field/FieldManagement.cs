@@ -30,6 +30,7 @@ public class FieldManagement : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        GameManager.ChangeState(GameManager.State.IsGame);
         _enemyctrl = new EnemyController();
         _camera = new CameraController();
 
