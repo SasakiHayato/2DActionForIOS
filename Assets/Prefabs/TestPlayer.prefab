@@ -262,7 +262,7 @@ MonoBehaviour:
     CallBackAttack: 1
     ImputTime: 3
   - ActionAnimName: TestPlayer_Attack2
-    Power: 0
+    Power: 5
     Action: 0
     Effect: 000000000200000003000000
     CallBackAttack: 0

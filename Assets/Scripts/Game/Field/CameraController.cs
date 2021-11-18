@@ -41,8 +41,8 @@ namespace Fields
             if (FieldManagement.FieldCharas.Count <= 1) Normal();
             else
             {
-                //Target();
-                Normal();
+                Target();
+                //Normal();
             }
         }
 

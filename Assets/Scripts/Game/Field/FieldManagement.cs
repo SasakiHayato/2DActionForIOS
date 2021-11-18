@@ -8,7 +8,6 @@ public class FieldManagement : MonoBehaviour
 {
     [SerializeField] float _createTime;
     [SerializeField] float _shakeTime;
-    [SerializeField] float _timeRate;
     [SerializeField] EnemyData _enemyData;
     [SerializeField] GameObject _player;
 
@@ -24,6 +23,9 @@ public class FieldManagement : MonoBehaviour
     CameraController _camera;
 
     float _timer;
+
+    string _ownerName = null;
+    float _ownerTime = 0;
 
     private void Awake()
     {
@@ -47,8 +49,32 @@ public class FieldManagement : MonoBehaviour
             _enemyctrl.SetUp();
         }
 
+        _ownerTime += Time.unscaledDeltaTime;
+        if (_ownerTime > 3)
+        {
+            _ownerTime = 0;
+            DeleteOnwer();
+        }
+
         _camera.Mode();
     }
+
+    public static bool AttackOwner(string name)
+    {
+        if (Instance._ownerName == null)
+        {
+            Instance._ownerTime = 0;
+            Instance._ownerName = name;
+            return true;
+        }
+        else
+        {
+            if (Instance._ownerName == name) return true;
+            else return false;
+        }
+    }
+
+    public static void DeleteOnwer() => Instance._ownerName = null;
 
     public static void ShakeCm() => Instance.StartCoroutine(Instance.Goshake());
     IEnumerator Goshake()

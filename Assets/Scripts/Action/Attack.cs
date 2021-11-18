@@ -17,7 +17,7 @@ public class Attack : IAction
 
     public void Action()
     {
-        if (!GameManager.AttackOwner(_my.name)) return;
+        if (!FieldManagement.AttackOwner(_my.name)) return;
         if (_anim == null) _anim = _my.GetComponent<Animator>();
 
         if (!_isPlay)
@@ -29,7 +29,7 @@ public class Attack : IAction
         AnimatorStateInfo info = _anim.GetCurrentAnimatorStateInfo(0);
         if (info.normalizedTime >= 1)
         {
-            GameManager.DeleteOnwer();
+            FieldManagement.DeleteOnwer();
             _isPlay = false;
             _check = true;
         }
