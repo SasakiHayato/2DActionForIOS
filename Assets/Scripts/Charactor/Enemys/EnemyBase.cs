@@ -45,6 +45,7 @@ public abstract class EnemyBase : CharaBase
     public virtual void Force(Vector2 force, float power)
     {
         RB.drag = 0;
+        UIManager.AddScore();
         RB.AddForce(force * power, ForceMode2D.Impulse);
     }
 

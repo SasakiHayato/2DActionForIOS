@@ -17,6 +17,9 @@ public class UIManager : MonoBehaviour
     List<SpriteRenderer> _spritesList = new List<SpriteRenderer>();
     GameObject _deleteTarget = null;
 
+    int _count = 0;
+    int _updateCombo = 0;
+
     private void Awake()
     {
         _instance = this;
@@ -29,7 +32,16 @@ public class UIManager : MonoBehaviour
 
     public static void AddScore()
     {
+        Instance._count++;
+        Instance._scoreText.text = $"Score : {Instance._count.ToString("d3")}" ;
+    }
 
+    public static void SetComboText(int num = 1)
+    {
+        Instance._updateCombo++;
+        if (num == 0) Instance._updateCombo = num;
+        
+        Instance._comboText.text = $"{Instance._updateCombo} Combo";
     }
 
     public static void AddSprite(SpriteRenderer set) 

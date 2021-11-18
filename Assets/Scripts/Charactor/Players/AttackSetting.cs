@@ -110,6 +110,7 @@ public class AttackSetting : MonoBehaviour
             _floatDataId = _setUpFloatDataId;
             _combo = 0;
             _time = 0;
+            UIManager.SetComboText(0);
         }
     }
 
@@ -134,7 +135,9 @@ public class AttackSetting : MonoBehaviour
             _saveActionId = requestId;
             _combo = 0;
         }
-        
+
+        UIManager.SetComboText();
+
         switch (data.Action)
         {
             case ActionType.Ground:
