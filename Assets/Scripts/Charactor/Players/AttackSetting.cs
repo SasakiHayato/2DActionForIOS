@@ -44,25 +44,20 @@ public class AttackSetting : MonoBehaviour
                 switch (effect)
                 {
                     case EffectType.CameraShake:
-                        setEvent += CameraShake;
+                        setEvent += FieldManagement.ShakeCm;
                         break;
                     case EffectType.HitStop:
-                        setEvent += HitStop;
+                        setEvent += EffectSystems.RequestHitStop;
                         break;
                     case EffectType.Particle:
-                        setEvent += Partical;
+                        setEvent += EffectSystems.RequestPartical;
                         break;
                     case EffectType.Knockback:
-                        setEvent += Knockback;
+                        setEvent += EffectSystems.RequestKnockBack;
                         break;
                 }
             }
         }
-
-        void CameraShake() => FieldManagement.ShakeCm();
-        void HitStop() => EffectSystems.RequestHitStop();
-        void Partical() => EffectSystems.RequestPartical();
-        void Knockback() => EffectSystems.RequestKnockBack();
     }
 
     EffectSetting _effectSetting = new EffectSetting();

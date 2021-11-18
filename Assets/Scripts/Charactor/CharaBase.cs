@@ -7,8 +7,8 @@ public enum State
     IsGround,
     IsFloating,
     // Enemy
-    Impact,
-    
+    ImpactGround,
+    ImpactFloat,
 }
 
 [RequireComponent(typeof(Rigidbody2D))]

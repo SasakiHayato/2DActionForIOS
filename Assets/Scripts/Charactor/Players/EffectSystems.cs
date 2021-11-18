@@ -47,6 +47,7 @@ public class EffectSystems : MonoBehaviour
         GameObject set = Instantiate(get, setPos, Quaternion.identity);
         int rotateZ = Random.Range(0, 360);
         set.transform.rotation = Quaternion.Euler(0, 0, rotateZ);
+        UIManager.AddSprite(set.GetComponent<SpriteRenderer>());
         SimpleFade.Fade.OutSingle(set.GetComponent<SpriteRenderer>(), 1f);
     }
 

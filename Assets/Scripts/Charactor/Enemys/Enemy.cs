@@ -14,14 +14,20 @@ public class Enemy : EnemyBase, IBehaviorTree, IEnemys, IDamageble
         switch (Current)
         {
             case State.IsGround:
+                RB.mass = 1;
                 RB.drag = 0;
                 _tree.Repeater(this);
                 break;
             case State.IsFloating:
                 if (RB.velocity.y <= 0) RB.drag = 100;
                 break;
-            case State.Impact:
+            case State.ImpactGround:
                 RB.drag = 0;
+                RB.mass = 10;
+                break;
+            case State.ImpactFloat:
+                RB.drag = 0;
+                RB.mass = 10;
                 break;
         }
     }

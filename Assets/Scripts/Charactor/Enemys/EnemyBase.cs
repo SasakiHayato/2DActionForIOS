@@ -6,7 +6,7 @@ public abstract class EnemyBase : CharaBase
 {
     GameObject _player;
     protected Rigidbody2D RB { get; private set; }
-    protected bool IsMove { get; private set; } = false;
+
     public int Hp { protected get; set; }
     public float Speed { get; set; }
     
@@ -22,14 +22,12 @@ public abstract class EnemyBase : CharaBase
         if (thisT.position.x > _player.transform.position.x)
         {
             dir = Quaternion.Euler(0, 180, 0);
-            if (Speed > 0)
-                Speed *= -1;
+            if (Speed > 0) Speed *= -1;
         }
         else
         {
             dir = Quaternion.Euler(0, 0, 0);
-            if (Speed < 0)
-                Speed *= -1;
+            if (Speed < 0) Speed *= -1;
         }
 
         thisT.localRotation = dir;
@@ -40,22 +38,21 @@ public abstract class EnemyBase : CharaBase
         FieldManagement.EnemysList.Remove(target.GetComponent<IEnemys>());
         FieldManagement.FieldCharas.Remove(target);
         Player player = FindObjectOfType<Player>();
-        player.SetIEnemy();
+        player.DeleteIEnemy();
         Destroy(target);
     }
 
-    void IsAttack() => GameManager.SetTimeRate(true);
     public virtual void Force(Vector2 force, float power)
     {
         RB.drag = 0;
         RB.AddForce(force * power, ForceMode2D.Impulse);
     }
 
-        private void OnCollisionEnter2D(Collision2D collision)
+    // AnimEvent‚ÅŒÄ‚Ño‚µ
+    void IsAttack() => GameManager.SetTimeRate(true);
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        GameObject get = collision.gameObject;
-        CharaBase chara = get.GetComponent<CharaBase>();
-        
-        if (get.CompareTag("Ground") || get.CompareTag("Enemy")) ChangeState(State.IsGround);
+        if (collision.gameObject.CompareTag("Ground")) ChangeState(State.IsGround);
     }
 }
