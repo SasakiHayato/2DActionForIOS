@@ -8,6 +8,7 @@ public class FieldManagement : MonoBehaviour
 {
     [SerializeField] float _createTime;
     [SerializeField] float _shakeTime;
+    [SerializeField] float _timeRate;
     [SerializeField] EnemyData _enemyData;
     [SerializeField] GameObject _player;
 
@@ -27,10 +28,11 @@ public class FieldManagement : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        GameObject player = Instantiate(_player);
-        FieldCharas.Add(player);
         _enemyctrl = new EnemyController();
         _camera = new CameraController();
+
+        GameObject player = Instantiate(_player);
+        FieldCharas.Add(player);
         
         _camera.SetUp();
         _enemyctrl.SetUpEnemy = _enemyData;

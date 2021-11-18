@@ -2,52 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : EnemyBase, IEnemys, IDamageble
+using BehaviorTrees;
+
+public class Enemy : EnemyBase, IBehaviorTree, IEnemys, IDamageble
 {
+    [SerializeField] BehaviorTree _tree;
+    
     void Update()
     {
         base.FindPlayer(transform);
-        if (!IsMove) return;
-        
-        Move();
-    }
-
-    public void Move()
-    {
         switch (Current)
         {
             case State.IsGround:
-                RB.gravityScale = 1;
-                RB.velocity = new Vector2(Speed, RB.velocity.y);
+                RB.drag = 0;
+                _tree.Repeater(this);
                 break;
             case State.IsFloating:
-                RB.velocity = new Vector2(0, RB.velocity.y);
-                if (RB.velocity.y <= 0) RB.gravityScale = 0;
+                if (RB.velocity.y <= 0) RB.drag = 100;
                 break;
             case State.Impact:
-                RB.gravityScale = 1;
-                Debug.Log("Impact");
+                RB.drag = 0;
                 break;
         }
     }
 
-    public void Attack()
-    {
-       
-    }
+    public void Set(IAction action) => action.Action();
 
-    public override void AttackMove(int combo = 0)
-    {
-        Debug.Log(combo);
-    }
-
+    public GameObject GetObj() => gameObject;
     public int AddDamage() => 1;
     public void GetDamage(int damage)
     {
         Hp -= damage;
         if (Hp <= 0) Deid(gameObject);
     }
-
-    public bool IsRockOn { get; set; }
-    public GameObject GetObj() => gameObject;
 }

@@ -19,10 +19,8 @@ namespace Players
         public float FlickTime { private get; set; } = 0;
         public float FlickLimit { private get; set; } = 0;
         public bool IsMove { get; set; } = false;
-        public bool IsPress { get => _isPress; }
 
-        public Vector2 ForceVec { get; set; } = Vector2.zero;
-
+        public Vector2 ForceVec { get;private set; } = Vector2.zero;
         public Player Player { private get; set; } = null;
 
         public void Update()
@@ -54,12 +52,9 @@ namespace Players
         {
             if (Input.GetMouseButtonUp(0))
             {
-                float diffX = _setUpPos.x - _currentPos.x;
-                float diffY = _setUpPos.y - _currentPos.y;
-
                 if (_time < FlickTime)
                 {
-                    if (Mathf.Abs(diffX) >= FlickLimit && Mathf.Abs(diffY) >= FlickLimit)
+                    if (Vector2.Distance(_setUpPos, _currentPos) >= Mathf.Abs(FlickLimit))
                     {
                         Vector2 diffVec = _currentPos - _setUpPos;
                         float rad = Mathf.Atan2(diffVec.y, diffVec.x);
@@ -67,14 +62,8 @@ namespace Players
                     }
                     else
                         ForceVec = Vector2.zero;
-
-                    Player.Attack(ForceVec);
-                }
-                else
-                {
-
-                    if (diffX < FlickLimit * -1) Player.Move(Vector2.right);
-                    else if (diffX > FlickLimit) Player.Move(Vector2.right * -1);
+                   
+                    Player.Attack();
                 }
 
                 _isPress = false;

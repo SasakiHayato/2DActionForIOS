@@ -89,7 +89,6 @@ namespace BehaviorTrees
             IConditional _c;
 
             public int ActionId { get; private set; } = 0;
-
             public void Set(IConditional c, int id,ref State state)
             {
                 ActionId = id;

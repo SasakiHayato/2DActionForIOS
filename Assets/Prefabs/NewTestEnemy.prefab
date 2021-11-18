@@ -181,17 +181,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Conditional:
   - id: 0
-  Action:
   - id: 1
+  Action:
+  - id: 2
+  - id: 3
   references:
     version: 1
     00000000:
       type: {class: FindRange, ns: , asm: Assembly-CSharp}
       data:
-        _range: 7
+        _range: {x: 5.2, y: 10}
         _my: {fileID: 8663902115027683161}
     00000001:
-      type: {class: NormalAttack, ns: , asm: Assembly-CSharp}
+      type: {class: FindRange, ns: , asm: Assembly-CSharp}
+      data:
+        _range: {x: 6, y: 3}
+        _my: {fileID: 8663902115027683161}
+    00000002:
+      type: {class: Move, ns: , asm: Assembly-CSharp}
+      data:
+        _my: {fileID: 7182620128938348911}
+    00000003:
+      type: {class: Attack, ns: , asm: Assembly-CSharp}
       data:
         _my: {fileID: 7182620128938348911}
         _animName: Enemy_Attack

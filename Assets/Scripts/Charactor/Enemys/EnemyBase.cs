@@ -7,21 +7,13 @@ public abstract class EnemyBase : CharaBase
     GameObject _player;
     protected Rigidbody2D RB { get; private set; }
     protected bool IsMove { get; private set; } = false;
-    public int Hp { get; set; }
+    public int Hp { protected get; set; }
     public float Speed { get; set; }
     
     private void Awake()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
         RB = GetComponent<Rigidbody2D>();
-        StartCoroutine(Wait());
-    }
-
-    IEnumerator Wait()
-    {
-        IsMove = false;
-        yield return new WaitForSeconds(1f);
-        IsMove = true;
     }
 
     public virtual void FindPlayer(Transform thisT)
@@ -52,9 +44,14 @@ public abstract class EnemyBase : CharaBase
         Destroy(target);
     }
 
-    public virtual void Force(Vector2 force, float power) => RB.AddForce(force * power, ForceMode2D.Impulse);
+    void IsAttack() => GameManager.SetTimeRate(true);
+    public virtual void Force(Vector2 force, float power)
+    {
+        RB.drag = 0;
+        RB.AddForce(force * power, ForceMode2D.Impulse);
+    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+        private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject get = collision.gameObject;
         CharaBase chara = get.GetComponent<CharaBase>();

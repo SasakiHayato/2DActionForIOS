@@ -8,7 +8,7 @@ public enum State
     IsFloating,
     // Enemy
     Impact,
-    Deid,
+    
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -18,6 +18,4 @@ public abstract class CharaBase : MonoBehaviour, IState
 
     public State Current { get; private set; } = State.IsGround;
     public State ChangeState(State get) => Current = get;
-
-    public abstract void AttackMove(int combo = 0);
 }

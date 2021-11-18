@@ -6,7 +6,7 @@ using BehaviorTrees;
 
 public class FindRange : IConditional
 {
-    [SerializeField] float _range;
+    [SerializeField] Vector2 _range = Vector2.zero;
     [SerializeField] Transform _my;
     GameObject _player = null;
     bool _check = false;
@@ -14,9 +14,10 @@ public class FindRange : IConditional
     public bool Check()
     {
         if (_player == null) _player = GameObject.FindGameObjectWithTag("Player");
-        float distance = Vector2.Distance(_my.position, _player.transform.position);
-        
-        if (distance < _range) _check = true;
+        float x = _my.position.x - _player.transform.position.x;
+        float y = _my.position.y - _player.transform.position.y;
+
+        if (Mathf.Abs(x) < _range.x && Mathf.Abs(y) < _range.y) _check = true;
         else _check = false;
 
         return _check;

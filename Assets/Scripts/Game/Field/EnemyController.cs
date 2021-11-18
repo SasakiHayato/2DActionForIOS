@@ -15,6 +15,7 @@ namespace Fields
         SpriteRenderer _sprite;
 
         int _setXval = 5;
+        int _count = 0;
 
         public void SetUp()
         {
@@ -29,6 +30,8 @@ namespace Fields
             _data = SetUpEnemy.GetData(set);
             
             GameObject obj = MonoBehaviour.Instantiate(_data.Obj);
+            obj.name = $"Enemy No.{_count}";
+            _count++;
             _sprite = obj.GetComponent<SpriteRenderer>();
             _sprite.enabled = false;
             

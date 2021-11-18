@@ -19,7 +19,7 @@ public class AttackSetting : MonoBehaviour
     }
 
     [SerializeField] List<Data> _setAction = new List<Data>();
-    [SerializeField] CharaBase _chara;
+    [SerializeField] Player _player;
 
     delegate void SetAnimEvent();
     SetAnimEvent _animEvent;
@@ -144,24 +144,24 @@ public class AttackSetting : MonoBehaviour
         {
             case ActionType.Ground:
                 ComboSettingToGround();
-                _chara.Power = data.Power;
+                _player.Power = data.Power;
+                _animEvent += _player.GroundAttack;
                 _effectSetting.Set(ref _animEvent, data.Effect);
                 _anim.Play(data.ActionAnimName);
                 break;
 
             case ActionType.Floating:
                 ComboSettingToFloating();
-                if (data.CallBackAttack) _animEvent += CallBack;
-                else _chara.AttackMove(_combo);
-                
-                _chara.Power = data.Power;
+                if (data.CallBackAttack) _animEvent += CallBackFloat;
+                else _player.FloatAttack(_combo);
+                _player.Power = data.Power;
                 _effectSetting.Set(ref _animEvent, data.Effect);
                 _anim.Play(data.ActionAnimName);
                 break;
         }
     }
 
-    void CallBack() => _chara.AttackMove(_combo);
+    void CallBackFloat() => _player.FloatAttack(_combo);
 
     void ComboSettingToGround()
     {

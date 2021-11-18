@@ -4,7 +4,7 @@ using UnityEngine;
 
 using BehaviorTrees;
 
-public class NormalAttack : IAction
+public class Attack : IAction
 {
     [SerializeField] GameObject _my;
     [SerializeField] string _animName;
@@ -17,7 +17,9 @@ public class NormalAttack : IAction
 
     public void Action()
     {
+        if (!GameManager.AttackOwner(_my.name)) return;
         if (_anim == null) _anim = _my.GetComponent<Animator>();
+
         if (!_isPlay)
         {
             _isPlay = true;
@@ -27,6 +29,7 @@ public class NormalAttack : IAction
         AnimatorStateInfo info = _anim.GetCurrentAnimatorStateInfo(0);
         if (info.normalizedTime >= 1)
         {
+            GameManager.DeleteOnwer();
             _isPlay = false;
             _check = true;
         }

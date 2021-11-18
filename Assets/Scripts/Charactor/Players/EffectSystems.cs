@@ -52,7 +52,7 @@ public class EffectSystems : MonoBehaviour
 
     void HitStop()
     {
-        _player.Anim.speed = 0.1f;
+        _player.Anim.speed = 0.01f;
         StartCoroutine(WaitTime());
     }
 

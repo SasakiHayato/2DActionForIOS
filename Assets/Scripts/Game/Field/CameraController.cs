@@ -7,6 +7,9 @@ namespace Fields
 {
     class CameraController
     {
+        float _minVal = 20;
+        float _maxVal = 20;
+
         GameObject _cameraObj;
         Camera _cm;
 
@@ -36,15 +39,19 @@ namespace Fields
             }
 
             if (FieldManagement.FieldCharas.Count <= 1) Normal();
-            else Target();
+            else
+            {
+                //Target();
+                Normal();
+            }
         }
 
         void Normal()
         {
             Vector3 target = _playerObj.transform.position;
-            Vector3 set = new Vector3(target.x, target.y, -10);
+            Vector3 set = new Vector3(target.x, 0, -10);
             _cameraObj.transform.position = set;
-            _cm.orthographicSize = 10;
+            _cm.orthographicSize = _minVal;
         }
 
         void Target()
@@ -61,7 +68,7 @@ namespace Fields
 
         void Zoom(float distance)
         {
-            float z = Mathf.Lerp(10, 16, distance / 10);
+            float z = Mathf.Lerp(_minVal, _maxVal, distance / 10);
             _cm.orthographicSize = z;
         }
 
