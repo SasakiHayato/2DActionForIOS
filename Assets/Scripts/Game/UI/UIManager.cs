@@ -26,7 +26,6 @@ public class UIManager : MonoBehaviour
     public static void UpDateCombo(int count)
     {
         GameObject obj = Instantiate(Instance._comboObj);
-        obj.GetComponent<ComboUISetting>().GetData(count);
-        SimpleFade.Fade.OutSingle(obj.GetComponent<Image>(), Instance._comboObjFadeTime);
+        obj.GetComponentInChildren<ComboUISetting>().GetData(count);
     }
 }
