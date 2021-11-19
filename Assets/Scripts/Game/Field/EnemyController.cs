@@ -24,6 +24,29 @@ namespace Fields
             Spawn();
         }
 
+        public void Tutorial()
+        {
+            GameObject obj = MonoBehaviour
+                .Instantiate((GameObject)Resources.Load("TutorialTestEnemy"));
+            obj.name = $"Enemy No.{_count}";
+            _count++;
+            _sprite = obj.GetComponent<SpriteRenderer>();
+            _sprite.enabled = false;
+
+            EnemyBase enemy = obj.GetComponent<EnemyBase>();
+            enemy.Speed = 3;
+            enemy.Hp = 2;
+
+            Vector2 playerPos = GameObject.FindGameObjectWithTag("Player").transform.position;
+            int[] setPosX = { _setXval * -1, _setXval };
+            int randomX = Random.Range(0, setPosX.Length);
+
+            _sprite.enabled = true;
+            Vector2 setPos = new Vector2(playerPos.x + setPosX[randomX], -2);
+            obj.transform.position = setPos;
+            Light(setPos);
+        }
+
         void Create()
         {
             int set = Random.Range(0, SetUpEnemy.DataLength);
@@ -36,6 +59,7 @@ namespace Fields
             _sprite.enabled = false;
             
             _setEnemy = obj;
+
             FieldManagement.FieldCharas.Add(obj);
         }
 

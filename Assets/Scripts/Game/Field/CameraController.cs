@@ -36,12 +36,6 @@ namespace Fields
                 return;
             }
 
-            if (GameManager.CurrentState == GameManager.State.Tutorial)
-            {
-                Tutorial();
-                return;
-            }
-
             if (FieldManagement.FieldCharas.Count <= 1)
             {
                 Normal();
@@ -74,12 +68,21 @@ namespace Fields
             _cameraObj.transform.position = set;
         }
 
-        void Tutorial()
+        public void Tutorial(int id)
         {
-            Vector3 target = _playerObj.transform.position;
-            Vector3 set = new Vector3(target.x, target.y, -10);
-            _cameraObj.transform.position = set;
-            _cm.orthographicSize = 7;
+            switch (id)
+            {
+                case 1:
+                    Vector3 target = _playerObj.transform.position;
+                    Vector3 set = new Vector3(target.x, target.y, -10);
+                    _cameraObj.transform.position = set;
+                    _cm.orthographicSize = 7;
+                    break;
+                case 2:
+                    float z = Mathf.Lerp(_minVal, _maxVal, Time.deltaTime);
+                    _cm.orthographicSize = z;
+                    break;
+            }
         }
 
         void Zoom(float distance)

@@ -37,7 +37,8 @@ public class EventSetting : MonoBehaviour
 
     void EntryPlayer()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        AudioManager.StopSource();
+        GameObject player = Instantiate((GameObject)Resources.Load("TestPlayer"));
         
         player.transform.position = Vector2.one * 10;
         player.GetComponent<Rigidbody2D>()
@@ -45,12 +46,29 @@ public class EventSetting : MonoBehaviour
 
         Fade.OutSingle(Fade.CreateFadeImage(), 1);
         StartCoroutine(Tutorial(player));
+
+        CameraController camera = new CameraController();
+        camera.SetUp();
+        StartCoroutine(TutorialUpdate(camera));
     }
 
     IEnumerator Tutorial(GameObject player)
     {
         CheckGround ground = player.GetComponentInChildren<CheckGround>();
-        yield return null;
+        yield return new WaitUntil(() => ground.IsGround);
+        AudioManager.LandSE();
+        EnemyController enemy = new EnemyController();
+        enemy.Tutorial();
+    }
+
+    IEnumerator TutorialUpdate(CameraController camera)
+    {
+        bool end = false;
+        while (!end)
+        {
+            camera.Tutorial(1);
+            yield return null;
+        }
     }
 
     void End() => IsEnd = true;

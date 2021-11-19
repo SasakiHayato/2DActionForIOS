@@ -7,6 +7,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] float _vol;
     [SerializeField] AudioClip[] _bgm = new AudioClip[4];
     [SerializeField] AudioClip _clickSE;
+    [SerializeField] AudioClip _randSE;
 
     private static AudioManager s_instance;
     public static AudioManager Instence => s_instance;
@@ -18,10 +19,6 @@ public class AudioManager : MonoBehaviour
     {
         s_instance = this;
         _source = gameObject.AddComponent<AudioSource>();
-    }
-
-    void Start()
-    {
         _source.volume = _vol;
         PlayBGM();
     }
@@ -55,5 +52,6 @@ public class AudioManager : MonoBehaviour
     }
 
     public static void OnClickSE() => Instence._source.PlayOneShot(Instence._clickSE);
+    public static void LandSE() => Instence._source.PlayOneShot(Instence._randSE);
     public static void StopSource() => Instence._source.Stop();
 }

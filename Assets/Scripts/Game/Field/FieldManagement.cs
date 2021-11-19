@@ -43,7 +43,6 @@ public class FieldManagement : MonoBehaviour
     void Update()
     {
         _camera.Mode();
-        if (GameManager.CurrentState != GameManager.State.IsGame) return;
 
         _timer += Time.deltaTime;
         if (_timer > _createTime)
