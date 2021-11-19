@@ -10,6 +10,8 @@ namespace Fields
         float _minVal = 20;
         float _maxVal = 20;
 
+        float _tTime;
+
         GameObject _cameraObj;
         Camera _cm;
 
@@ -79,7 +81,8 @@ namespace Fields
                     _cm.orthographicSize = 7;
                     break;
                 case 2:
-                    float z = Mathf.Lerp(_minVal, _maxVal, Time.deltaTime);
+                    _tTime += Time.deltaTime;
+                    float z = Mathf.Lerp(7, 13, _tTime);
                     _cm.orthographicSize = z;
                     break;
             }

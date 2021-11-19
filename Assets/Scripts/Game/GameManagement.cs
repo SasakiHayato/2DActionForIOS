@@ -68,6 +68,7 @@ public class GameManagement : MonoBehaviour
                 break;
             case GameManager.State.Tutorial:
                 Instantiate(_audio.gameObject);
+                Instantiate(_uI.gameObject);
                 _setEvent.Set(1);
                 break;
             case GameManager.State.None:

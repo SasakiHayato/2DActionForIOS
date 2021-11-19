@@ -76,7 +76,12 @@ public class FieldManagement : MonoBehaviour
 
     public static void DeleteOnwer() => Instance._ownerName = null;
 
-    public static void ShakeCm() => Instance.StartCoroutine(Instance.Goshake());
+    public static void ShakeCm()
+    {
+        if (GameManager.CurrentState != GameManager.State.IsGame) return;
+        Instance.StartCoroutine(Instance.Goshake());
+    }
+
     IEnumerator Goshake()
     {
         float time = 0;

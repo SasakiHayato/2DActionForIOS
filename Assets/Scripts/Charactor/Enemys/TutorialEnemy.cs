@@ -11,7 +11,7 @@ public class TutorialEnemy : EnemyBase, IEnemys, IDamageble
 
     void Update()
     {
-        
+        base.FindPlayer(transform);
     }
 
     public GameObject GetObj() => gameObject;

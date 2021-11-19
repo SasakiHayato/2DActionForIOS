@@ -8,6 +8,7 @@ using SimpleFade;
 public class EventSetting : MonoBehaviour
 {
     public bool IsEnd { get; private set; }
+    int _tutorialId = 1;
 
     public void Set(int id, object set = null)
     {
@@ -57,8 +58,16 @@ public class EventSetting : MonoBehaviour
         CheckGround ground = player.GetComponentInChildren<CheckGround>();
         yield return new WaitUntil(() => ground.IsGround);
         AudioManager.LandSE();
+        yield return new WaitForSeconds(1f);
         EnemyController enemy = new EnemyController();
         enemy.Tutorial();
+        _tutorialId++;
+        yield return new WaitForSeconds(1.5f);
+        AudioManager.PlaySouce();
+        GameObject.FindGameObjectWithTag("Enemy")
+            .GetComponent<Animator>().Play("Enemy_Attack");
+
+        UIManager.SetTUIData(1, player);
     }
 
     IEnumerator TutorialUpdate(CameraController camera)
@@ -66,7 +75,7 @@ public class EventSetting : MonoBehaviour
         bool end = false;
         while (!end)
         {
-            camera.Tutorial(1);
+            camera.Tutorial(_tutorialId);
             yield return null;
         }
     }

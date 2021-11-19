@@ -36,13 +36,11 @@ namespace Fields
             EnemyBase enemy = obj.GetComponent<EnemyBase>();
             enemy.Speed = 3;
             enemy.Hp = 2;
-
+            FieldManagement.EnemysList.Add(obj.GetComponent<IEnemys>());
             Vector2 playerPos = GameObject.FindGameObjectWithTag("Player").transform.position;
-            int[] setPosX = { _setXval * -1, _setXval };
-            int randomX = Random.Range(0, setPosX.Length);
-
+            
             _sprite.enabled = true;
-            Vector2 setPos = new Vector2(playerPos.x + setPosX[randomX], -2);
+            Vector2 setPos = new Vector2(playerPos.x + _setXval, -2);
             obj.transform.position = setPos;
             Light(setPos);
         }
