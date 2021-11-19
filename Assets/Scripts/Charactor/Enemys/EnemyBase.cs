@@ -50,7 +50,7 @@ public abstract class EnemyBase : CharaBase
     }
 
     // AnimEvent‚ÅŒÄ‚Ño‚µ
-    void IsAttack() => GameManager.SetTimeRate(true);
+    void IsAttack() => FieldManagement.SetTimeRate(true);
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

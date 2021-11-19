@@ -107,7 +107,7 @@ public class Player : CharaBase, IDamageble
     {
         if (_ctrl.NearEnemy == null || _ctrl.IsMove) return;
         if (_ctrl.ForceVec == Vector2.zero && Current == State.IsGround) return;
-        GameManager.SetTimeRate(false);
+        FieldManagement.SetTimeRate(false);
         if (Current == State.IsGround)
         {
             float dis = Vector2.Distance

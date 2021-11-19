@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] GameObject _comboObj;
-    [SerializeField] float _comboObjFadeTime;
 
     // Ç«Ç±Ç©ÇÁÇ≈Ç‡åƒÇ—èoÇπÇÈÇÊÇ§Ç…
     private static UIManager _instance = null;

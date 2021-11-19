@@ -89,4 +89,10 @@ public class FieldManagement : MonoBehaviour
         }
         _camera.EndShake();
     }
+
+    public static void SetTimeRate(bool set)
+    {
+        if (set) Time.timeScale = 0f;
+        else Time.timeScale = 1;
+    }
 }
