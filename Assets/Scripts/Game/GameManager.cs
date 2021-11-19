@@ -8,7 +8,7 @@ public class GameManager
     {
         IsGame,
         EndGame,
-        Others,
+        Title,
 
         None,
     }

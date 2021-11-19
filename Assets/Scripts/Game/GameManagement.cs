@@ -11,6 +11,9 @@ public class GameManagement : MonoBehaviour
     [SerializeField] bool _isDebug;
 
     public static GameManagement Instance;
+    EventSetting _setEvent;
+    SceneManage _scene;
+
     private void Awake()
     {
         if (_isDebug)
@@ -24,27 +27,49 @@ public class GameManagement : MonoBehaviour
         else
         {
             Instance = this;
+            _scene = gameObject.AddComponent<SceneManage>();
+            _setEvent = gameObject.AddComponent<EventSetting>();
             DontDestroyOnLoad(gameObject);
         }
 
         SetUp();
     }
 
+    void Start()
+    {
+        GameManager.ChangeState(GameManager.State.Title);
+        SetUp();
+    }
+
     public void ChangeScene(string name)
     {
         if (name == "Main") GameManager.ChangeState(GameManager.State.IsGame);
-        
-        SceneManage scene = new SceneManage();
-        scene.Load(name);
+        AudioManager.OnClickSE();
+        _scene.LoadAsync(name, _setEvent);
+    }
+
+    public void SetEvents(int id)
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        _setEvent.Set(id, player);
     }
 
     void SetUp()
     {
-        if (GameManager.State.IsGame == GameManager.CurrentState)
+        switch (GameManager.CurrentState)
         {
-            Instantiate(Instance._uI.gameObject);
-            Instantiate(Instance._field.gameObject);
-            Instantiate(Instance._audio.gameObject);
+            case GameManager.State.IsGame:
+                Instantiate(_uI.gameObject);
+                Instantiate(_field.gameObject);
+                Instantiate(_audio.gameObject);
+                break;
+            case GameManager.State.EndGame:
+                break;
+            case GameManager.State.Title:
+                Instantiate(_audio.gameObject);
+                break;
+            case GameManager.State.None:
+                break;
         }
     }
 }

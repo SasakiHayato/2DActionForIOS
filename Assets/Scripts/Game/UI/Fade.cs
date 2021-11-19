@@ -35,6 +35,7 @@ namespace SimpleFade
 
         bool _currentFade = false;
         bool _async = false;
+        bool _isFade = false;
 
         bool _break = false;
 
@@ -328,9 +329,39 @@ namespace SimpleFade
             => Instance.FadeCrossForSprite(before, after, speed);
 
         /// <summary>
+        /// fade用のImageの生成
+        /// </summary>
+        /// <returns>FadeImage</returns>
+        public static Image CreateFadeImage()
+        {
+            Canvas canvas = new GameObject("FadeCanvas").AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = 10;
+            CanvasScaler scaler = canvas.gameObject.AddComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1000, 1600);
+
+            RectTransform rect = new GameObject("FadeImage")
+                .AddComponent<Image>().GetComponent<RectTransform>();
+            rect.transform.SetParent(canvas.transform);
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.sizeDelta = Vector2.zero;
+            rect.transform.localPosition = Vector2.zero;
+            rect.GetComponent<Image>().color = Color.black;
+            return rect.GetComponent<Image>();
+        }
+
+        /// <summary>
         /// 現在行われているすべてのフェードを強制終了
         /// </summary>
         public static void FadeBreakAll() => Instance._break = true;
+
+        /// <summary>
+        /// フェードの終了を知らせる
+        /// </summary>
+        /// <returns>true</returns>
+        public static bool EndFade { get => Instance._isFade; } 
 
         #region 処理
         void FadeForImage(Image target = null)
@@ -368,6 +399,7 @@ namespace SimpleFade
 
         void SetFadeParam(float speed, float start, float end)
         {
+            _isFade = false;
             Instance._startVal = start;
             Instance._endVal = end;
             Instance._fadeSpeed = speed;
@@ -388,6 +420,7 @@ namespace SimpleFade
             }
 
             ResetParam();
+            _isFade = true;
         }
         IEnumerator SetAsyncForSprite(List<SpriteRenderer> targets)
         {
@@ -403,6 +436,7 @@ namespace SimpleFade
             }
 
             ResetParam();
+            _isFade = true;
         }
         IEnumerator SetAsyncForMaterial(List<Material> targets)
         {
@@ -446,7 +480,11 @@ namespace SimpleFade
 
             _currentFade = false;
 
-            if (!_async) ResetParam();
+            if (!_async)
+            {
+                ResetParam();
+                _isFade = true;
+            }
         }
         IEnumerator FadeToSprite(SpriteRenderer set)
         {
@@ -474,7 +512,11 @@ namespace SimpleFade
 
             _currentFade = false;
 
-            if (!_async) ResetParam();
+            if (!_async)
+            {
+                ResetParam();
+                _isFade = true;
+            }
         }
         IEnumerator FadeToMaterial(Material set)
         {
@@ -502,7 +544,11 @@ namespace SimpleFade
 
             _currentFade = false;
 
-            if (!_async) ResetParam();
+            if (!_async)
+            {
+                ResetParam();
+                _isFade = true;
+            }
         }
 
         IEnumerator FadeCrossToImage(Image before, Image after)
@@ -535,6 +581,7 @@ namespace SimpleFade
             _currentFade = false;
 
             ResetParam();
+            _isFade = true;
         }
         IEnumerator FadeCrossToSprite(SpriteRenderer before, SpriteRenderer after)
         {
@@ -566,11 +613,12 @@ namespace SimpleFade
             _currentFade = false;
 
             ResetParam();
+            _isFade = true;
         }
 
         void ResetParam()
         {
-            _currentFade = false;
+            _currentFade = true;
             _async = false;
             _setImage = new List<Image>();
             _setSprites = new List<SpriteRenderer>();

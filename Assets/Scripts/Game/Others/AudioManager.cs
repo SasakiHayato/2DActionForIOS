@@ -6,6 +6,7 @@ public class AudioManager : MonoBehaviour
 {
     [SerializeField] float _vol;
     [SerializeField] AudioClip[] _bgm = new AudioClip[3];
+    [SerializeField] AudioClip _clickSE;
 
     private static AudioManager s_instance;
     public static AudioManager Instence => s_instance;
@@ -36,11 +37,8 @@ public class AudioManager : MonoBehaviour
             case GameManager.State.EndGame:
                 _source.clip = _bgm[1];
                 break;
-            case GameManager.State.Others:
+            case GameManager.State.Title:
                 _source.clip = _bgm[2];
-                break;
-            case GameManager.State.None:
-                Debug.LogError("State.None");
                 break;
         }
 
@@ -52,4 +50,6 @@ public class AudioManager : MonoBehaviour
         if (clip == null) return;
         Instence._source.PlayOneShot(clip);
     }
+
+    public static void OnClickSE() => Instence._source.PlayOneShot(Instence._clickSE);
 }
