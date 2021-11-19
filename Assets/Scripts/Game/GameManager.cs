@@ -9,6 +9,7 @@ public class GameManager
         IsGame,
         EndGame,
         Title,
+        Tutorial,
 
         None,
     }

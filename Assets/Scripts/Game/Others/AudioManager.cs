@@ -5,7 +5,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] float _vol;
-    [SerializeField] AudioClip[] _bgm = new AudioClip[3];
+    [SerializeField] AudioClip[] _bgm = new AudioClip[4];
     [SerializeField] AudioClip _clickSE;
 
     private static AudioManager s_instance;
@@ -40,6 +40,9 @@ public class AudioManager : MonoBehaviour
             case GameManager.State.Title:
                 _source.clip = _bgm[2];
                 break;
+            case GameManager.State.Tutorial:
+                _source.clip = _bgm[3];
+                break;
         }
 
         _source.Play();
@@ -52,4 +55,5 @@ public class AudioManager : MonoBehaviour
     }
 
     public static void OnClickSE() => Instence._source.PlayOneShot(Instence._clickSE);
+    public static void StopSource() => Instence._source.Stop();
 }

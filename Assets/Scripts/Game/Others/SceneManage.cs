@@ -14,12 +14,10 @@ public class SceneManage : MonoBehaviour
     IEnumerator Loading(AsyncOperation operation, EventSetting setEvent)
     {
         operation.allowSceneActivation = false;
-
-        while (!setEvent.IsEnd) yield return null;
+        yield return new WaitUntil(() => setEvent.IsEnd);
         
         Fade.InSingle(Fade.CreateFadeImage(), 1);
-        while (!Fade.EndFade) yield return null;
-
+        yield return new WaitUntil(() => Fade.EndFade);
         yield return new WaitForSeconds(0.2f);
         operation.allowSceneActivation = true;
     }

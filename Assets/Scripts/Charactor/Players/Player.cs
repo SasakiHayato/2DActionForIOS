@@ -15,7 +15,7 @@ public class Player : CharaBase, IDamageble
     public Animator Anim { get; private set; }
 
     Controller _ctrl = new Controller();
-    
+    CheckGround _ground;
     AttackSetting _atkSetting;
     GameObject _rockOnEnemy;
 
@@ -26,6 +26,7 @@ public class Player : CharaBase, IDamageble
         _rb = GetComponent<Rigidbody2D>();
         Anim = GetComponent<Animator>();
         _atkSetting = GetComponent<AttackSetting>();
+        _ground = GetComponentInChildren<CheckGround>();
         
         SetUpAtkCol();
         SetUpCtrl();
@@ -49,9 +50,8 @@ public class Player : CharaBase, IDamageble
         _ctrl.SetNearEnemy(transform);
         _ctrl.Update();
 
-        
-        
-        _rb.velocity = new Vector2(_flickMove, _rb.velocity.y);
+        if (!_ground.IsGround && _rb.velocity.y < 0)
+            Anim.Play("TestPlayer_Fall");
     }
 
     void SetDir()

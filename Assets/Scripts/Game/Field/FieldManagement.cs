@@ -30,7 +30,6 @@ public class FieldManagement : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        GameManager.ChangeState(GameManager.State.IsGame);
         _enemyctrl = new EnemyController();
         _camera = new CameraController();
 
@@ -43,6 +42,9 @@ public class FieldManagement : MonoBehaviour
 
     void Update()
     {
+        _camera.Mode();
+        if (GameManager.CurrentState != GameManager.State.IsGame) return;
+
         _timer += Time.deltaTime;
         if (_timer > _createTime)
         {
@@ -56,8 +58,6 @@ public class FieldManagement : MonoBehaviour
             _ownerTime = 0;
             DeleteOnwer();
         }
-
-        _camera.Mode();
     }
 
     public static bool AttackOwner(string name)

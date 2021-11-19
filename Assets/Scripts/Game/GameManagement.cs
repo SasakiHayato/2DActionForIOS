@@ -22,6 +22,7 @@ public class GameManagement : MonoBehaviour
         if (Instance != null)
         {
             Debug.Log("å≥ÅXÇ†ÇÈ");
+            _setEvent = FindObjectOfType<EventSetting>();
             Destroy(gameObject);
         }
         else
@@ -43,16 +44,13 @@ public class GameManagement : MonoBehaviour
 
     public void ChangeScene(string name)
     {
-        if (name == "Main") GameManager.ChangeState(GameManager.State.IsGame);
+        if (name == "Main") GameManager.ChangeState(GameManager.State.Tutorial);
+        AudioManager.StopSource();
         AudioManager.OnClickSE();
         _scene.LoadAsync(name, _setEvent);
     }
 
-    public void SetEvents(int id)
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        _setEvent.Set(id, player);
-    }
+    public void SetEvents(int id) => _setEvent.Set(id);
 
     void SetUp()
     {
@@ -67,6 +65,11 @@ public class GameManagement : MonoBehaviour
                 break;
             case GameManager.State.Title:
                 Instantiate(_audio.gameObject);
+                break;
+            case GameManager.State.Tutorial:
+                Instantiate(_audio.gameObject);
+                Instantiate(_field.gameObject);
+                _setEvent.Set(1);
                 break;
             case GameManager.State.None:
                 break;

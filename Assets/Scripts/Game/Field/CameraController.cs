@@ -18,8 +18,6 @@ namespace Fields
 
         bool _shake = false;
         Vector3 _setShakeVec = Vector3.zero;
-
-
        
         public void SetUp()
         {
@@ -38,11 +36,21 @@ namespace Fields
                 return;
             }
 
-            if (FieldManagement.FieldCharas.Count <= 1) Normal();
+            if (GameManager.CurrentState == GameManager.State.Tutorial)
+            {
+                Tutorial();
+                return;
+            }
+
+            if (FieldManagement.FieldCharas.Count <= 1)
+            {
+                Normal();
+                return;
+            }
             else
             {
                 Target();
-                //Normal();
+                return;
             }
         }
 
@@ -64,6 +72,14 @@ namespace Fields
             Zoom(Vector3.Distance(playerPos, targetPos));
             Vector3 set = new Vector3(centar.x, centar.y, -10);
             _cameraObj.transform.position = set;
+        }
+
+        void Tutorial()
+        {
+            Vector3 target = _playerObj.transform.position;
+            Vector3 set = new Vector3(target.x, target.y, -10);
+            _cameraObj.transform.position = set;
+            _cm.orthographicSize = 7;
         }
 
         void Zoom(float distance)
