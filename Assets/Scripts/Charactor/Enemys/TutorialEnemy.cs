@@ -12,6 +12,24 @@ public class TutorialEnemy : EnemyBase, IEnemys, IDamageble
     void Update()
     {
         base.FindPlayer(transform);
+        switch (Current)
+        {
+            case State.IsGround:
+                RB.mass = 1;
+                RB.drag = 0;
+                break;
+            case State.IsFloating:
+                if (RB.velocity.y <= 0) RB.drag = 100;
+                break;
+            case State.ImpactGround:
+                RB.drag = 0;
+                RB.mass = 10;
+                break;
+            case State.ImpactFloat:
+                RB.drag = 0;
+                RB.mass = 10;
+                break;
+        }
     }
 
     public GameObject GetObj() => gameObject;

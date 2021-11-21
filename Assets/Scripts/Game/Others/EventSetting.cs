@@ -55,19 +55,59 @@ public class EventSetting : MonoBehaviour
 
     IEnumerator Tutorial(GameObject player)
     {
+        // 登場
         CheckGround ground = player.GetComponentInChildren<CheckGround>();
+        player.GetComponent<Animator>().Play("TestPlayer_Fall");
         yield return new WaitUntil(() => ground.IsGround);
+
+        // 着地
         AudioManager.LandSE();
+        player.GetComponent<Animator>().Play("TestPlayer_Idle");
         yield return new WaitForSeconds(1f);
+
+        // Enemy出現
         EnemyController enemy = new EnemyController();
-        enemy.Tutorial();
+        enemy.Tutorial(_tutorialId);
         _tutorialId++;
         yield return new WaitForSeconds(1.5f);
+
+        // スタートBGM. Player攻撃
         AudioManager.PlaySouce();
         GameObject.FindGameObjectWithTag("Enemy")
             .GetComponent<Animator>().Play("Enemy_Attack");
-
         UIManager.SetTUIData(1, player);
+        player.GetComponent<Player>().TutorialEvent = true;
+        yield return new WaitUntil(() => player.GetComponent<TutorialPlayer>().GetBool);
+
+        // 諸々リセット
+        player.GetComponent<Player>().TutorialEvent = false;
+        player.GetComponent<TutorialPlayer>().ResetBool();
+        UIManager.SetTUIData(2);
+        yield return new WaitForSeconds(1);
+
+        // Enemy出現
+        enemy.Tutorial(_tutorialId);
+        yield return new WaitForSeconds(1.5f);
+        
+        // Player攻撃
+        GameObject.FindGameObjectWithTag("Enemy")
+            .GetComponent<Animator>().Play("Enemy_Attack");
+        UIManager.SetTUIData(3, player);
+        player.GetComponent<Player>().TutorialEvent = true;
+        yield return new WaitUntil(() => player.GetComponent<TutorialPlayer>().GetBool);
+
+        // 諸々リセット
+        player.GetComponent<Player>().TutorialEvent = false;
+        player.GetComponent<TutorialPlayer>().ResetBool();
+        UIManager.SetTUIData(2);
+        _tutorialId++;
+        yield return new WaitForSeconds(1);
+        
+        _tutorialId++;
+        yield return null;
+
+        player.GetComponent<Player>().TutorialEvent = true;
+        yield return new WaitUntil(() => player.GetComponent<TutorialPlayer>().GetBool);
     }
 
     IEnumerator TutorialUpdate(CameraController camera)

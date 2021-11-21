@@ -19,7 +19,14 @@ public class Player : CharaBase, IDamageble
     AttackSetting _atkSetting;
     GameObject _rockOnEnemy;
 
-    float _flickMove;
+    TutorialPlayer _tutorial;
+    public bool TutorialEvent { get; set; } = false;
+
+    private void Awake()
+    {
+        if (GameManager.CurrentState == GameManager.State.Tutorial)
+            _tutorial = gameObject.AddComponent<TutorialPlayer>();
+    }
 
     void Start()
     {
@@ -47,11 +54,12 @@ public class Player : CharaBase, IDamageble
     void Update()
     {
         SetDir();
+        if (GameManager.CurrentState == GameManager.State.Tutorial && !TutorialEvent) return;
         _ctrl.SetNearEnemy(transform);
         _ctrl.Update();
 
-        if (!_ground.IsGround && _rb.velocity.y < 0)
-            Anim.Play("TestPlayer_Fall");
+        //if (!_ground.IsGround && _rb.velocity.y < 0 && !_ctrl.IsMove)
+        //    Anim.Play("TestPlayer_Fall");
     }
 
     void SetDir()
@@ -107,7 +115,7 @@ public class Player : CharaBase, IDamageble
     {
         if (_ctrl.NearEnemy == null || _ctrl.IsMove) return;
         if (_ctrl.ForceVec == Vector2.zero && Current == State.IsGround) return;
-        FieldManagement.SetTimeRate(false);
+        
         if (Current == State.IsGround)
         {
             float dis = Vector2.Distance
@@ -115,8 +123,12 @@ public class Player : CharaBase, IDamageble
             
             if (dis > 8) return;
         }
+
         float angle = Mathf.Atan2(_ctrl.ForceVec.y, _ctrl.ForceVec.x) * Mathf.Rad2Deg;
-        
+        if (_tutorial != null) _tutorial.SetData(angle);
+        if (GameManager.CurrentState == GameManager.State.Tutorial && !_tutorial.GetBool) return;
+
+        FieldManagement.SetTimeRate(false);
         if (angle >= 45 && angle < 130 || Current == State.IsFloating) _atkSetting.RequestToFloating();
         else _atkSetting.RequestToGround();
 

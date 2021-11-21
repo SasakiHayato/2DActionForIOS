@@ -85,6 +85,14 @@ namespace Fields
                     float z = Mathf.Lerp(7, 13, _tTime);
                     _cm.orthographicSize = z;
                     break;
+                case 3:
+                    _tTime = 0;
+                    break;
+                case 4:
+                    _tTime += Time.deltaTime;
+                    z = Mathf.Lerp(13, 19, _tTime);
+                    _cm.orthographicSize = z;
+                    break;
             }
         }
 

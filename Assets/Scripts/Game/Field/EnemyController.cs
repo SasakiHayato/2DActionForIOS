@@ -24,7 +24,7 @@ namespace Fields
             Spawn();
         }
 
-        public void Tutorial()
+        public void Tutorial(int id)
         {
             GameObject obj = MonoBehaviour
                 .Instantiate((GameObject)Resources.Load("TutorialTestEnemy"));
@@ -40,7 +40,11 @@ namespace Fields
             Vector2 playerPos = GameObject.FindGameObjectWithTag("Player").transform.position;
             
             _sprite.enabled = true;
-            Vector2 setPos = new Vector2(playerPos.x + _setXval, -2);
+
+            float set = 0;
+            if (id == 1) set = 5;
+            else set = -3;
+            Vector2 setPos = new Vector2(playerPos.x + set, -2);
             obj.transform.position = setPos;
             Light(setPos);
         }
