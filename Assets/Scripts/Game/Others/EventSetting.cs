@@ -106,8 +106,34 @@ public class EventSetting : MonoBehaviour
         _tutorialId++;
         yield return null;
 
+        // Player攻撃
         player.GetComponent<Player>().TutorialEvent = true;
+        UIManager.SetTUIData(4, player);
         yield return new WaitUntil(() => player.GetComponent<TutorialPlayer>().GetBool);
+
+        // 諸々リセット
+        player.GetComponent<Player>().TutorialEvent = false;
+        player.GetComponent<TutorialPlayer>().ResetBool();
+        UIManager.SetTUIData(2);
+        yield return new WaitForSeconds(1);
+
+        // Player攻撃
+        player.GetComponent<Player>().TutorialEvent = true;
+        UIManager.SetTUIData(5, player);
+        yield return new WaitUntil(() => player.GetComponent<TutorialPlayer>().GetBool);
+
+        // 諸々リセット
+        player.GetComponent<Player>().TutorialEvent = false;
+        player.GetComponent<TutorialPlayer>().ResetBool();
+        UIManager.SetTUIData(2);
+        yield return new WaitForSeconds(1);
+
+        Fade.InSingle(Fade.CreateFadeImage(), 1);
+        yield return new WaitUntil(() => Fade.EndFade);
+        yield return new WaitForSeconds(0.2f);
+        GameManager.ChangeState(GameManager.State.Title);
+        _tutorialId++;
+        FindObjectOfType<SceneManage>().Load("Title");
     }
 
     IEnumerator TutorialUpdate(CameraController camera)
@@ -116,6 +142,7 @@ public class EventSetting : MonoBehaviour
         while (!end)
         {
             camera.Tutorial(_tutorialId);
+            if (_tutorialId == 5) end = true;
             yield return null;
         }
     }

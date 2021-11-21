@@ -58,3 +58,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _arrow: {fileID: 338191070662417281, guid: 4f49182710c225e4781bbea89ecdd648, type: 3}
+  _textBox: {fileID: 9087541121736815012, guid: 94b6e3579b071f84aa071dc2a024484f, type: 3}

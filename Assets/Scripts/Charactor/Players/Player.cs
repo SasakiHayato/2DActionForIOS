@@ -57,9 +57,6 @@ public class Player : CharaBase, IDamageble
         if (GameManager.CurrentState == GameManager.State.Tutorial && !TutorialEvent) return;
         _ctrl.SetNearEnemy(transform);
         _ctrl.Update();
-
-        //if (!_ground.IsGround && _rb.velocity.y < 0 && !_ctrl.IsMove)
-        //    Anim.Play("TestPlayer_Fall");
     }
 
     void SetDir()

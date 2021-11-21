@@ -38,8 +38,11 @@ public class GameManagement : MonoBehaviour
 
     void Start()
     {
-        GameManager.ChangeState(GameManager.State.Title);
-        SetUp();
+        if (!_isDebug)
+        {
+            GameManager.ChangeState(GameManager.State.Title);
+            SetUp();
+        }
     }
 
     public void ChangeScene(string name)

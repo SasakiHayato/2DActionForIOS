@@ -26,6 +26,11 @@ public class TutorialPlayer : MonoBehaviour
             case 3:
                 IsFlick();
                 break;
+            case 4:
+                _angle = (float)type;
+                if (_angle > -135 && _angle < -45)
+                    IsFlick();
+                break;
         }
     }
 
