@@ -23,6 +23,7 @@ public class GameManagement : MonoBehaviour
         {
             Debug.Log("å≥ÅXÇ†ÇÈ");
             _setEvent = FindObjectOfType<EventSetting>();
+            _scene = FindObjectOfType<SceneManage>();
             Destroy(gameObject);
         }
         else
@@ -45,12 +46,19 @@ public class GameManagement : MonoBehaviour
         }
     }
 
-    public void ChangeScene(string name)
+    public void GoTutorial(string name)
     {
         if (name == "Main") GameManager.ChangeState(GameManager.State.Tutorial);
         AudioManager.StopSource();
         AudioManager.OnClickSE();
         _scene.LoadAsync(name, _setEvent);
+    }
+
+    public void ChangeScene(string name)
+    {
+        AudioManager.StopSource();
+        AudioManager.OnClickSE();
+        _scene.Load(name);
     }
 
     public void SetEvents(int id) => _setEvent.Set(id);

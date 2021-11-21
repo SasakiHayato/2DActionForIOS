@@ -7,7 +7,20 @@ using SimpleFade;
 
 public class SceneManage : MonoBehaviour
 {
-    public void Load(string name) => SceneManager.LoadScene(name);
+    public void Load(string name)
+    {
+        switch (name)
+        {
+            case "Main":
+                GameManager.ChangeState(GameManager.State.IsGame);
+                SceneManager.LoadScene(name);
+                break;
+            case "Title":
+                GameManager.ChangeState(GameManager.State.Title);
+                SceneManager.LoadScene(name);
+                break;
+        }
+    }
     public void LoadAsync(string name, EventSetting setEvent = null) 
         => StartCoroutine(Loading(SceneManager.LoadSceneAsync(name), setEvent));
 

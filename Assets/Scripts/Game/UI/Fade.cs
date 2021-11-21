@@ -39,6 +39,8 @@ namespace SimpleFade
 
         bool _break = false;
 
+        Image _thisImage = null;
+
         List<Image> _setImage = new List<Image>();
         List<SpriteRenderer> _setSprites = new List<SpriteRenderer>();
         List<Material> _setMaterials = new List<Material>();
@@ -334,22 +336,27 @@ namespace SimpleFade
         /// <returns>FadeImage</returns>
         public static Image CreateFadeImage()
         {
-            Canvas canvas = new GameObject("FadeCanvas").AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvas.sortingOrder = 10;
-            CanvasScaler scaler = canvas.gameObject.AddComponent<CanvasScaler>();
-            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            scaler.referenceResolution = new Vector2(1000, 1600);
+            if (Instance._thisImage == null)
+            {
+                Canvas canvas = new GameObject("FadeCanvas").AddComponent<Canvas>();
+                canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+                canvas.sortingOrder = 10;
+                CanvasScaler scaler = canvas.gameObject.AddComponent<CanvasScaler>();
+                scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+                scaler.referenceResolution = new Vector2(1000, 1600);
 
-            RectTransform rect = new GameObject("FadeImage")
-                .AddComponent<Image>().GetComponent<RectTransform>();
-            rect.transform.SetParent(canvas.transform);
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.sizeDelta = Vector2.zero;
-            rect.transform.localPosition = Vector2.zero;
-            rect.GetComponent<Image>().color = Color.black;
-            return rect.GetComponent<Image>();
+                RectTransform rect = new GameObject("FadeImage")
+                    .AddComponent<Image>().GetComponent<RectTransform>();
+                rect.transform.SetParent(canvas.transform);
+                rect.anchorMin = Vector2.zero;
+                rect.anchorMax = Vector2.one;
+                rect.sizeDelta = Vector2.zero;
+                rect.transform.localPosition = Vector2.zero;
+                rect.GetComponent<Image>().color = Color.black;
+                Instance._thisImage = rect.GetComponent<Image>();
+            }
+            
+            return Instance._thisImage;
         }
 
         /// <summary>
@@ -419,8 +426,9 @@ namespace SimpleFade
                 yield return null;
             }
 
-            ResetParam();
             _isFade = true;
+            ResetParam();
+            
         }
         IEnumerator SetAsyncForSprite(List<SpriteRenderer> targets)
         {
@@ -435,8 +443,9 @@ namespace SimpleFade
                 yield return null;
             }
 
-            ResetParam();
             _isFade = true;
+            ResetParam();
+            
         }
         IEnumerator SetAsyncForMaterial(List<Material> targets)
         {
@@ -482,8 +491,9 @@ namespace SimpleFade
 
             if (!_async)
             {
-                ResetParam();
                 _isFade = true;
+                ResetParam();
+                
             }
         }
         IEnumerator FadeToSprite(SpriteRenderer set)
@@ -514,8 +524,9 @@ namespace SimpleFade
 
             if (!_async)
             {
-                ResetParam();
                 _isFade = true;
+                ResetParam();
+                
             }
         }
         IEnumerator FadeToMaterial(Material set)
@@ -546,8 +557,9 @@ namespace SimpleFade
 
             if (!_async)
             {
-                ResetParam();
                 _isFade = true;
+                ResetParam();
+                
             }
         }
 
@@ -580,8 +592,8 @@ namespace SimpleFade
 
             _currentFade = false;
 
-            ResetParam();
             _isFade = true;
+            ResetParam();
         }
         IEnumerator FadeCrossToSprite(SpriteRenderer before, SpriteRenderer after)
         {
@@ -612,12 +624,13 @@ namespace SimpleFade
 
             _currentFade = false;
 
-            ResetParam();
             _isFade = true;
+            ResetParam();
         }
 
         void ResetParam()
         {
+            
             _currentFade = true;
             _async = false;
             _setImage = new List<Image>();

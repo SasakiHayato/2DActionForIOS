@@ -130,10 +130,10 @@ public class EventSetting : MonoBehaviour
 
         Fade.InSingle(Fade.CreateFadeImage(), 1);
         yield return new WaitUntil(() => Fade.EndFade);
-        yield return new WaitForSeconds(0.2f);
-        GameManager.ChangeState(GameManager.State.Title);
+        yield return new WaitForSeconds(1.2f);
+
         _tutorialId++;
-        FindObjectOfType<SceneManage>().Load("Title");
+        FindObjectOfType<SceneManage>().Load("Main");
     }
 
     IEnumerator TutorialUpdate(CameraController camera)

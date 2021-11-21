@@ -30,6 +30,7 @@ public class FieldManagement : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        EnemysList = new List<IEnemys>();
         _enemyctrl = new EnemyController();
         _camera = new CameraController();
 

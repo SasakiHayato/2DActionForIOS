@@ -8,7 +8,7 @@ public class TutorialUI : MonoBehaviour
 {
     [SerializeField] GameObject _arrow;
     [SerializeField] GameObject _textBox;
-
+    
     GameObject _setobj;
     GameObject _setText;
     float _moveArrow = 3;

@@ -21,8 +21,9 @@ public class UIManager : MonoBehaviour
         
         _score = FindObjectOfType<ScoreManage>();
         if (GameManager.CurrentState == GameManager.State.Tutorial)
+        {
             _tutorial = gameObject.GetComponent<TutorialUI>();
-
+        }
     }
 
     public static void UpDateScore()

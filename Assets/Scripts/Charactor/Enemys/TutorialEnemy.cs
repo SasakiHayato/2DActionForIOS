@@ -39,4 +39,5 @@ public class TutorialEnemy : EnemyBase, IEnemys, IDamageble
         Hp -= damage;
         if (Hp <= 0) Deid(gameObject);
     }
+    public void Des() => Destroy(gameObject);
 }

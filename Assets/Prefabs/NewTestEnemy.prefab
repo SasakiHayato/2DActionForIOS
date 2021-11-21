@@ -190,7 +190,7 @@ MonoBehaviour:
     00000000:
       type: {class: FindRange, ns: , asm: Assembly-CSharp}
       data:
-        _range: {x: 5.2, y: 10}
+        _range: {x: 5.2, y: 100}
         _my: {fileID: 8663902115027683161}
     00000001:
       type: {class: FindRange, ns: , asm: Assembly-CSharp}
