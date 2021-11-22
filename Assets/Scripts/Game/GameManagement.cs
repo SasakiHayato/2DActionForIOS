@@ -12,12 +12,11 @@ public class GameManagement : MonoBehaviour
 
     public static GameManagement Instance;
     EventSetting _setEvent;
-    SceneManage _scene;
+    static SceneManage _scene;
 
     private void Awake()
     {
-        if (_isDebug)
-            GameManager.ChangeState(GameManager.State.IsGame);
+        if (_isDebug) GameManager.ChangeState(GameManager.State.IsGame);
 
         if (Instance != null)
         {

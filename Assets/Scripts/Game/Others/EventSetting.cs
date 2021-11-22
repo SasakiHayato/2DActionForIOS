@@ -131,7 +131,12 @@ public class EventSetting : MonoBehaviour
         Fade.InSingle(Fade.CreateFadeImage(), 1);
         yield return new WaitUntil(() => Fade.EndFade);
         yield return new WaitForSeconds(1.2f);
+        GameManager.SetPlayerPos(player.transform.position);
+        EndTutorial();
+    }
 
+    void EndTutorial()
+    {
         _tutorialId++;
         FindObjectOfType<SceneManage>().Load("Main");
     }

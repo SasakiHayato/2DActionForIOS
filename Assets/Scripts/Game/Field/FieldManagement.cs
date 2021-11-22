@@ -35,6 +35,8 @@ public class FieldManagement : MonoBehaviour
         _camera = new CameraController();
 
         GameObject player = Instantiate(_player);
+        Debug.Log(GameManager.CurrentPlayerPos);
+        player.transform.position = GameManager.CurrentPlayerPos;
         FieldCharas.Add(player);
         
         _camera.SetUp();
