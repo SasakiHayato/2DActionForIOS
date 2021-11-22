@@ -24,9 +24,8 @@ public class GameManager
         }
     }
 
-    State _state = State.None;
-    public static State CurrentState { get => Instance._state; }
-    public static void ChangeState(State state) => Instance._state = state;
+    public static State CurrentState { get; private set; }
+    public static void ChangeState(State state) => CurrentState = state;
 
     public static Vector2 CurrentPlayerPos { get; private set; }
     public static void SetPlayerPos(Vector2 set) => CurrentPlayerPos = set;

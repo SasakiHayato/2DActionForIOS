@@ -9,7 +9,7 @@ public class FieldManagement : MonoBehaviour
     [SerializeField] float _createTime;
     [SerializeField] float _shakeTime;
     [SerializeField] EnemyData _enemyData;
-    [SerializeField] GameObject _player;
+    [SerializeField] Explosion _explosion;
 
     // Ç«Ç±Ç©ÇÁÇ≈Ç‡åƒÇ—èoÇπÇÈÇÊÇ§Ç…
     private static FieldManagement _instance = null;
@@ -34,7 +34,7 @@ public class FieldManagement : MonoBehaviour
         _enemyctrl = new EnemyController();
         _camera = new CameraController();
 
-        GameObject player = Instantiate(_player);
+        GameObject player = Instantiate((GameObject)Resources.Load("TestPlayer"));
         Debug.Log(GameManager.CurrentPlayerPos);
         player.transform.position = GameManager.CurrentPlayerPos;
         FieldCharas.Add(player);
@@ -101,5 +101,12 @@ public class FieldManagement : MonoBehaviour
     {
         if (set) Time.timeScale = 0f;
         else Time.timeScale = 1;
+    }
+
+    public static void ReExplosion(GameObject target)
+    {
+        Explosion e = Instantiate(Instance._explosion);
+        e.transform.position = target.transform.position;
+        e.Target = target;
     }
 }

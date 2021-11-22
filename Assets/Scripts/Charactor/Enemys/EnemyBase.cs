@@ -54,6 +54,15 @@ public abstract class EnemyBase : CharaBase
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground")) ChangeState(State.IsGround);
+        GameObject get = collision.gameObject;
+        
+        if (get.CompareTag("Ground") && Current == State.ImpactFloat 
+            || get.CompareTag("Enemy") && Current == State.ImpactFloat)
+        {
+            Debug.Log("Explosion");
+            FieldManagement.ReExplosion(gameObject);
+            ChangeState(State.IsGround);
+        }
+        if (get.CompareTag("Ground")) ChangeState(State.IsGround);
     }
 }
