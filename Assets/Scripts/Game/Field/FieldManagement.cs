@@ -42,6 +42,7 @@ public class FieldManagement : MonoBehaviour
         
         _camera.SetUp();
         _enemyctrl.SetUpEnemy = _enemyData;
+        _enemyctrl.SetUp();
     }
 
     void Update()
@@ -52,7 +53,7 @@ public class FieldManagement : MonoBehaviour
         if (_timer > _createTime)
         {
             _timer = 0;
-            _enemyctrl.SetUp();
+            _enemyctrl.Setting();
         }
 
         _ownerTime += Time.unscaledDeltaTime;

@@ -17,7 +17,14 @@ namespace Fields
         int _setXval = 5;
         int _count = 0;
 
+        ObjectPool<GameObject> _sLPool = new ObjectPool<GameObject>();
+
         public void SetUp()
+        {
+            _sLPool.Create((GameObject)Resources.Load("SpawnLight"));
+        }
+
+        public void Setting()
         {
             Create();
             SetData();

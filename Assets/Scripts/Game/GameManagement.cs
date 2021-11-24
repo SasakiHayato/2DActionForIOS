@@ -20,7 +20,6 @@ public class GameManagement : MonoBehaviour
 
         if (Instance != null)
         {
-            Debug.Log("å≥ÅXÇ†ÇÈ");
             _setEvent = FindObjectOfType<EventSetting>();
             _scene = FindObjectOfType<SceneManage>();
             Destroy(gameObject);
@@ -32,7 +31,7 @@ public class GameManagement : MonoBehaviour
             _setEvent = gameObject.AddComponent<EventSetting>();
             DontDestroyOnLoad(gameObject);
         }
-
+        
         SetUp();
     }
 
