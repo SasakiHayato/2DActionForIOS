@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using BehaviorTrees;
+using BehaviorAI;
 
-public class Enemy : EnemyBase, IBehaviorTree, IEnemys, IDamageble
+public class Enemy : EnemyBase, IBehavior, IEnemys, IDamageble
 {
     [SerializeField] BehaviorTree _tree;
     
@@ -32,8 +32,8 @@ public class Enemy : EnemyBase, IBehaviorTree, IEnemys, IDamageble
         }
     }
 
-    public void Set(IAction action) => action.Action();
-
+    public void Call(IAction action) => action.Execute();
+    public GameObject SetTarget() => gameObject;
     public GameObject GetObj() => gameObject;
     public int AddDamage() => 1;
     public void GetDamage(int damage)

@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 8290194698992909440}
   - component: {fileID: 5909395944899960987}
   - component: {fileID: 7133257230341481227}
-  - component: {fileID: 1590290175100559062}
   - component: {fileID: -3800579456002988577}
   - component: {fileID: 923760176242642034}
+  - component: {fileID: 7551239264878272794}
   m_Layer: 0
   m_Name: NewTestEnemy
   m_TagString: Enemy
@@ -128,32 +128,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &1590290175100559062
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7182620128938348911}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 12.5, y: 12.5}
-    newSize: {x: 12.5, y: 12.5}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.91, y: 2.5}
-  m_EdgeRadius: 0
 --- !u!114 &-3800579456002988577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,30 +153,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78201133bc3b61f428e099c4ba9e37eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Conditional:
-  - id: 0
-  - id: 1
-  Action:
-  - id: 2
-  - id: 3
+  _selector:
+  - Datas:
+    - Conditional:
+        id: 0
+      Action:
+        id: 1
+    - Conditional:
+        id: 2
+      Action:
+        id: 3
   references:
     version: 1
     00000000:
       type: {class: FindRange, ns: , asm: Assembly-CSharp}
       data:
         _range: {x: 5.2, y: 100}
-        _my: {fileID: 8663902115027683161}
     00000001:
+      type: {class: Move, ns: , asm: Assembly-CSharp}
+    00000002:
       type: {class: FindRange, ns: , asm: Assembly-CSharp}
       data:
-        _range: {x: 7, y: 1}
-        _my: {fileID: 8663902115027683161}
-    00000002:
-      type: {class: Move, ns: , asm: Assembly-CSharp}
-      data:
-        _my: {fileID: 7182620128938348911}
+        _range: {x: 5.3, y: 2}
     00000003:
       type: {class: Attack, ns: , asm: Assembly-CSharp}
       data:
-        _my: {fileID: 7182620128938348911}
         _animName: Enemy_Attack
+--- !u!70 &7551239264878272794
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7182620128938348911}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1.94, y: 2.7}
+  m_Direction: 0

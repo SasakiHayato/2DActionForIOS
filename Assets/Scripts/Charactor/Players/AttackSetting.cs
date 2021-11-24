@@ -77,6 +77,7 @@ public class AttackSetting : MonoBehaviour
     int _comboLengthFloat;
 
     int _totalCombo = 0;
+    public bool CurrentCombo { get; private set; } = false;
 
     private void Awake()
     {
@@ -114,7 +115,13 @@ public class AttackSetting : MonoBehaviour
             _floatDataId = _setUpFloatDataId;
             _combo = 0;
             _time = 0;
+            _totalCombo = 0;
+            CurrentCombo = false;
             UIManager.UpDateCombo(0);
+        }
+        else
+        {
+            CurrentCombo = true;
         }
     }
 
@@ -186,7 +193,7 @@ public class AttackSetting : MonoBehaviour
         if (_combo >= _comboLengthGround)
         {
             _groungDataId = _setUpGroundData;
-            _combo = 0;
+            _combo = 1;
         }
     }
 
@@ -205,7 +212,7 @@ public class AttackSetting : MonoBehaviour
         if (_combo > _comboLengthFloat)
         {
             _floatDataId = _setUpFloatDataId;
-            _combo = 0;
+            _combo = 1;
         }
     }
 }

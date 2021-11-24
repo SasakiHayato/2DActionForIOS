@@ -24,9 +24,12 @@ public class GameManager
         }
     }
 
-    public static State CurrentState { get; private set; }
+    public static State CurrentState { get; private set; } = State.None;
     public static void ChangeState(State state) => CurrentState = state;
 
     public static Vector2 CurrentPlayerPos { get; private set; }
     public static void SetPlayerPos(Vector2 set) => CurrentPlayerPos = set;
+
+    public static bool IsSetting { get; private set; } = false;
+    public static bool Setting(bool set) => IsSetting = set;
 }

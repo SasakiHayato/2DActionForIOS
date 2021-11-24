@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using BehaviorTrees;
+using BehaviorAI;
 
 public class Attack : IAction
 {
-    [SerializeField] GameObject _my;
     [SerializeField] string _animName;
 
     Animator _anim = null;
@@ -15,10 +14,10 @@ public class Attack : IAction
     bool _check = false;
     public bool Reset { set { _check = value; } }
 
-    public void Action()
+    public void Execute()
     {
-        if (!FieldManagement.AttackOwner(_my.name)) return;
-        if (_anim == null) _anim = _my.GetComponent<Animator>();
+        if (!FieldManagement.AttackOwner(Target.name)) return;
+        if (_anim == null) _anim = Target.GetComponent<Animator>();
 
         if (!_isPlay)
         {
@@ -36,4 +35,5 @@ public class Attack : IAction
     }
 
     public bool End() => _check;
+    public GameObject Target { private get; set; }
 }

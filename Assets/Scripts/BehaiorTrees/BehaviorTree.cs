@@ -2,158 +2,162 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BehaviorTrees
+namespace BehaviorAI
 {
-    public interface IBehaviorTree
+    public interface IBehavior
     {
-        void Set(IAction action);
+        GameObject SetTarget();
+        void Call(IAction set);
     }
 
     public interface IConditional
     {
+        GameObject Target { set; }
         bool Check();
     }
 
     public interface IAction
     {
-        void Action();
+        GameObject Target { set; }
+        void Execute();
         bool End();
         bool Reset { set; }
     }
+
 
     public class BehaviorTree : MonoBehaviour
     {
         enum State
         {
-            Running,
-            Setting,
-
-            Start,
-            End,
+            Run,
+            Set,
 
             None,
         }
 
         State _state = State.None;
+        [SerializeField] List<Selector> _selector = new List<Selector>();
 
-        [SerializeReference, SubclassSelector] List<IConditional> Conditional;
-        [SerializeReference, SubclassSelector] List<IAction> Action;
-
-        void Start()
+        [System.Serializable]
+        public class Selector
         {
-            if (Conditional.Count != Action.Count)
-                Debug.LogError("IConditional と IAction が同じでありません");
+            public List<Seqence> Datas = new List<Seqence>();
+
+            [System.Serializable]
+            public class Seqence
+            {
+                [SerializeReference, SubclassSelector]
+                public IConditional Conditional;
+                [SerializeReference, SubclassSelector]
+                public IAction Action;
+            }
         }
 
-        SequenceNode _sqN;
         SelectorNode _stN;
-        ActionNode _aN;
+        SequenceNode _sqN;
 
-        public void Repeater<T>(T set) where T : IBehaviorTree
+        public void Repeater<T>(T get) where T : IBehavior
         {
-            if (_state == State.Running || _state == State.Start)
+            GameObject t = get.SetTarget();
+            switch (_state)
             {
-                _aN.Set(set, Action[_sqN.ActionId], ref _state);
-                if (_state == State.End) return;
-                _sqN.Run(ref _state);
+                case State.Run:
+                    _sqN.Set(_selector[_stN.GetID].Datas[_sqN.ID], get, ref _state, t);
+                    break;
+                case State.Set:
+                    _state = State.None;
+                    break;
+                case State.None:
+                    _stN = new SelectorNode();
+                    _sqN = new SequenceNode();
+                    _state = State.Set;
+                    _stN.Set(_selector, _sqN, ref _state, t);
+                    break;
             }
-            else if (_state == State.End || _state == State.None)
-            {
-                _sqN = new SequenceNode();
-                _stN = new SelectorNode();
-                _aN = new ActionNode();
-                
-                _state = State.Setting;
-            }
-            else
-                _stN.Set(Conditional, _sqN, ref _state);
         }
 
         class SelectorNode
         {
-            public void Set(List<IConditional> cList, SequenceNode sqN,ref State state)
+            public int GetID { get => _id; }
+            int _id = 0;
+
+            public void Set(List<Selector> st, SequenceNode sq, ref State state, GameObject t)
             {
-                ConditionalNade cN = new ConditionalNade();
-                IConditional result = cN.Set(cList);
-                if (result == null)
+                ConditionalNode cN = new ConditionalNode();
+                cN.SetTarget = t;
+                if (st.Count <= 0)
                 {
-                    state = State.None;
+                    Debug.LogError("データがありません");
                     return;
                 }
-                else sqN.Set(result, cN.SetId,ref state);
+                if (st.Count <= 1)
+                {
+                    _id = 0;
+                    cN.Set(st[0], sq, ref state);
+                }
+                else
+                {
+                    // 乱数設定 : Note 改善の余地あり
+                    int randomID = Random.Range(0, st.Count);
+                    _id = randomID;
+                    cN.Set(st[randomID], sq, ref state);
+                }
+            }
+        }
+
+        class ConditionalNode
+        {
+            public GameObject SetTarget { private get; set; }
+
+            public void Set(Selector st, SequenceNode sq, ref State state)
+            {
+                for (int id = 0; id < st.Datas.Count; id++)
+                {
+                    IConditional c = st.Datas[id].Conditional;
+                    c.Target = SetTarget;
+                    if (c.Check())
+                    {
+                        state = State.Run;
+                        sq.ID = id;
+                        return;
+                    }
+                }
+
+                state = State.None;
             }
         }
 
         class SequenceNode
         {
-            IConditional _c;
+            public int ID { get; set; } = 0;
 
-            public int ActionId { get; private set; } = 0;
-            public void Set(IConditional c, int id,ref State state)
+            public void Set(Selector.Seqence sq, IBehavior b, ref State s, GameObject t)
             {
-                ActionId = id;
-                _c = c;
-                state = State.Start;
-            }
-            public void Run(ref State state)
-            {
-                if (_c == null) state = State.None;
-                
-                if (_c.Check()) state = State.Running;
+                ActionNode aN = new ActionNode();
+                aN.SetTarget = t;
+                if (sq.Conditional.Check()) aN.Set(sq.Action, b, ref s);
                 else
                 {
-                    _c = null;
-                    state = State.None;
+                    sq.Action.Reset = false;
+                    s = State.None;
                 }
-            }
-
-            public void Reset()
-            {
-                _c = null;
-                ActionId = 0;
-            }
-        }
-
-        class ConditionalNade
-        {
-            public int SetId { get; private set; } = 0;
-
-            public IConditional Set(List<IConditional> cList)
-            {
-                IConditional set = null;
-                bool check = false;
-                int index = 0;
-                cList.ForEach(c =>
-                {
-                    bool result = c.Check();
-                    if (result && !check)
-                    {
-                        check = true;
-                        set = cList[index];
-                        SetId = index;
-                    }
-                    else
-                    {
-                        index++;
-                    }
-                });
-
-                return set;
             }
         }
 
         class ActionNode
         {
-            public void Set(IBehaviorTree ai, IAction a,ref State state)
+            public GameObject SetTarget { get; set; }
+            public void Set(IAction a, IBehavior iB, ref State state)
             {
-                ai.Set(a);
+                a.Target = SetTarget;
                 if (a.End())
                 {
+                    state = State.None;
                     a.Reset = false;
-                    state = State.End;
                 }
+                else
+                    iB.Call(a);
             }
         }
     }
 }
-

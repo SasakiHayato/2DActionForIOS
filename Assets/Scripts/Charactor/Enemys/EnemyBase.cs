@@ -44,6 +44,11 @@ public abstract class EnemyBase : CharaBase
 
     public virtual void Force(Vector2 force, float power)
     {
+        if (GameManager.CurrentState == GameManager.State.IsGame)
+        {
+            Hp--;
+            if (Hp <= 0) Deid(gameObject);
+        }
         RB.drag = 0;
         UIManager.UpDateScore();
         RB.AddForce(force * power, ForceMode2D.Impulse);
@@ -59,8 +64,12 @@ public abstract class EnemyBase : CharaBase
         if (get.CompareTag("Ground") && Current == State.ImpactFloat 
             || get.CompareTag("Enemy") && Current == State.ImpactFloat)
         {
-            Debug.Log("Explosion");
             FieldManagement.ReExplosion(gameObject);
+            ChangeState(State.IsGround);
+        }
+        else if (get.CompareTag("Enemy") && Current == State.ImpactGround)
+        {
+            Debug.Log("GroundImpact");
             ChangeState(State.IsGround);
         }
         if (get.CompareTag("Ground")) ChangeState(State.IsGround);

@@ -17,6 +17,6 @@ public class ScoreManage : MonoBehaviour
     public void Add()
     {
         _count++;
-        _scoreTxt.text = $"Score : {_count.ToString("000")}";
+        _scoreTxt.text = $"Score : {_count.ToString("d3")}";
     }
 }

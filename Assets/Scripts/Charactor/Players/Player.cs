@@ -15,7 +15,6 @@ public class Player : CharaBase, IDamageble
     public Animator Anim { get; private set; }
 
     Controller _ctrl = new Controller();
-    CheckGround _ground;
     AttackSetting _atkSetting;
     GameObject _rockOnEnemy;
 
@@ -33,7 +32,6 @@ public class Player : CharaBase, IDamageble
         _rb = GetComponent<Rigidbody2D>();
         Anim = GetComponent<Animator>();
         _atkSetting = GetComponent<AttackSetting>();
-        _ground = GetComponentInChildren<CheckGround>();
         
         SetUpAtkCol();
         SetUpCtrl();
@@ -55,6 +53,12 @@ public class Player : CharaBase, IDamageble
     {
         SetDir();
         if (GameManager.CurrentState == GameManager.State.Tutorial && !TutorialEvent) return;
+        if (!_atkSetting.CurrentCombo)
+        {
+            _rb.drag = 0;
+            gameObject.GetComponent<Collider2D>().isTrigger = false;
+            ChangeState(State.IsGround);
+        }
         _ctrl.SetNearEnemy(transform);
         _ctrl.Update();
     }
@@ -78,23 +82,35 @@ public class Player : CharaBase, IDamageble
                 GameObject enemy = _ctrl.NearEnemy.GetObj();
                 enemy.GetComponent<IState>().ChangeState(State.IsFloating);
                 enemy.GetComponent<EnemyBase>().Force(new Vector2(0, 2.5f), 7);
+
                 _rockOnEnemy = enemy;
                 break;
             case 2:
                 _rb.drag = 100;
-                if (_rockOnEnemy == null) ChangeState(State.IsGround);
+                gameObject.GetComponent<Collider2D>().isTrigger = true;
+                if (_rockOnEnemy == null)
+                {
+                    gameObject.GetComponent<Collider2D>().isTrigger = false;
+                    ChangeState(State.IsGround);
+                    return;
+                }
                 Vector2 setVec = _rockOnEnemy.transform.position;
                 transform.position = new Vector2(setVec.x, setVec.y + 1);
                 _rb.velocity = Vector2.zero;
                 break;
             case 3:
                 _rb.drag = 0;
-                if (_rockOnEnemy == null) ChangeState(State.IsGround);
+                if (_rockOnEnemy == null)
+                {
+                    ChangeState(State.IsGround);
+                    return;
+                }
                 Vector2 set = _rockOnEnemy.transform.position;
                 transform.position = new Vector2(set.x, set.y + 1);
                 _rockOnEnemy.GetComponent<EnemyBase>().Force(_ctrl.ForceVec, 50);
                 _rockOnEnemy.GetComponent<IState>().ChangeState(State.ImpactFloat);
                 _rockOnEnemy = null;
+                gameObject.GetComponent<Collider2D>().isTrigger = false;
                 ChangeState(State.IsGround);
                 break;
         }
@@ -104,12 +120,13 @@ public class Player : CharaBase, IDamageble
     {
         GameObject enemy = _ctrl.NearEnemy.GetObj();
         enemy.GetComponent<IState>().ChangeState(State.IsFloating);
-        enemy.GetComponent<EnemyBase>().Force(_ctrl.ForceVec, 15);
+        enemy.GetComponent<EnemyBase>().Force(_ctrl.ForceVec, 30);
         enemy.GetComponent<IState>().ChangeState(State.ImpactGround);
     }
 
     public void Attack()
     {
+        if (!GameManager.IsSetting && Current == State.IsGround) return;
         if (_ctrl.NearEnemy == null || _ctrl.IsMove) return;
         if (_ctrl.ForceVec == Vector2.zero && Current == State.IsGround) return;
         
@@ -124,7 +141,6 @@ public class Player : CharaBase, IDamageble
         float angle = Mathf.Atan2(_ctrl.ForceVec.y, _ctrl.ForceVec.x) * Mathf.Rad2Deg;
         if (_tutorial != null) _tutorial.SetData(angle);
         if (GameManager.CurrentState == GameManager.State.Tutorial && !_tutorial.GetBool) return;
-
         FieldManagement.SetTimeRate(false);
         if (angle >= 45 && angle < 130 || Current == State.IsFloating) _atkSetting.RequestToFloating();
         else _atkSetting.RequestToGround();

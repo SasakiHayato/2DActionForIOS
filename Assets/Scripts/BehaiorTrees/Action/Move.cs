@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using BehaviorTrees;
+using BehaviorAI;
 
 public class Move : IAction
 {
-    [SerializeField] GameObject _my;
     float _speed;
 
     GameObject _player = null;
@@ -15,20 +14,20 @@ public class Move : IAction
 
     bool _check = false;
     public bool Reset { set { _check = value; } }
-    public void Action()
+    public void Execute()
     {
         if (!_setUp)
         {
             _setUp = true;
-            _rb = _my.GetComponent<Rigidbody2D>();
-            _speed = _my.GetComponent<EnemyBase>().Speed;
+            _rb = Target.GetComponent<Rigidbody2D>();
+            _speed = Target.GetComponent<EnemyBase>().Speed;
             _player = GameObject.FindGameObjectWithTag("Player");
         }
 
-        if (_my.transform.position.x < _player.transform.position.x)
+        if (Target.transform.position.x < _player.transform.position.x)
             if (_speed > 0) _speed *= -1;
 
-        if (_my.transform.position.x >= _player.transform.position.x)
+        if (Target.transform.position.x >= _player.transform.position.x)
             if (_speed < 0) _speed *= -1;
 
         _rb.velocity = new Vector2(_speed, _rb.velocity.y);
@@ -36,4 +35,5 @@ public class Move : IAction
     }
 
     public bool End() => _check;
+    public GameObject Target { private get; set; }
 }

@@ -21,6 +21,7 @@ public class FieldManagement : MonoBehaviour
 
     EnemyController _enemyctrl;
     CameraController _camera;
+    CharaBase _player;
 
     float _timer;
 
@@ -35,7 +36,7 @@ public class FieldManagement : MonoBehaviour
         _camera = new CameraController();
 
         GameObject player = Instantiate((GameObject)Resources.Load("TestPlayer"));
-        Debug.Log(GameManager.CurrentPlayerPos);
+        _player = player.GetComponent<CharaBase>();
         player.transform.position = GameManager.CurrentPlayerPos;
         FieldCharas.Add(player);
         
@@ -99,12 +100,24 @@ public class FieldManagement : MonoBehaviour
 
     public static void SetTimeRate(bool set)
     {
-        if (set) Time.timeScale = 0f;
-        else Time.timeScale = 1;
+        if (GameManager.CurrentState == GameManager.State.Tutorial) return;
+
+        if (set && Instance._player.Current == State.IsGround)
+        {
+            GameManager.Setting(true);
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            GameManager.Setting(false);
+            Time.timeScale = 1;
+        }
     }
 
     public static void ReExplosion(GameObject target)
     {
+        if (GameManager.CurrentState != GameManager.State.IsGame) return;
+
         Explosion e = Instantiate(Instance._explosion);
         e.transform.position = target.transform.position;
         e.Target = target;
