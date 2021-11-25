@@ -33,8 +33,7 @@ namespace Fields
 
         public void Tutorial(int id)
         {
-            GameObject obj = MonoBehaviour
-                .Instantiate((GameObject)Resources.Load("TutorialTestEnemy"));
+            GameObject obj = Object.Instantiate((GameObject)Resources.Load("TutorialTestEnemy"));
             obj.name = $"Enemy No.{_count}";
             _count++;
             _sprite = obj.GetComponent<SpriteRenderer>();
@@ -101,10 +100,9 @@ namespace Fields
 
         void Light(Vector2 enemyPos)
         {
-            GameObject spawnPrefab = (GameObject)Resources.Load("SpawnLight");
-            GameObject light = MonoBehaviour.Instantiate(spawnPrefab);
+            GameObject light = _sLPool.Use();
             light.transform.position = enemyPos;
-
+            light.GetComponent<DeleteUI>().SetAction(_sLPool.Delete);
             Fade.OutSingle(light.GetComponent<SpriteRenderer>(), 0.3f);
         }
     }

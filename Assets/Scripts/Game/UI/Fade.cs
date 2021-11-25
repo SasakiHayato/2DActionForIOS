@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 namespace SimpleFade
 {
@@ -40,6 +41,7 @@ namespace SimpleFade
         bool _break = false;
 
         Image _thisImage = null;
+        Action _action = null;
 
         List<Image> _setImage = new List<Image>();
         List<SpriteRenderer> _setSprites = new List<SpriteRenderer>();

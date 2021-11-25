@@ -27,11 +27,13 @@ public class EffectSystems : MonoBehaviour
     private EffectSystems() { }
 
     Player _player;
+    ObjectPool<GameObject> _sPool = new ObjectPool<GameObject>();
     
     private void Awake()
     {
         _instance = this;
         _player = FindObjectOfType<Player>();
+        _sPool.Create((GameObject)Resources.Load("Srash"));
     }
 
     public static void RequestPartical() => Instance.Partical();
@@ -42,9 +44,10 @@ public class EffectSystems : MonoBehaviour
     {
         if (_player.RequestIEnemy() == null) return;
 
-        GameObject get = (GameObject)Resources.Load("Srash");
         Vector2 setPos = _player.RequestIEnemy().GetObj().transform.position;
-        GameObject set = Instantiate(get, setPos, Quaternion.identity);
+        GameObject set = _sPool.Use();
+        set.GetComponent<DeleteUI>().SetAction(_sPool.Delete);
+        set.transform.position = setPos;
         int rotateZ = Random.Range(0, 360);
         set.transform.rotation = Quaternion.Euler(0, 0, rotateZ);
         SimpleFade.Fade.OutSingle(set.GetComponent<SpriteRenderer>(), 1f);

@@ -12,12 +12,14 @@ public class ObjectPool<T> where T : Object
 
     public void Create(GameObject set)
     {
+        GameObject pool = new GameObject($"{set.name} Pool");
         _setTarget = set;
         for (int i = 0; i < 10; i++)
         {
             _count++;
             GameObject obj = Object.Instantiate(set);
             obj.name = $"Pool {_count}";
+            obj.transform.SetParent(pool.transform);
             _targetList.Add(obj);
             obj.SetActive(false);
         }
