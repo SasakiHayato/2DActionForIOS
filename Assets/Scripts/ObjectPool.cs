@@ -10,11 +10,11 @@ public class ObjectPool<T> where T : Object
     int _count;
     GameObject _setTarget;
 
-    public void Create(GameObject set)
+    public void Create(GameObject set, int count = 10)
     {
         GameObject pool = new GameObject($"{set.name} Pool");
         _setTarget = set;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < count; i++)
         {
             _count++;
             GameObject obj = Object.Instantiate(set);

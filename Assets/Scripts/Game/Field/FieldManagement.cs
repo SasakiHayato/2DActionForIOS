@@ -28,6 +28,8 @@ public class FieldManagement : MonoBehaviour
     string _ownerName = null;
     float _ownerTime = 0;
 
+    ObjectPool<GameObject> _exPool = new ObjectPool<GameObject>();
+
     private void Awake()
     {
         _instance = this;
@@ -39,7 +41,9 @@ public class FieldManagement : MonoBehaviour
         _player = player.GetComponent<CharaBase>();
         player.transform.position = GameManager.CurrentPlayerPos;
         FieldCharas.Add(player);
-        
+
+        _exPool.Create(_explosion.gameObject);
+
         _camera.SetUp();
         _enemyctrl.SetUpEnemy = _enemyData;
         _enemyctrl.SetUp();
@@ -119,8 +123,9 @@ public class FieldManagement : MonoBehaviour
     {
         if (GameManager.CurrentState != GameManager.State.IsGame) return;
 
-        Explosion e = Instantiate(Instance._explosion);
+        Explosion e = Instance._exPool.Use().GetComponent<Explosion>();
         e.transform.position = target.transform.position;
         e.Target = target;
+        e.SetAction(Instance._exPool.Delete);
     }
 }
