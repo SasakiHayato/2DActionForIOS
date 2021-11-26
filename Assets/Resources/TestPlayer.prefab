@@ -300,7 +300,7 @@ MonoBehaviour:
     Action: 1
     Effect: 0000000002000000
     SE: {fileID: 8300000, guid: 6fde2e6fc31d5e342b80e745f24a584d, type: 3}
-    CallBackAttack: 0
+    CallBackAttack: 1
     ImputTime: 3
   - ActionAnimName: TestPlayer_Attack1
     Power: 0

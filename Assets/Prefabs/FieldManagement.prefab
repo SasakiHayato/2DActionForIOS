@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8684618674306698500}
   - component: {fileID: 8684618674306698503}
+  - component: {fileID: 2442735319967059706}
   m_Layer: 0
   m_Name: FieldManagement
   m_TagString: Untagged
@@ -47,3 +48,21 @@ MonoBehaviour:
   _shakeTime: 0.2
   _enemyData: {fileID: 11400000, guid: 7cac6a97e5e3d2840bcb48d1eb501af7, type: 2}
   _explosion: {fileID: 7861550658898305305, guid: 0440a07abc671b242bf77d9938a11446, type: 3}
+--- !u!114 &2442735319967059706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8684618674306698502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 065ae64a5992d93499a95c43c2e48be8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gorundTip:
+  - {fileID: 5524608272566545534, guid: f154afa9fe8a40e4c94020d773da8ace, type: 3}
+  - {fileID: 3877506519797603562, guid: 8472ca54f0f38a547833458a0e772472, type: 3}
+  - {fileID: 6215514547492838471, guid: fe2690be46275ec4f97013c0b2957b11, type: 3}
+  _underGround: {fileID: 6637939354333506113, guid: 9cc7a950ddddbbd44896812332bbfb45, type: 3}
+  _setPos: {x: 0, y: 0}
