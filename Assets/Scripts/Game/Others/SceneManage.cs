@@ -19,6 +19,10 @@ public class SceneManage : MonoBehaviour
                 GameManager.ChangeState(GameManager.State.Title);
                 SceneManager.LoadScene(name);
                 break;
+            case "Result":
+                GameManager.ChangeState(GameManager.State.EndGame);
+                SceneManager.LoadScene(name);
+                break;
         }
     }
     public void LoadAsync(string name, EventSetting setEvent = null) 

@@ -10,6 +10,7 @@ public class Player : CharaBase, IDamageble
 {
     [SerializeField] float _flickTime = 0.2f;
     [SerializeField] float _flickLimit = 3;
+    [SerializeField] int _hp;
 
     CircleCollider2D _atkCol;
     CapsuleCollider2D _playerCol;
@@ -179,7 +180,13 @@ public class Player : CharaBase, IDamageble
     public void GetDamage(int damage)
     {
         FieldManagement.SetTimeRate(false);
-        Debug.Log($"{gameObject.name} Žó‚¯‚½");
+        _hp -= damage;
+        if (_hp >= 0)
+        {
+            Debug.Log("Ž€‚ñ‚¾");
+            GameManager.ChangeState(GameManager.State.EndGame);
+            GameManagement.RequestSetUp();
+        }
     }
 
     IEnumerator EndAnim()

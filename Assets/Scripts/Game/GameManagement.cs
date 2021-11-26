@@ -72,6 +72,8 @@ public class GameManagement : MonoBehaviour
                 Instantiate(_audio.gameObject);
                 break;
             case GameManager.State.EndGame:
+                Debug.Log("I—¹");
+                _setEvent.Set(3, _scene);
                 break;
             case GameManager.State.Title:
                 GameObject.Find("moon").transform
@@ -88,4 +90,6 @@ public class GameManagement : MonoBehaviour
                 break;
         }
     }
+
+    public static void RequestSetUp() => Instance.SetUp();
 }

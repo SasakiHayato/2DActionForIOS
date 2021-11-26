@@ -338,6 +338,11 @@ namespace SimpleFade
         /// <returns>FadeImage</returns>
         public static Image CreateFadeImage()
         {
+            if (Instance._thisImage != null)
+            {
+                Destroy(GameObject.Find("FadeCanvas"));
+                Instance._thisImage = null;
+            }
             if (Instance._thisImage == null)
             {
                 Canvas canvas = new GameObject("FadeCanvas").AddComponent<Canvas>();

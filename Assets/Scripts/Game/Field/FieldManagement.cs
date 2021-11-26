@@ -54,6 +54,7 @@ public class FieldManagement : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.CurrentState != GameManager.State.IsGame) return;
         _camera.Mode();
 
         _timer += Time.deltaTime;
@@ -112,7 +113,7 @@ public class FieldManagement : MonoBehaviour
 
     public static void SetTimeRate(bool set)
     {
-        if (GameManager.CurrentState == GameManager.State.Tutorial) return;
+        if (GameManager.CurrentState != GameManager.State.IsGame) return;
 
         if (set && Instance._player.Current == State.IsGround)
         {

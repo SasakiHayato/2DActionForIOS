@@ -25,6 +25,10 @@ public class EventSetting : MonoBehaviour
                 int bossID = (int)set;
                 EntryBoss(bossID);
                 break;
+            case 3:
+                SceneManage scene = (SceneManage)set;
+                DeadPlayer(scene);
+                break;
         }
     }
 
@@ -161,5 +165,19 @@ public class EventSetting : MonoBehaviour
     void EntryBoss(int id)
     {
         // ‹C‚ªŒü‚¢‚½‚ç
+    }
+
+    void DeadPlayer(SceneManage scene)
+    {
+        GameObject.FindGameObjectWithTag("Player")
+            .GetComponent<Animator>().Play("TestPlayer_Dead");
+        StartCoroutine(Dead(scene));
+    }
+
+    IEnumerator Dead(SceneManage scene)
+    {
+        Fade.InSingle(Fade.CreateFadeImage(), 1);
+        yield return new WaitUntil(() => Fade.EndFade);
+        scene.Load("Result");
     }
 }
