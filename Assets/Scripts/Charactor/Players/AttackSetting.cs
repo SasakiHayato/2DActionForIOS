@@ -158,17 +158,17 @@ public class AttackSetting : MonoBehaviour
             case ActionType.Ground:
                 ComboSettingToGround();
                 _player.Power = data.Power;
-                _animEvent += _player.GroundAttack;
                 _effectSetting.Set(ref _animEvent, data.Effect);
+                _animEvent += _player.GroundAttack;
                 _anim.Play(data.ActionAnimName);
                 break;
 
             case ActionType.Floating:
                 ComboSettingToFloating();
+                _effectSetting.Set(ref _animEvent, data.Effect);
                 if (data.CallBackAttack) _animEvent += CallBackFloat;
                 else _player.FloatAttack(_combo);
                 _player.Power = data.Power;
-                _effectSetting.Set(ref _animEvent, data.Effect);
                 _anim.Play(data.ActionAnimName);
                 break;
         }

@@ -61,8 +61,15 @@ namespace Fields
         void Target()
         {
             if (_player.RequestIEnemy() == null) return;
-
+            Vector2 nearEnemy = _player.RequestIEnemy().GetObj().transform.position;
             Vector3 playerPos = _playerObj.transform.position;
+            float distance = Vector2.Distance(playerPos, nearEnemy);
+            if (distance >= 6)
+            {
+                Normal();
+                return;
+            }
+            
             Vector3 targetPos = _player.RequestIEnemy().GetObj().transform.position;
             Vector2 centar = (playerPos + targetPos) / 2;
             Zoom(Vector3.Distance(playerPos, targetPos));

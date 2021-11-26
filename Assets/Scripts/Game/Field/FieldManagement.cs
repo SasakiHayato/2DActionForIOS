@@ -64,14 +64,14 @@ public class FieldManagement : MonoBehaviour
         }
 
         _ownerTime += Time.unscaledDeltaTime;
-        if (_ownerTime > 3)
+        if (_ownerTime > 2)
         {
             _ownerTime = 0;
             DeleteOnwer();
         }
 
         _gameTime += Time.unscaledDeltaTime;
-        
+        GameManager.CheckPhase(_gameTime);
     }
 
     public static bool AttackOwner(string name)

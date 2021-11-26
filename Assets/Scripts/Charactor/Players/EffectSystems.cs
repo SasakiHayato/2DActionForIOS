@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Fields;
 
 public class EffectSystems : MonoBehaviour
 {
@@ -44,7 +43,7 @@ public class EffectSystems : MonoBehaviour
     {
         if (_player.RequestIEnemy() == null) return;
 
-        Vector2 setPos = _player.RequestIEnemy().GetObj().transform.position;
+        Vector2 setPos = _player.RockOnE.transform.position;
         GameObject set = _sPool.Use();
         set.GetComponent<DeleteUI>().SetAction(_sPool.Delete);
         set.transform.position = setPos;

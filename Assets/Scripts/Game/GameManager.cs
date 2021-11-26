@@ -33,6 +33,8 @@ public class GameManager
         }
     }
 
+    Phase _savePhase = Phase.None;
+
     public static State CurrentState { get; private set; } = State.None;
     public static void ChangeState(State state) => CurrentState = state;
 
@@ -42,9 +44,9 @@ public class GameManager
     public static bool IsSetting { get; private set; } = false;
     public static bool Setting(bool set) => IsSetting = set;
 
-    public Phase CurrentPhase { get; private set; } = Phase.None;
-    public void SetPhase(float time)
+    public static Phase CurrentPhase { get; private set; } = Phase.None;
+    public static void CheckPhase(float time)
     {
-
+        
     }
 }

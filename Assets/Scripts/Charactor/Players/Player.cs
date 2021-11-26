@@ -16,7 +16,9 @@ public class Player : CharaBase, IDamageble
 
     Controller _ctrl = new Controller();
     AttackSetting _atkSetting;
+
     GameObject _rockOnEnemy;
+    public GameObject RockOnE { get => _rockOnEnemy; }
 
     TutorialPlayer _tutorial;
     public bool TutorialEvent { get; set; } = false;
@@ -122,6 +124,8 @@ public class Player : CharaBase, IDamageble
         enemy.GetComponent<IState>().ChangeState(State.IsFloating);
         enemy.GetComponent<EnemyBase>().Force(_ctrl.ForceVec, 30);
         enemy.GetComponent<IState>().ChangeState(State.ImpactGround);
+
+        _rockOnEnemy = null;
     }
 
     public void Attack()
@@ -141,6 +145,9 @@ public class Player : CharaBase, IDamageble
         float angle = Mathf.Atan2(_ctrl.ForceVec.y, _ctrl.ForceVec.x) * Mathf.Rad2Deg;
         if (_tutorial != null) _tutorial.SetData(angle);
         if (GameManager.CurrentState == GameManager.State.Tutorial && !_tutorial.GetBool) return;
+
+        if (_rockOnEnemy == null) _rockOnEnemy = _ctrl.NearEnemy.GetObj();
+        Debug.Log(_rockOnEnemy);
         FieldManagement.SetTimeRate(false);
         if (angle >= 45 && angle < 130 || Current == State.IsFloating) _atkSetting.RequestToFloating();
         else _atkSetting.RequestToGround();
