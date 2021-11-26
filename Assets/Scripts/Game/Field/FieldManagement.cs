@@ -28,7 +28,8 @@ public class FieldManagement : MonoBehaviour
     string _ownerName = null;
     float _ownerTime = 0;
 
-    ObjectPool<GameObject> _exPool = new ObjectPool<GameObject>();
+    ObjectPool<GameObject> _explosionPool = new ObjectPool<GameObject>();
+    ObjectPool<GameObject> _exPPool = new ObjectPool<GameObject>();
 
     private void Awake()
     {
@@ -42,7 +43,8 @@ public class FieldManagement : MonoBehaviour
         player.transform.position = GameManager.CurrentPlayerPos;
         FieldCharas.Add(player);
 
-        _exPool.Create(_explosion.gameObject);
+        _explosionPool.Create(_explosion.gameObject, 3);
+        _exPPool.Create((GameObject)Resources.Load("ExplosionP"), 3);
 
         _camera.SetUp();
         _enemyctrl.SetUpEnemy = _enemyData;
@@ -110,7 +112,7 @@ public class FieldManagement : MonoBehaviour
         if (set && Instance._player.Current == State.IsGround)
         {
             GameManager.Setting(true);
-            Time.timeScale = 1f;
+            Time.timeScale = 0f;
         }
         else
         {
@@ -123,9 +125,12 @@ public class FieldManagement : MonoBehaviour
     {
         if (GameManager.CurrentState != GameManager.State.IsGame) return;
 
-        Explosion e = Instance._exPool.Use().GetComponent<Explosion>();
+        Explosion e = Instance._explosionPool.Use().GetComponent<Explosion>();
+        GameObject obj = Instance._exPPool.Use();
+        obj.GetComponent<DeleteUI>().SetAction(Instance._exPPool.Delete);
         e.transform.position = target.transform.position;
         e.Target = target;
-        e.SetAction(Instance._exPool.Delete);
+        obj.transform.position = target.transform.position;
+        e.SetAction(Instance._explosionPool.Delete);
     }
 }
