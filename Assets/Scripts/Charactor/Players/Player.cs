@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 using Players;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -84,7 +86,8 @@ public class Player : CharaBase, IDamageble
                 GameObject enemy = _ctrl.NearEnemy.GetObj();
                 enemy.GetComponent<IState>().ChangeState(State.IsFloating);
                 enemy.GetComponent<EnemyBase>().Force(new Vector2(0, 2.5f), 7);
-
+                enemy.transform.DORotate(new Vector3(0, 0, 360), 1, RotateMode.LocalAxisAdd)
+                    .SetLoops(-1).SetEase(Ease.Linear);
                 _rockOnEnemy = enemy;
                 break;
             case 2:
@@ -147,7 +150,7 @@ public class Player : CharaBase, IDamageble
         if (GameManager.CurrentState == GameManager.State.Tutorial && !_tutorial.GetBool) return;
 
         if (_rockOnEnemy == null) _rockOnEnemy = _ctrl.NearEnemy.GetObj();
-        Debug.Log(_rockOnEnemy);
+        
         FieldManagement.SetTimeRate(false);
         if (angle >= 45 && angle < 130 || Current == State.IsFloating) _atkSetting.RequestToFloating();
         else _atkSetting.RequestToGround();

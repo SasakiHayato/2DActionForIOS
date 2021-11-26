@@ -71,6 +71,7 @@ public class FieldManagement : MonoBehaviour
         }
 
         _gameTime += Time.unscaledDeltaTime;
+        UIManager.UpDateTime(_gameTime);
         GameManager.CheckPhase(_gameTime);
     }
 

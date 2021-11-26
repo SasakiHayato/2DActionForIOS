@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] GameObject _comboObj;
     [SerializeField] string _tPanelName;
+    [SerializeField] string _gPanelName;
 
     // Ç«Ç±Ç©ÇÁÇ≈Ç‡åƒÇ—èoÇπÇÈÇÊÇ§Ç…
     private static UIManager _instance = null;
@@ -14,21 +15,27 @@ public class UIManager : MonoBehaviour
     private UIManager() { }
 
     ScoreManage _score;
+    TimerText _timer;
     TutorialUI _tUI;
-    GameObject _tPanel;
 
     private void Awake()
     {
         _instance = this;
-        _tPanel = GameObject.Find(_tPanelName);
-        _tPanel.SetActive(false);
 
-        _score = FindObjectOfType<ScoreManage>();
         if (GameManager.CurrentState == GameManager.State.Tutorial)
         {
             _tUI = gameObject.GetComponent<TutorialUI>();
-            _tPanel.SetActive(true);
+            GameObject.Find(_tPanelName).SetActive(true);
+            GameObject.Find(_gPanelName).SetActive(false);
         }
+        else
+        {
+            GameObject.Find(_gPanelName).SetActive(true);
+            GameObject.Find(_tPanelName).SetActive(false);
+        }
+
+        _score = FindObjectOfType<ScoreManage>();
+        _timer = FindObjectOfType<TimerText>();
     }
 
     public static void UpDateScore()
@@ -37,9 +44,16 @@ public class UIManager : MonoBehaviour
         Instance._score.Add();
     }
 
+    public static void UpDateTime(float time)
+    {
+        if (GameManager.CurrentState != GameManager.State.IsGame) return;
+        Instance._timer.SetTime(time);
+    }
+
     public static void UpDateCombo(int count)
     {
         if (GameManager.CurrentState != GameManager.State.IsGame) return;
+        if (count == 0) return;
         GameObject obj = Instantiate(Instance._comboObj);
         obj.GetComponentInChildren<ComboUISetting>().GetData(count);
     }

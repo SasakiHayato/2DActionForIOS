@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 using BehaviorAI;
 
@@ -8,6 +9,12 @@ public class Enemy : EnemyBase, IBehavior, IEnemys, IDamageble
 {
     [SerializeField] BehaviorTree _tree;
     
+    void Start()
+    {
+        //transform.DORotate(new Vector3(0, 0, 360), 1, RotateMode.FastBeyond360)
+        //    .SetLoops(-1).SetEase(Ease.Linear).Play();
+    }
+
     void Update()
     {
         base.FindPlayer(transform);
@@ -22,10 +29,12 @@ public class Enemy : EnemyBase, IBehavior, IEnemys, IDamageble
                 if (RB.velocity.y <= 0) RB.drag = 100;
                 break;
             case State.ImpactGround:
+                transform.DOKill();
                 RB.drag = 0;
                 RB.mass = 10;
                 break;
             case State.ImpactFloat:
+                transform.DOKill();
                 RB.drag = 0;
                 RB.mass = 10;
                 break;

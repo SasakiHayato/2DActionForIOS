@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class GameManagement : MonoBehaviour
 {
@@ -73,6 +74,9 @@ public class GameManagement : MonoBehaviour
             case GameManager.State.EndGame:
                 break;
             case GameManager.State.Title:
+                GameObject.Find("moon").transform
+                    .DORotate(new Vector3(0, 0, 360), 20, RotateMode.LocalAxisAdd)
+                    .SetLoops(-1).SetEase(Ease.Linear);
                 Instantiate(_audio.gameObject);
                 break;
             case GameManager.State.Tutorial:

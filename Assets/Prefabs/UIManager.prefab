@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _comboObj: {fileID: 1274139069553903034, guid: 8b214e39726f46d4793954a02a32c6ff, type: 3}
   _tPanelName: TutorialPanal
+  _gPanelName: GamePanel
 --- !u!114 &7216080842659713285
 MonoBehaviour:
   m_ObjectHideFlags: 0
