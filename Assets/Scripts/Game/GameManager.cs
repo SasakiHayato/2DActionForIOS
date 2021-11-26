@@ -14,6 +14,15 @@ public class GameManager
         None,
     }
 
+    public enum Phase
+    {
+        Phase1,
+        Phase2,
+        Phase3,
+
+        None,
+    }
+
     private static GameManager s_instance = null;
     public static GameManager Instance
     {
@@ -32,4 +41,10 @@ public class GameManager
 
     public static bool IsSetting { get; private set; } = false;
     public static bool Setting(bool set) => IsSetting = set;
+
+    public Phase CurrentPhase { get; private set; } = Phase.None;
+    public void SetPhase(float time)
+    {
+
+    }
 }

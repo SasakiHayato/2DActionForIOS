@@ -24,6 +24,7 @@ public class FieldManagement : MonoBehaviour
     CharaBase _player;
 
     float _timer;
+    float _gameTime = 0;
 
     string _ownerName = null;
     float _ownerTime = 0;
@@ -68,6 +69,9 @@ public class FieldManagement : MonoBehaviour
             _ownerTime = 0;
             DeleteOnwer();
         }
+
+        _gameTime += Time.unscaledDeltaTime;
+        
     }
 
     public static bool AttackOwner(string name)
