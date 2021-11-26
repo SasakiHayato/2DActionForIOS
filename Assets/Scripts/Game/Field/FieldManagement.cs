@@ -117,7 +117,7 @@ public class FieldManagement : MonoBehaviour
         if (set && Instance._player.Current == State.IsGround)
         {
             GameManager.Setting(true);
-            Time.timeScale = 0f;
+            Time.timeScale = 0.0075f;
         }
         else
         {

@@ -21,6 +21,10 @@ public class EventSetting : MonoBehaviour
             case 1:
                 EntryPlayer();
                 break;
+            case 2:
+                int bossID = (int)set;
+                EntryBoss(bossID);
+                break;
         }
     }
 
@@ -153,4 +157,9 @@ public class EventSetting : MonoBehaviour
     }
 
     void End() => IsEnd = true;
+
+    void EntryBoss(int id)
+    {
+        // ‹C‚ªŒü‚¢‚½‚ç
+    }
 }

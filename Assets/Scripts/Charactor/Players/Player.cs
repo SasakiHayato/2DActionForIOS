@@ -12,6 +12,7 @@ public class Player : CharaBase, IDamageble
     [SerializeField] float _flickLimit = 3;
 
     CircleCollider2D _atkCol;
+    CapsuleCollider2D _playerCol;
 
     Rigidbody2D _rb;
     public Animator Anim { get; private set; }
@@ -36,6 +37,7 @@ public class Player : CharaBase, IDamageble
         _rb = GetComponent<Rigidbody2D>();
         Anim = GetComponent<Animator>();
         _atkSetting = GetComponent<AttackSetting>();
+        _playerCol = GetComponent<CapsuleCollider2D>();
         
         SetUpAtkCol();
         SetUpCtrl();
@@ -63,6 +65,17 @@ public class Player : CharaBase, IDamageble
             gameObject.GetComponent<Collider2D>().isTrigger = false;
             ChangeState(State.IsGround);
         }
+        switch (Current)
+        {
+            case State.IsGround:
+                _playerCol.enabled = true;
+                _rb.gravityScale = 5;
+                break;
+            case State.IsFloating:
+                _playerCol.enabled = false;
+                _rb.gravityScale = 0;
+                break;
+        }
         _ctrl.SetNearEnemy(transform);
         _ctrl.Update();
     }
@@ -86,6 +99,7 @@ public class Player : CharaBase, IDamageble
                 GameObject enemy = _ctrl.NearEnemy.GetObj();
                 enemy.GetComponent<IState>().ChangeState(State.IsFloating);
                 enemy.GetComponent<EnemyBase>().Force(new Vector2(0, 2.5f), 7);
+
                 enemy.transform.DORotate(new Vector3(0, 0, 360), 1, RotateMode.LocalAxisAdd)
                     .SetLoops(-1).SetEase(Ease.Linear);
                 _rockOnEnemy = enemy;
@@ -150,6 +164,7 @@ public class Player : CharaBase, IDamageble
         if (GameManager.CurrentState == GameManager.State.Tutorial && !_tutorial.GetBool) return;
 
         if (_rockOnEnemy == null) _rockOnEnemy = _ctrl.NearEnemy.GetObj();
+        _rockOnEnemy.GetComponent<Animator>().enabled = false;
         
         FieldManagement.SetTimeRate(false);
         if (angle >= 45 && angle < 130 || Current == State.IsFloating) _atkSetting.RequestToFloating();
@@ -163,7 +178,8 @@ public class Player : CharaBase, IDamageble
     public int AddDamage() => Power;
     public void GetDamage(int damage)
     {
-
+        FieldManagement.SetTimeRate(false);
+        Debug.Log($"{gameObject.name} Žó‚¯‚½");
     }
 
     IEnumerator EndAnim()

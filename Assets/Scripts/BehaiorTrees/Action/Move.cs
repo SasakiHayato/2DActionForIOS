@@ -29,7 +29,7 @@ public class Move : IAction
 
         if (Target.transform.position.x >= _player.transform.position.x)
             if (_speed < 0) _speed *= -1;
-
+        
         _rb.velocity = new Vector2(_speed, _rb.velocity.y);
         _check = true;
     }

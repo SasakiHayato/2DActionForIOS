@@ -16,9 +16,9 @@ public class GameManager
 
     public enum Phase
     {
-        Phase1,
-        Phase2,
-        Phase3,
+        Normal,
+        Boss,
+        Last,
 
         None,
     }
