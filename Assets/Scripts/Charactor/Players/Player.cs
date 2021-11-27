@@ -103,6 +103,7 @@ public class Player : CharaBase, IDamageble
 
                 enemy.transform.DORotate(new Vector3(0, 0, 360), 1, RotateMode.LocalAxisAdd)
                     .SetLoops(-1).SetEase(Ease.Linear);
+
                 _rockOnEnemy = enemy;
                 break;
             case 2:
@@ -114,6 +115,7 @@ public class Player : CharaBase, IDamageble
                     ChangeState(State.IsGround);
                     return;
                 }
+
                 Vector2 setVec = _rockOnEnemy.transform.position;
                 transform.position = new Vector2(setVec.x, setVec.y + 1);
                 _rb.velocity = Vector2.zero;
@@ -181,9 +183,8 @@ public class Player : CharaBase, IDamageble
     {
         FieldManagement.SetTimeRate(false);
         _hp -= damage;
-        if (_hp >= 0)
+        if (_hp <= 0)
         {
-            Debug.Log("Ž€‚ñ‚¾");
             GameManager.ChangeState(GameManager.State.EndGame);
             GameManagement.RequestSetUp();
         }

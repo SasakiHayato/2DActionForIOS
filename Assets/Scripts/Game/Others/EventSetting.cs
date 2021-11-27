@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 using Fields;
 using SimpleFade;
@@ -178,6 +179,7 @@ public class EventSetting : MonoBehaviour
     {
         Fade.InSingle(Fade.CreateFadeImage(), 1);
         yield return new WaitUntil(() => Fade.EndFade);
+        yield return new WaitForSeconds(1);
         scene.Load("Result");
     }
 }

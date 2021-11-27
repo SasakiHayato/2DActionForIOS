@@ -20,7 +20,7 @@ public class SceneManage : MonoBehaviour
                 SceneManager.LoadScene(name);
                 break;
             case "Result":
-                GameManager.ChangeState(GameManager.State.EndGame);
+                GameManager.ChangeState(GameManager.State.Result);
                 SceneManager.LoadScene(name);
                 break;
         }

@@ -377,6 +377,9 @@ namespace SimpleFade
         /// <returns>true</returns>
         public static bool EndFade { get => Instance._isFade; } 
 
+        public static string FageCanvasName { get => "FadeCanvas"; }
+        public static string FadeImageName { get => "FadeImage"; }
+
         #region ˆ—
         void FadeForImage(Image target = null)
         {

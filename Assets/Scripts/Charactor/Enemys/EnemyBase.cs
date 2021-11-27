@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public abstract class EnemyBase : CharaBase
 {
@@ -35,6 +36,7 @@ public abstract class EnemyBase : CharaBase
     
     public virtual void Deid(GameObject target)
     {
+        target.transform.DOKill();
         FieldManagement.EnemysList.Remove(target.GetComponent<IEnemys>());
         FieldManagement.FieldCharas.Remove(target);
         Player player = FindObjectOfType<Player>();

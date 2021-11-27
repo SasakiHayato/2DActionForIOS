@@ -28,10 +28,14 @@ public class UIManager : MonoBehaviour
             GameObject.Find(_tPanelName).SetActive(true);
             GameObject.Find(_gPanelName).SetActive(false);
         }
-        else
+        else if (GameManager.CurrentState == GameManager.State.IsGame)
         {
             GameObject.Find(_gPanelName).SetActive(true);
             GameObject.Find(_tPanelName).SetActive(false);
+        }
+        else
+        {
+
         }
 
         _score = FindObjectOfType<ScoreManage>();

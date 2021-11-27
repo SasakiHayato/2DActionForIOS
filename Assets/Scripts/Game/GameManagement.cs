@@ -86,6 +86,11 @@ public class GameManagement : MonoBehaviour
                 Instantiate(_uI.gameObject);
                 _setEvent.Set(1);
                 break;
+            case GameManager.State.Result:
+                Instantiate(_audio.gameObject);
+                Instantiate(_uI.gameObject);
+                SimpleFade.Fade.OutSingle(SimpleFade.Fade.CreateFadeImage(), 1);
+                break;
             case GameManager.State.None:
                 break;
         }

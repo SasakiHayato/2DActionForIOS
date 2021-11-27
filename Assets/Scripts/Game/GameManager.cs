@@ -10,6 +10,7 @@ public class GameManager
         EndGame,
         Title,
         Tutorial,
+        Result,
 
         None,
     }
