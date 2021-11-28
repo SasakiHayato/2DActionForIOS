@@ -43,7 +43,6 @@ namespace Players
         void Pressing()
         {
             if (!_isPress) return;
-
             _currentPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             _time += Time.deltaTime;
         }

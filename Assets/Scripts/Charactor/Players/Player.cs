@@ -59,13 +59,6 @@ public class Player : CharaBase, IDamageble
     void Update()
     {
         SetDir();
-        if (GameManager.CurrentState == GameManager.State.Tutorial && !TutorialEvent) return;
-        if (!_atkSetting.CurrentCombo)
-        {
-            _rb.drag = 0;
-            gameObject.GetComponent<Collider2D>().isTrigger = false;
-            ChangeState(State.IsGround);
-        }
         switch (Current)
         {
             case State.IsGround:
@@ -77,6 +70,16 @@ public class Player : CharaBase, IDamageble
                 _rb.gravityScale = 0;
                 break;
         }
+
+        if (GameManager.CurrentState == GameManager.State.Tutorial && !TutorialEvent) return;
+
+        if (!_atkSetting.CurrentCombo)
+        {
+            _rb.drag = 0;
+            gameObject.GetComponent<Collider2D>().isTrigger = false;
+            ChangeState(State.IsGround);
+        }
+        
         _ctrl.SetNearEnemy(transform);
         _ctrl.Update();
     }
@@ -150,10 +153,10 @@ public class Player : CharaBase, IDamageble
 
     public void Attack()
     {
-        if (!GameManager.IsSetting && Current == State.IsGround) return;
+        //if (/*!GameManager.IsSetting && */Current != State.IsGround) return;
         if (_ctrl.NearEnemy == null || _ctrl.IsMove) return;
         if (_ctrl.ForceVec == Vector2.zero && Current == State.IsGround) return;
-        
+
         if (Current == State.IsGround)
         {
             float dis = Vector2.Distance

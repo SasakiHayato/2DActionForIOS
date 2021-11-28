@@ -79,6 +79,7 @@ public class EventSetting : MonoBehaviour
 
         // Enemyèoåª
         EnemyController enemy = new EnemyController();
+        enemy.SetUp();
         enemy.Tutorial(_tutorialId);
         _tutorialId++;
         yield return new WaitForSeconds(1.5f);

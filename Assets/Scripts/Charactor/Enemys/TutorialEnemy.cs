@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class TutorialEnemy : EnemyBase, IEnemys, IDamageble
 {
+    CircleCollider2D _col;
+
     void Start()
     {
-        
+        _col = GetComponentInChildren<CircleCollider2D>();
+        _col.enabled = false;
     }
 
     void Update()
@@ -32,8 +35,15 @@ public class TutorialEnemy : EnemyBase, IEnemys, IDamageble
         }
     }
 
+    // AnimEvent ‚ÅŒÄ‚Ño‚µ
+    void SetCollider()
+    {
+        if (!_col.enabled) _col.enabled = true;
+        else _col.enabled = false;
+    }
+
     public GameObject GetObj() => gameObject;
-    public int AddDamage() => 1;
+    public int AddDamage() => 0;
     public void GetDamage(int damage)
     {
         Hp -= damage;

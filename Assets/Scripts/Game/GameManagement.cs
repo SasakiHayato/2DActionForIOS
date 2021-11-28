@@ -36,6 +36,7 @@ public class GameManagement : MonoBehaviour
             SetUp();
             return;
         }
+        
         SetUp();
     }
 

@@ -275,7 +275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _flickTime: 0.2
   _flickLimit: 2
-  _hp: 1
+  _hp: 3
 --- !u!114 &5621373899508025863
 MonoBehaviour:
   m_ObjectHideFlags: 0
