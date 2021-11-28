@@ -49,5 +49,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 8300000, guid: 3a45a10fcd3173247bbd7611a3bcfa24, type: 3}
   - {fileID: 8300000, guid: 1dc5a828d85aebf4284ea10458d2eab4, type: 3}
+  - {fileID: 8300000, guid: 8ec332dfd8e542147ae3560c1ac8b7c3, type: 3}
   _clickSE: {fileID: 8300000, guid: cf01ecd69c4a77a4aae1139a958b2d28, type: 3}
   _randSE: {fileID: 8300000, guid: 91bb811fc85e3924cb7adb775120c169, type: 3}

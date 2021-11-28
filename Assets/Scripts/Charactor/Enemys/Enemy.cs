@@ -45,6 +45,7 @@ public class Enemy : EnemyBase, IBehavior, IEnemys, IDamageble
         }
     }
 
+    // AnimEvent ‚ÅŒÄ‚Ño‚µ
     void SetCollider()
     {
         if (!_col.enabled) _col.enabled = true;

@@ -21,23 +21,30 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-
-        if (GameManager.CurrentState == GameManager.State.Tutorial)
+        switch (GameManager.CurrentState)
         {
-            _tUI = gameObject.GetComponent<TutorialUI>();
-            GameObject.Find(_tPanelName).SetActive(true);
-            GameObject.Find(_gPanelName).SetActive(false);
+            case GameManager.State.IsGame:
+                GameObject.Find(_gPanelName).SetActive(true);
+                GameObject.Find(_tPanelName).SetActive(false);
+                break;
+            case GameManager.State.EndGame:
+                break;
+            case GameManager.State.Title:
+                break;
+            case GameManager.State.Tutorial:
+                _tUI = gameObject.GetComponent<TutorialUI>();
+                GameObject.Find(_tPanelName).SetActive(true);
+                GameObject.Find(_gPanelName).SetActive(false);
+                break;
+            case GameManager.State.Result:
+                FindObjectOfType<ResultUI>().SetUp();
+                break;
+            case GameManager.State.None:
+                break;
+            default:
+                break;
         }
-        else if (GameManager.CurrentState == GameManager.State.IsGame)
-        {
-            GameObject.Find(_gPanelName).SetActive(true);
-            GameObject.Find(_tPanelName).SetActive(false);
-        }
-        else
-        {
-
-        }
-
+        
         _score = FindObjectOfType<ScoreManage>();
         _timer = FindObjectOfType<TimerText>();
     }

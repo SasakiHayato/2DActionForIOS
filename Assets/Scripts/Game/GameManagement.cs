@@ -9,7 +9,7 @@ public class GameManagement : MonoBehaviour
     [SerializeField] FieldManagement _field;
     [SerializeField] AudioManager _audio;
 
-    [SerializeField] bool _isDebug;
+    [SerializeField] GameManager.State _Debugstate;
 
     public static GameManagement Instance;
     EventSetting _setEvent;
@@ -17,8 +17,6 @@ public class GameManagement : MonoBehaviour
 
     private void Awake()
     {
-        if (_isDebug) GameManager.ChangeState(GameManager.State.IsGame);
-
         if (Instance != null)
         {
             _setEvent = FindObjectOfType<EventSetting>();
@@ -32,17 +30,13 @@ public class GameManagement : MonoBehaviour
             _setEvent = gameObject.AddComponent<EventSetting>();
             DontDestroyOnLoad(gameObject);
         }
-        
-        SetUp();
-    }
-
-    void Start()
-    {
-        if (!_isDebug)
+        if (_Debugstate != GameManager.State.None)
         {
-            GameManager.ChangeState(GameManager.State.Title);
+            GameManager.ChangeState(_Debugstate);
             SetUp();
+            return;
         }
+        SetUp();
     }
 
     public void GoTutorial(string name)
@@ -72,7 +66,6 @@ public class GameManagement : MonoBehaviour
                 Instantiate(_audio.gameObject);
                 break;
             case GameManager.State.EndGame:
-                Debug.Log("èIóπ");
                 _setEvent.Set(3, _scene);
                 break;
             case GameManager.State.Title:
@@ -89,7 +82,7 @@ public class GameManagement : MonoBehaviour
             case GameManager.State.Result:
                 Instantiate(_audio.gameObject);
                 Instantiate(_uI.gameObject);
-                SimpleFade.Fade.OutSingle(SimpleFade.Fade.CreateFadeImage(), 1);
+                _setEvent.Set(4);
                 break;
             case GameManager.State.None:
                 break;

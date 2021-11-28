@@ -30,6 +30,9 @@ public class EventSetting : MonoBehaviour
                 SceneManage scene = (SceneManage)set;
                 DeadPlayer(scene);
                 break;
+            case 4:
+                StartCoroutine(SetResult());
+                break;
         }
     }
 
@@ -181,5 +184,26 @@ public class EventSetting : MonoBehaviour
         yield return new WaitUntil(() => Fade.EndFade);
         yield return new WaitForSeconds(1);
         scene.Load("Result");
+    }
+
+    IEnumerator SetResult()
+    {
+        Fade.OutSingle(Fade.CreateFadeImage(), 1);
+        yield return new WaitUntil(() => Fade.EndFade);
+        GameObject.Find("ResultPlayer").GetComponent<Animator>().Play("TestPlayer_Dead");
+        RectTransform logRect = (RectTransform)GameObject.Find("LogText").transform;
+        logRect.DOAnchorPosX(0, 0.3f).SetEase(Ease.Linear);
+        yield return new WaitForSeconds(0.2f);
+        RectTransform scoreRect = (RectTransform)GameObject.Find("Score").transform;
+        scoreRect.DOAnchorPosX(0, 0.3f).SetEase(Ease.Linear);
+        yield return new WaitForSeconds(0.2f);
+        RectTransform phaseRect = (RectTransform)GameObject.Find("Phase").transform;
+        phaseRect.DOAnchorPosX(0, 0.3f).SetEase(Ease.Linear);
+
+        yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+        AudioManager.OnClickSE();
+        Fade.InSingle(Fade.CreateFadeImage(), 1);
+        yield return new WaitUntil(() => Fade.EndFade);
+        FindObjectOfType<SceneManage>().Load("Title");
     }
 }

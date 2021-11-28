@@ -18,5 +18,6 @@ public class ScoreManage : MonoBehaviour
     {
         _count++;
         _scoreTxt.text = $"Score : {_count.ToString("d3")}";
+        GameManager.SaveScore(_count);
     }
 }

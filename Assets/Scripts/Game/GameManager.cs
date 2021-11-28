@@ -36,6 +36,12 @@ public class GameManager
 
     Phase _savePhase = Phase.None;
 
+    public static int GameScore { get; private set; } = 0;
+    public static void SaveScore(int score) => GameScore = score;
+
+    public static int GamePhase { get; private set; } = 0;
+    public static void SavePhase(int phase) => GamePhase = phase;
+
     public static State CurrentState { get; private set; } = State.None;
     public static void ChangeState(State state) => CurrentState = state;
 

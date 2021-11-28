@@ -5,7 +5,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] float _vol;
-    [SerializeField] AudioClip[] _bgm = new AudioClip[4];
+    [SerializeField] AudioClip[] _bgm = new AudioClip[0];
     [SerializeField] AudioClip _clickSE;
     [SerializeField] AudioClip _randSE;
 
@@ -20,6 +20,7 @@ public class AudioManager : MonoBehaviour
         s_instance = this;
         _source = gameObject.AddComponent<AudioSource>();
         _source.volume = _vol;
+        _source.loop = true;
         PlayBGM();
     }
 
@@ -39,6 +40,9 @@ public class AudioManager : MonoBehaviour
                 break;
             case GameManager.State.Tutorial:
                 _source.clip = _bgm[3];
+                break;
+            case GameManager.State.Result:
+                _source.clip = _bgm[4];
                 break;
         }
 
