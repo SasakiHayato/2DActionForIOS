@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 using Fields;
 using SimpleFade;
@@ -10,6 +11,9 @@ public class EventSetting : MonoBehaviour
 {
     public bool IsEnd { get; private set; }
     int _tutorialId = 1;
+
+    Coroutine _tutorial;
+    Coroutine _camera;
 
     public void Set(int id, object set = null)
     {
@@ -32,6 +36,9 @@ public class EventSetting : MonoBehaviour
                 break;
             case 4:
                 StartCoroutine(SetResult());
+                break;
+            case 5:
+                StartCoroutine(SkipTutorial());
                 break;
         }
     }
@@ -58,11 +65,11 @@ public class EventSetting : MonoBehaviour
             .AddForce(new Vector2(-5, 0) * 100, ForceMode2D.Force);
 
         Fade.OutSingle(Fade.CreateFadeImage(), 1);
-        StartCoroutine(Tutorial(player));
+        _tutorial = StartCoroutine(Tutorial(player));
 
         CameraController camera = new CameraController();
         camera.SetUp();
-        StartCoroutine(TutorialUpdate(camera));
+        _camera = StartCoroutine(TutorialUpdate(camera));
     }
 
     IEnumerator Tutorial(GameObject player)
@@ -144,6 +151,20 @@ public class EventSetting : MonoBehaviour
         Fade.InSingle(Fade.CreateFadeImage(), 1);
         yield return new WaitUntil(() => Fade.EndFade);
         yield return new WaitForSeconds(1.2f);
+        GameManager.SetPlayerPos(player.transform.position);
+        EndTutorial();
+    }
+
+    IEnumerator SkipTutorial()
+    {
+        StopCoroutine(_tutorial);
+        StopCoroutine(_camera);
+        AudioManager.StopSource();
+        AudioManager.OnClickSE();
+        Fade.InSingle(Fade.CreateFadeImage(), 1);
+        yield return new WaitUntil(() => Fade.EndFade);
+        yield return new WaitForSeconds(1.2f);
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
         GameManager.SetPlayerPos(player.transform.position);
         EndTutorial();
     }

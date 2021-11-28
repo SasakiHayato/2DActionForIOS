@@ -153,7 +153,8 @@ public class Player : CharaBase, IDamageble
 
     public void Attack()
     {
-        //if (/*!GameManager.IsSetting && */Current != State.IsGround) return;
+        if (!GameManager.IsSetting && Current == State.IsGround 
+            && GameManager.CurrentState == GameManager.State.IsGame) return;
         if (_ctrl.NearEnemy == null || _ctrl.IsMove) return;
         if (_ctrl.ForceVec == Vector2.zero && Current == State.IsGround) return;
 

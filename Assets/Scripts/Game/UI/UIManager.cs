@@ -30,18 +30,17 @@ public class UIManager : MonoBehaviour
             case GameManager.State.EndGame:
                 break;
             case GameManager.State.Title:
+                FindObjectOfType<TitleUI>().SetUp();
                 break;
             case GameManager.State.Tutorial:
                 _tUI = gameObject.GetComponent<TutorialUI>();
+                GameObject.Find("SkipButton").GetComponent<Button>()
+                    .onClick.AddListener(() => GameManagement.Instance.SetEvents(5));
                 GameObject.Find(_tPanelName).SetActive(true);
                 GameObject.Find(_gPanelName).SetActive(false);
                 break;
             case GameManager.State.Result:
                 FindObjectOfType<ResultUI>().SetUp();
-                break;
-            case GameManager.State.None:
-                break;
-            default:
                 break;
         }
         

@@ -45,6 +45,7 @@ public class GameManagement : MonoBehaviour
         if (name == "Main") GameManager.ChangeState(GameManager.State.Tutorial);
         AudioManager.StopSource();
         AudioManager.OnClickSE();
+        
         _scene.LoadAsync(name, _setEvent);
     }
 
@@ -74,6 +75,7 @@ public class GameManagement : MonoBehaviour
                     .DORotate(new Vector3(0, 0, 360), 20, RotateMode.LocalAxisAdd)
                     .SetLoops(-1).SetEase(Ease.Linear);
                 Instantiate(_audio.gameObject);
+                Instantiate(_uI.gameObject);
                 break;
             case GameManager.State.Tutorial:
                 Instantiate(_audio.gameObject);
