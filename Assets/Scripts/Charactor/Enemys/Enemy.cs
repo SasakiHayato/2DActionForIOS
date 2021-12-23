@@ -55,6 +55,7 @@ public class Enemy : EnemyBase, IBehavior, IEnemys, IDamageble
     public void Call(IAction action) => action.Execute();
     public GameObject SetTarget() => gameObject;
     public GameObject GetObj() => gameObject;
+
     public int AddDamage() => 1;
     public void GetDamage(int damage)
     {

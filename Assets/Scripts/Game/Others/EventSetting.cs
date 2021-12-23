@@ -52,7 +52,7 @@ public class EventSetting : MonoBehaviour
         player.GetComponent<Rigidbody2D>()
             .AddForce(new Vector2(-3, 5) * 7, ForceMode2D.Impulse);
 
-        Invoke("End", 0);
+        Invoke(nameof(End), 0);
     }
 
     void EntryPlayer()
